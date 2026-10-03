@@ -42,6 +42,36 @@ test('MarketCalculator', () => {
   assert.equal(result.totalPurchasedGrams, 1000)
   assert.equal(result.surplusGrams, 250)
   assert.ok(result.surplusSuggestion?.includes('tomato achar'))
+
+  const plan = MarketCalculator.calculatePurchasePlan({
+    ingredientId: 'tomato',
+    nameEn: 'Tomato',
+    nameNe: 'गोलभेडा',
+    recipeQuantityGrams: 750,
+    standardPackageGrams: 1000,
+    pantryAvailableGrams: 200
+  })
+
+  assert.equal(plan.status, 'partiallyAvailable')
+  assert.equal(plan.netNeededGrams, 550)
+  assert.equal(plan.packagesToBuy, 1)
+  assert.equal(plan.vendorUnitLabelEn, '1 kg (4 pau)')
+  assert.equal(plan.vendorUnitLabelNe, '१ के.जी. (४ पाउ)')
+  assert.equal(plan.surplusGrams, 450)
+  assert.ok(plan.surplusSuggestionEn?.includes('tomato achar'))
+  assert.ok(plan.surplusSuggestionNe?.includes('गोलभेडाको ताजा अचार'))
+
+  // Full pantry test
+  const fullPlan = MarketCalculator.calculatePurchasePlan({
+    ingredientId: 'potato',
+    nameEn: 'Potato',
+    nameNe: 'आलु',
+    recipeQuantityGrams: 500,
+    standardPackageGrams: 500,
+    pantryAvailableGrams: 500
+  })
+  assert.equal(fullPlan.status, 'sufficient')
+  assert.equal(fullPlan.packagesToBuy, 0)
 })
 
 test('AltitudeCalculator', () => {

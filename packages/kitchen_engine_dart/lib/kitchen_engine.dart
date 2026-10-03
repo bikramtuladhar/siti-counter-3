@@ -1,6 +1,6 @@
-/// Core kitchen engine library for Siti Counter 3.0.
-/// Implements pure domain calculations for market units, altitude, and purchasable quantities.
-library kitchen_engine;
+library;
+
+import 'nepali_calendar.dart';
 
 /// Canonical mass and volume conversion constants and helpers.
 class UnitConverter {
@@ -74,6 +74,68 @@ class UnitConverter {
   }
 }
 
+enum PantryStatus {
+  sufficient,
+  partiallyAvailable,
+  missing;
+
+  String get labelEn {
+    switch (this) {
+      case PantryStatus.sufficient:
+        return 'Already in Pantry';
+      case PantryStatus.partiallyAvailable:
+        return 'Partially in Pantry';
+      case PantryStatus.missing:
+        return 'Need to Buy';
+    }
+  }
+
+  String get labelNe {
+    switch (this) {
+      case PantryStatus.sufficient:
+        return 'भण्डारमा छ (पर्देन)';
+      case PantryStatus.partiallyAvailable:
+        return 'केही छ (थप किन्नुपर्ने)';
+      case PantryStatus.missing:
+        return 'किन्नुपर्ने';
+    }
+  }
+}
+
+class IngredientPurchasePlan {
+  final String ingredientId;
+  final String nameEn;
+  final String nameNe;
+  final double recipeRequiredGrams;
+  final double pantryAvailableGrams;
+  final double netNeededGrams;
+  final String vendorUnitLabelEn;
+  final String vendorUnitLabelNe;
+  final int packagesToBuy;
+  final double totalPurchasedGrams;
+  final double surplusGrams;
+  final String? surplusSuggestionEn;
+  final String? surplusSuggestionNe;
+  final PantryStatus status;
+
+  const IngredientPurchasePlan({
+    required this.ingredientId,
+    required this.nameEn,
+    required this.nameNe,
+    required this.recipeRequiredGrams,
+    required this.pantryAvailableGrams,
+    required this.netNeededGrams,
+    required this.vendorUnitLabelEn,
+    required this.vendorUnitLabelNe,
+    required this.packagesToBuy,
+    required this.totalPurchasedGrams,
+    required this.surplusGrams,
+    this.surplusSuggestionEn,
+    this.surplusSuggestionNe,
+    required this.status,
+  });
+}
+
 /// Result of converting recipe needs into a purchasable store package.
 class PurchaseRecommendation {
   final String ingredientName;
@@ -97,6 +159,73 @@ class PurchaseRecommendation {
 
 /// Calculates purchasable store quantities and tracks ingredient surplus.
 class MarketCalculator {
+  static String formatVendorUnits(double grams, {bool preferNepali = false}) {
+    final intGrams = grams.round();
+    if (intGrams >= 1000 && intGrams % 1000 == 0) {
+      final kg = intGrams ~/ 1000;
+      final pau = intGrams ~/ 250;
+      return preferNepali
+          ? '${NepaliCalendar.toDevanagariDigits(kg)} के.जी. (${NepaliCalendar.toDevanagariDigits(pau)} पाउ)'
+          : '$kg kg ($pau pau)';
+    }
+    if (intGrams >= 250 && intGrams % 250 == 0) {
+      final pau = intGrams ~/ 250;
+      return preferNepali
+          ? '${NepaliCalendar.toDevanagariDigits(pau)} पाउ (${NepaliCalendar.toDevanagariDigits(intGrams)} ग्राम)'
+          : '$pau pau ($intGrams g)';
+    }
+    return preferNepali
+        ? '${NepaliCalendar.toDevanagariDigits(intGrams)} ग्राम'
+        : '$intGrams g';
+  }
+
+  static ({String? en, String? ne}) getSurplusSuggestion(
+    String ingredientName,
+    double surplusGrams,
+  ) {
+    final lower = ingredientName.toLowerCase();
+    final intSurplus = surplusGrams.round();
+    if (surplusGrams >= 150) {
+      if (lower.contains('tomato') || lower.contains('गोलभेडा')) {
+        return (
+          en: 'Leftover ${intSurplus}g tomatoes make fresh fire-roasted tomato achar (गोलभेडाको अचार)',
+          ne: 'बाँकी ${NepaliCalendar.toDevanagariDigits(intSurplus)} ग्राम गोलभेडा: पोलेको गोलभेडाको ताजा अचार बनाउन उत्तम',
+        );
+      }
+      if (lower.contains('potato') || lower.contains('आलु')) {
+        return (
+          en: 'Leftover ${intSurplus}g potatoes can be used for tomorrow\'s aloo paratha or tarkari',
+          ne: 'बाँकी ${NepaliCalendar.toDevanagariDigits(intSurplus)} ग्राम आलु: भोलिको आलु पराठा वा खाजा बनाउन प्रयोग गर्नुहोस्',
+        );
+      }
+      if (lower.contains('radish') || lower.contains('मूला')) {
+        return (
+          en: 'Leftover ${intSurplus}g radish: Slice and sun-dry for fermented radish achar (मूलाको चाना/अचार)',
+          ne: 'बाँकी ${NepaliCalendar.toDevanagariDigits(intSurplus)} ग्राम मूला: चाना बनाएर घाममा सुकाई स्वादिष्ट अचार बनाउनुहोस्',
+        );
+      }
+      if (lower.contains('cauliflower') || lower.contains('काउली')) {
+        return (
+          en: 'Leftover ${intSurplus}g cauliflower: Pair with green peas for tomorrow\'s curry',
+          ne: 'बाँकी ${NepaliCalendar.toDevanagariDigits(intSurplus)} ग्राम काउली: भोलिको लागि केराउसँग तरकारी बनाउनुहोस्',
+        );
+      }
+      if (lower.contains('spinach') || lower.contains('पालुङ्गो') || lower.contains('saag') || lower.contains('साग')) {
+        return (
+          en: 'Cook remaining greens within 2 days or wilt for gundruk fermentation',
+          ne: 'बाँकी साग २ दिनभित्र पकाउनुहोस् वा गुन्द्रुक बनाउन ओइलाउनुहोस्',
+        );
+      }
+      if (lower.contains('ginger') || lower.contains('अदुवा') || lower.contains('garlic') || lower.contains('लसुन')) {
+        return (
+          en: 'Store leftover peeled paste in clean jar with oil and salt',
+          ne: 'बाँकी अदुवा-लसुनको पेस्टमा थोरै तेल र नुन मोलेर सिसाको बट्टामा राख्नुहोस्',
+        );
+      }
+    }
+    return (en: null, ne: null);
+  }
+
   /// Converts required recipe weight into standard purchasable market package amounts.
   static PurchaseRecommendation calculatePurchase({
     required String ingredientName,
@@ -123,17 +252,7 @@ class MarketCalculator {
     final totalAvailable = alreadyHaveGrams + totalPurchased;
     final surplus = totalAvailable - recipeQuantityGrams;
 
-    String? suggestion;
-    final lowerName = ingredientName.toLowerCase();
-    if (surplus >= 200) {
-      if (lowerName.contains('tomato') || lowerName.contains('गोलभेडा')) {
-        suggestion = 'Leftover tomatoes make fresh tomato achar (गोलभेडाको अचार)';
-      } else if (lowerName.contains('potato') || lowerName.contains('आलु')) {
-        suggestion = 'Leftover potatoes can be used for tomorrow\'s khaja or aloo paratha';
-      } else if (lowerName.contains('spinach') || lowerName.contains('पालुङ्गो')) {
-        suggestion = 'Cook remaining spinach within 2 days to prevent wilting';
-      }
-    }
+    final suggestionObj = getSurplusSuggestion(ingredientName, surplus);
 
     return PurchaseRecommendation(
       ingredientName: ingredientName,
@@ -142,7 +261,53 @@ class MarketCalculator {
       packagesToBuy: packagesToBuy,
       totalPurchasedGrams: totalPurchased,
       surplusGrams: surplus,
-      surplusSuggestion: suggestion,
+      surplusSuggestion: suggestionObj.en,
+    );
+  }
+
+  static IngredientPurchasePlan calculatePurchasePlan({
+    required String ingredientId,
+    required String nameEn,
+    required String nameNe,
+    required double recipeQuantityGrams,
+    required double standardPackageGrams,
+    double pantryAvailableGrams = 0.0,
+  }) {
+    final netNeededGrams = (recipeQuantityGrams - pantryAvailableGrams).clamp(0.0, double.infinity);
+
+    final PantryStatus status;
+    if (netNeededGrams == 0.0) {
+      status = PantryStatus.sufficient;
+    } else if (pantryAvailableGrams > 0.0) {
+      status = PantryStatus.partiallyAvailable;
+    } else {
+      status = PantryStatus.missing;
+    }
+
+    final packagesToBuy = netNeededGrams > 0.0
+        ? (netNeededGrams / standardPackageGrams).ceil()
+        : 0;
+    final totalPurchasedGrams = packagesToBuy * standardPackageGrams;
+    final totalAvailable = pantryAvailableGrams + totalPurchasedGrams;
+    final surplusGrams = (totalAvailable - recipeQuantityGrams).clamp(0.0, double.infinity);
+
+    final suggestion = getSurplusSuggestion(nameEn, surplusGrams);
+
+    return IngredientPurchasePlan(
+      ingredientId: ingredientId,
+      nameEn: nameEn,
+      nameNe: nameNe,
+      recipeRequiredGrams: recipeQuantityGrams,
+      pantryAvailableGrams: pantryAvailableGrams,
+      netNeededGrams: netNeededGrams,
+      vendorUnitLabelEn: formatVendorUnits(totalPurchasedGrams, preferNepali: false),
+      vendorUnitLabelNe: formatVendorUnits(totalPurchasedGrams, preferNepali: true),
+      packagesToBuy: packagesToBuy,
+      totalPurchasedGrams: totalPurchasedGrams,
+      surplusGrams: surplusGrams,
+      surplusSuggestionEn: suggestion.en,
+      surplusSuggestionNe: suggestion.ne,
+      status: status,
     );
   }
 }

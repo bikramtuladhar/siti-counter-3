@@ -72,7 +72,7 @@ void main() {
       expect(result.packagesToBuy, equals(1));
       expect(result.totalPurchasedGrams, equals(1000.0));
       expect(result.surplusGrams, equals(250.0));
-      expect(result.surplusSuggestion, contains('fresh tomato achar'));
+      expect(result.surplusSuggestion, contains('tomato achar'));
     });
 
     test('handles already-have quantity correctly', () {
@@ -88,6 +88,40 @@ void main() {
       expect(result.packagesToBuy, equals(2));
       expect(result.totalPurchasedGrams, equals(500.0));
       expect(result.surplusGrams, equals(200.0));
+    });
+
+    test('generates comprehensive purchase plan with pantry tracking and surplus advice', () {
+      final plan = MarketCalculator.calculatePurchasePlan(
+        ingredientId: 'tomato',
+        nameEn: 'Tomato',
+        nameNe: 'गोलभेडा',
+        recipeQuantityGrams: 750,
+        standardPackageGrams: 1000,
+        pantryAvailableGrams: 200,
+      );
+
+      expect(plan.status, equals(PantryStatus.partiallyAvailable));
+      expect(plan.netNeededGrams, equals(550.0));
+      expect(plan.packagesToBuy, equals(1));
+      expect(plan.totalPurchasedGrams, equals(1000.0));
+      expect(plan.vendorUnitLabelEn, equals('1 kg (4 pau)'));
+      expect(plan.vendorUnitLabelNe, equals('१ के.जी. (४ पाउ)'));
+      expect(plan.surplusGrams, equals(450.0));
+      expect(plan.surplusSuggestionEn, contains('fresh fire-roasted tomato achar'));
+      expect(plan.surplusSuggestionNe, contains('गोलभेडाको ताजा अचार'));
+
+      // Fully covered by pantry
+      final fullPlan = MarketCalculator.calculatePurchasePlan(
+        ingredientId: 'potato',
+        nameEn: 'Potato',
+        nameNe: 'आलु',
+        recipeQuantityGrams: 500,
+        standardPackageGrams: 250,
+        pantryAvailableGrams: 500,
+      );
+      expect(fullPlan.status, equals(PantryStatus.sufficient));
+      expect(fullPlan.packagesToBuy, equals(0));
+      expect(fullPlan.surplusGrams, equals(0.0));
     });
   });
 

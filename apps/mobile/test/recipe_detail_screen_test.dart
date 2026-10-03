@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kitchen_engine/kitchen_engine.dart';
 import 'package:kitchen_engine/region_pack.dart';
 import 'package:siti_counter/screens/recipe_detail_screen.dart';
 
@@ -247,5 +248,163 @@ void main() {
 
     expect(groceryServings, equals(4));
     expect(find.text('सबै सामग्री किराना सूचीमा थपियो'), findsOneWidget);
+  });
+
+  testWidgets('RecipeDetailScreen "What to buy" converts recipe portion to market units and shows surplus advice',
+      (tester) async {
+    tester.view.physicalSize = const Size(800, 1600);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    const recipeWithTomato = RegionRecipe(
+      id: 'aloo-tama-bodi',
+      titleEn: 'Aloo Tama Bodi',
+      titleNe: 'आलु तामा बोडी',
+      category: 'curry',
+      cuisine: 'newari',
+      dietary: ['vegetarian', 'vegan'],
+      prepTimeMinutes: 15,
+      cookTimeMinutes: 25,
+      servings: 4,
+      difficulty: 'medium',
+      pressureCooker: RecipeWhistleProfile(
+        enabled: true,
+        recommendedWhistles: 3,
+        altitudeWhistleOffsetKathmandu: 1,
+        heatLevel: 'medium',
+        releaseType: 'natural',
+      ),
+      ingredients: [
+        RecipeIngredientItem(ingredientId: 'tomato', quantity: 750, unit: 'g'),
+        RecipeIngredientItem(ingredientId: 'potato', quantity: 400, unit: 'g'),
+      ],
+      steps: [
+        RecipeStepItem(
+          stepNumber: 1,
+          instructionEn: 'Fry spices and cook vegetables.',
+          instructionNe: 'मसला भुट्नुहोस् र तरकारी पकाउनुहोस्।',
+        ),
+      ],
+      seasonality: ['sharad'],
+      tags: ['curry'],
+      rating: 4.8,
+      caloriesPerServing: 260,
+      costEstimateNpr: 120,
+    );
+
+    const tomatoIngredient = RegionIngredient(
+      id: 'tomato',
+      nameEn: 'Tomato',
+      nameNe: 'गोलभेडा',
+      aliases: ['golbheda', 'tamatar'],
+      category: 'vegetables',
+      standardUnit: 'kg',
+      marketPackageGrams: 1000,
+      storageDays: 7,
+      allergens: [],
+      availability: {'sharad': 'peak'},
+    );
+
+    const potatoIngredient = RegionIngredient(
+      id: 'potato',
+      nameEn: 'Potato',
+      nameNe: 'आलु',
+      aliases: ['aloo', 'alu'],
+      category: 'vegetables',
+      standardUnit: 'pau',
+      marketPackageGrams: 250,
+      storageDays: 21,
+      allergens: [],
+      availability: {'sharad': 'peak'},
+    );
+
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: RecipeDetailScreen(
+          recipe: recipeWithTomato,
+          currentLanguage: 'ne',
+          ingredientsCatalog: [tomatoIngredient, potatoIngredient],
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    // Verify "What to Buy" section title
+    expect(find.text('के किन्ने (बजारको नाप र बचत)'), findsOneWidget);
+
+    // Tomato required is 750g, vendor unit is 1 kg (4 pau) in Nepali
+    expect(find.text('१ के.जी. (४ पाउ)'), findsOneWidget);
+
+    // Potato required is 400g, 2 packages of 250g = 500g = 2 pau (500g)
+    expect(find.text('२ पाउ (५०० ग्राम)'), findsOneWidget);
+
+    // 750g tomato into 1000g leaves 250g surplus -> expect tomato achar advice
+    expect(
+      find.textContaining('पोलेको गोलभेडाको ताजा अचार बनाउन उत्तम'),
+      findsOneWidget,
+    );
+
+    // Check initial status: 2 to buy, 0 in pantry
+    expect(find.text('२ किन्नुपर्ने'), findsOneWidget);
+    expect(find.text('० घरमै छ'), findsOneWidget);
+
+    // Tap "सबै छ" quick action
+    final allInPantryButton = find.text('सबै छ');
+    await tester.ensureVisible(allInPantryButton);
+    await tester.tap(allInPantryButton);
+    await tester.pumpAndSettle();
+
+    // Now 0 to buy, 2 in pantry
+    expect(find.text('० किन्नुपर्ने'), findsOneWidget);
+    expect(find.text('२ घरमै छ'), findsOneWidget);
+    expect(find.text('आवश्यक छैन'), findsNWidgets(2));
+
+    // Tap "सबै किन्ने" quick action to reset
+    final buyAllButton = find.text('सबै किन्ने');
+    await tester.ensureVisible(buyAllButton);
+    await tester.tap(buyAllButton);
+    await tester.pumpAndSettle();
+
+    expect(find.text('२ किन्नुपर्ने'), findsOneWidget);
+  });
+
+  testWidgets('RecipeDetailScreen "Add purchasable to grocery list" sends only needed items',
+      (tester) async {
+    tester.view.physicalSize = const Size(800, 1600);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final recipe = createTestRecipe();
+    List<IngredientPurchasePlan>? purchasableList;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: RecipeDetailScreen(
+          recipe: recipe,
+          currentLanguage: 'ne',
+          // kalo_dal is already in pantry
+          initialPantry: const {'kalo_dal': true},
+          onAddPurchasableToGrocery: (items) {
+            purchasableList = items;
+          },
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final addPurchasableButton = find.text('किन्नुपर्ने सामग्री किराना सूचीमा थप्नुहोस्');
+    expect(addPurchasableButton, findsOneWidget);
+
+    await tester.ensureVisible(addPurchasableButton);
+    await tester.tap(addPurchasableButton);
+    await tester.pump();
+
+    // kalo_dal is in pantry, so only jimbu and ghee should be in purchasableList (2 items)
+    expect(purchasableList, isNotNull);
+    expect(purchasableList!.length, equals(2));
+    expect(purchasableList!.any((p) => p.ingredientId == 'kalo_dal'), isFalse);
+    expect(find.text('२ वटा किन्ने सामग्री किराना सूचीमा थपियो'), findsOneWidget);
   });
 }

@@ -1,8 +1,10 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:kitchen_engine/kitchen_engine.dart';
 import 'package:kitchen_engine/nepali_calendar.dart';
 import 'package:kitchen_engine/region_pack.dart';
+import '../data/region_pack_repository.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
 
@@ -93,16 +95,22 @@ class RecipeDetailScreen extends StatefulWidget {
   final RegionRecipe recipe;
   final String currentLanguage;
   final CooktopType initialCooktop;
+  final List<RegionIngredient>? ingredientsCatalog;
+  final Map<String, bool>? initialPantry;
   final void Function(RegionRecipe recipe, int whistles, CooktopType cooktop)? onStartCooking;
   final void Function(RegionRecipe recipe, int servings)? onAddAllToGrocery;
+  final void Function(List<IngredientPurchasePlan> purchasableItems)? onAddPurchasableToGrocery;
 
   const RecipeDetailScreen({
     super.key,
     required this.recipe,
     this.currentLanguage = 'ne',
     this.initialCooktop = CooktopType.lpgGas,
+    this.ingredientsCatalog,
+    this.initialPantry,
     this.onStartCooking,
     this.onAddAllToGrocery,
+    this.onAddPurchasableToGrocery,
   });
 
   @override
@@ -112,6 +120,7 @@ class RecipeDetailScreen extends StatefulWidget {
 class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   late int _servings;
   late CooktopType _selectedCooktop;
+  late Map<String, bool> _pantryHas;
   final Set<int> _activeTimerStepIndices = {};
 
   bool get _isNepali => widget.currentLanguage == 'ne';
@@ -121,6 +130,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
     super.initState();
     _servings = widget.recipe.servings > 0 ? widget.recipe.servings : 4;
     _selectedCooktop = widget.initialCooktop;
+    _pantryHas = Map<String, bool>.from(widget.initialPantry ?? {});
   }
 
   double get _scalingFactor =>
@@ -220,6 +230,10 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
 
               // Scaled Ingredients List
               _buildIngredientsCard(),
+              const SizedBox(height: 16),
+
+              // What to Buy (Market Purchase Converter & Surplus Tracking)
+              _buildWhatToBuyCard(),
               const SizedBox(height: 16),
 
               // Titled Step List with Inline Timers & Target Siti
@@ -707,6 +721,453 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
               side: BorderSide(color: Colors.grey.shade300),
               minimumSize: const Size.fromHeight(40),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  double _convertToGrams(double quantity, String unit) {
+    final lowerUnit = unit.toLowerCase().trim();
+    if (lowerUnit == 'kg' || lowerUnit == 'kilogram' || lowerUnit == 'kilograms') {
+      return quantity * 1000.0;
+    }
+    if (lowerUnit == 'g' || lowerUnit == 'gram' || lowerUnit == 'grams' || lowerUnit == 'gm') {
+      return quantity;
+    }
+    if (lowerUnit == 'pau') {
+      return quantity * 250.0;
+    }
+    if (lowerUnit == 'tbsp' || lowerUnit == 'tablespoon') {
+      return quantity * 15.0;
+    }
+    if (lowerUnit == 'tsp' || lowerUnit == 'teaspoon') {
+      return quantity * 5.0;
+    }
+    if (lowerUnit == 'cup' || lowerUnit == 'cups') {
+      return quantity * 200.0;
+    }
+    if (lowerUnit == 'l' || lowerUnit == 'liter' || lowerUnit == 'litres') {
+      return quantity * 1000.0;
+    }
+    if (lowerUnit == 'ml') {
+      return quantity;
+    }
+    return quantity * 100.0;
+  }
+
+  double _resolvePackageGrams(String ingredientId, RegionIngredient? meta, String unit) {
+    if (meta != null && meta.marketPackageGrams > 0) {
+      return meta.marketPackageGrams.toDouble();
+    }
+    final lower = ingredientId.toLowerCase();
+    if (lower.contains('dal') || lower.contains('lentil') || lower.contains('bean')) {
+      return 500.0;
+    }
+    if (lower.contains('rice') || lower.contains('chamal') || lower.contains('flour') || lower.contains('atta')) {
+      return 1000.0;
+    }
+    if (lower.contains('potato') || lower.contains('aloo') || lower.contains('tomato') || lower.contains('onion') || lower.contains('cauliflower') || lower.contains('cabbage')) {
+      return 1000.0;
+    }
+    if (lower.contains('jimbu') || lower.contains('spice') || lower.contains('methi') || lower.contains('turmeric') || lower.contains('chili') || lower.contains('hing')) {
+      return 50.0;
+    }
+    if (unit.toLowerCase() == 'kg') return 1000.0;
+    if (unit.toLowerCase() == 'pau') return 250.0;
+    return 250.0;
+  }
+
+  List<IngredientPurchasePlan> _computePurchasePlans() {
+    final catalog = widget.ingredientsCatalog ?? RegionPackRepository().currentPack?.ingredients ?? [];
+    final plans = <IngredientPurchasePlan>[];
+
+    for (final item in widget.recipe.ingredients) {
+      final scaledQty = item.quantity * _scalingFactor;
+      final requiredGrams = _convertToGrams(scaledQty, item.unit);
+
+      RegionIngredient? matched;
+      for (final ing in catalog) {
+        if (ing.id == item.ingredientId || ing.aliases.contains(item.ingredientId)) {
+          matched = ing;
+          break;
+        }
+      }
+
+      final nameEn = matched?.nameEn ?? item.ingredientId.replaceAll('_', ' ');
+      final nameNe = matched?.nameNe ?? item.ingredientId.replaceAll('_', ' ');
+      final packageGrams = _resolvePackageGrams(item.ingredientId, matched, item.unit);
+
+      final hasInPantry = _pantryHas[item.ingredientId] ?? false;
+      final pantryAvailableGrams = hasInPantry ? requiredGrams : 0.0;
+
+      final plan = MarketCalculator.calculatePurchasePlan(
+        ingredientId: item.ingredientId,
+        nameEn: nameEn,
+        nameNe: nameNe,
+        recipeQuantityGrams: requiredGrams,
+        standardPackageGrams: packageGrams,
+        pantryAvailableGrams: pantryAvailableGrams,
+      );
+
+      plans.add(plan);
+    }
+
+    return plans;
+  }
+
+  Widget _buildWhatToBuyCard() {
+    final plans = _computePurchasePlans();
+    final toBuyCount = plans.where((p) => p.packagesToBuy > 0).length;
+    final inPantryCount = plans.where((p) => p.status == PantryStatus.sufficient).length;
+
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: SitiColors.terracotta.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.shopping_bag_outlined,
+                  color: SitiColors.terracotta,
+                  size: 22,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _isNepali ? 'के किन्ने (बजारको नाप र बचत)' : 'What to Buy (Market Units & Surplus)',
+                      style: NepaliTypography.titleMedium.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: SitiColors.dark,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      _isNepali
+                          ? 'रेसिपीको मात्रालाई बजारको प्याकेटमा रूपान्तरण'
+                          : 'Recipe portions converted into realistic market packages',
+                      style: NepaliTypography.bodySmall.copyWith(
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+
+          // Pantry summary and quick actions
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: SitiColors.warmWhite,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.grey.shade200),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      _isNepali
+                          ? '${NepaliCalendar.toDevanagariDigits(toBuyCount)} किन्नुपर्ने'
+                          : '$toBuyCount to buy',
+                      style: NepaliTypography.bodySmall.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: SitiColors.terracotta,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text('•', style: TextStyle(color: Colors.grey.shade400)),
+                    const SizedBox(width: 8),
+                    Text(
+                      _isNepali
+                          ? '${NepaliCalendar.toDevanagariDigits(inPantryCount)} घरमै छ'
+                          : '$inPantryCount in pantry',
+                      style: NepaliTypography.bodySmall.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.green.shade800,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          for (final item in widget.recipe.ingredients) {
+                            _pantryHas[item.ingredientId] = true;
+                          }
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                        child: Text(
+                          _isNepali ? 'सबै छ' : 'All in pantry',
+                          style: NepaliTypography.labelSmall.copyWith(
+                            color: Colors.green.shade800,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          _pantryHas.clear();
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                        child: Text(
+                          _isNepali ? 'सबै किन्ने' : 'Buy all',
+                          style: NepaliTypography.labelSmall.copyWith(
+                            color: SitiColors.terracotta,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 14),
+
+          // Items list
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: plans.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 10),
+            itemBuilder: (context, index) {
+              final plan = plans[index];
+              final isInPantry = plan.status == PantryStatus.sufficient;
+
+              return Container(
+                decoration: BoxDecoration(
+                  color: isInPantry ? Colors.grey.shade50 : Colors.white,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: isInPantry ? Colors.grey.shade200 : Colors.amber.shade200,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: isInPantry,
+                            activeColor: Colors.green.shade700,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            onChanged: (bool? val) {
+                              setState(() {
+                                _pantryHas[plan.ingredientId] = val ?? false;
+                              });
+                            },
+                          ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _isNepali ? plan.nameNe : plan.nameEn,
+                                  style: NepaliTypography.titleSmall.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: SitiColors.dark,
+                                    decoration: isInPantry ? TextDecoration.lineThrough : null,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 4,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  children: [
+                                    Text(
+                                      _isNepali
+                                          ? '${NepaliCalendar.toDevanagariDigits(plan.recipeRequiredGrams.round())} ग्राम आवश्यक'
+                                          : '${plan.recipeRequiredGrams.round()}g required',
+                                      style: NepaliTypography.bodySmall.copyWith(
+                                        color: Colors.grey.shade600,
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                      decoration: BoxDecoration(
+                                        color: isInPantry ? Colors.green.shade50 : Colors.amber.shade50,
+                                        borderRadius: BorderRadius.circular(6),
+                                        border: Border.all(
+                                          color: isInPantry ? Colors.green.shade200 : Colors.amber.shade200,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        isInPantry
+                                            ? (_isNepali ? 'घरमै छ' : 'In Pantry')
+                                            : (_isNepali
+                                                ? 'किन्नुपर्छ (${NepaliCalendar.toDevanagariDigits(plan.packagesToBuy)} प्याकेट)'
+                                                : 'To Buy (${plan.packagesToBuy} pkg)'),
+                                        style: NepaliTypography.labelSmall.copyWith(
+                                          color: isInPantry ? Colors.green.shade900 : Colors.brown.shade800,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                isInPantry
+                                    ? (_isNepali ? 'आवश्यक छैन' : 'None needed')
+                                    : (_isNepali ? plan.vendorUnitLabelNe : plan.vendorUnitLabelEn),
+                                style: NepaliTypography.labelMedium.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: isInPantry ? Colors.grey.shade500 : SitiColors.terracotta,
+                                ),
+                              ),
+                              if (!isInPantry) ...[
+                                const SizedBox(height: 2),
+                                Text(
+                                  _isNepali ? 'बजार एकाइ' : 'Market unit',
+                                  style: NepaliTypography.bodySmall.copyWith(
+                                    fontSize: 10,
+                                    color: Colors.grey.shade500,
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Surplus Suggestion Banner
+                    if (plan.surplusGrams > 0 && plan.packagesToBuy > 0) ...[
+                      Container(
+                        margin: const EdgeInsets.only(left: 12, right: 12, bottom: 10),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE8F5E9),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.green.shade200),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.eco_rounded,
+                              size: 16,
+                              color: Colors.green.shade800,
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                _isNepali
+                                    ? (plan.surplusSuggestionNe ??
+                                        'बाँकी ${NepaliCalendar.toDevanagariDigits(plan.surplusGrams.round())} ग्राम बचत अर्को खानामा प्रयोग गर्न सकिन्छ')
+                                    : (plan.surplusSuggestionEn ??
+                                        'Leftover ${plan.surplusGrams.round()}g can be saved for another meal'),
+                                style: NepaliTypography.bodySmall.copyWith(
+                                  color: Colors.green.shade900,
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.3,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 16),
+
+          // Primary action: Add purchasable items to grocery list
+          ElevatedButton.icon(
+            onPressed: () {
+              final toBuy = plans.where((p) => p.packagesToBuy > 0).toList();
+              if (toBuy.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      _isNepali
+                          ? 'सबै सामग्री घरमै उपलब्ध छन्!'
+                          : 'All ingredients are already in your pantry!',
+                    ),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              } else {
+                if (widget.onAddPurchasableToGrocery != null) {
+                  widget.onAddPurchasableToGrocery!(toBuy);
+                }
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      _isNepali
+                          ? '${NepaliCalendar.toDevanagariDigits(toBuy.length)} वटा किन्ने सामग्री किराना सूचीमा थपियो'
+                          : 'Added ${toBuy.length} purchasable items to grocery list',
+                    ),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              }
+            },
+            icon: const Icon(Icons.add_shopping_cart_rounded, size: 18),
+            label: Text(
+              _isNepali
+                  ? 'किन्नुपर्ने सामग्री किराना सूचीमा थप्नुहोस्'
+                  : 'Add purchasable to grocery list',
+              style: NepaliTypography.labelLarge.copyWith(
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: SitiColors.terracotta,
+              foregroundColor: Colors.white,
+              minimumSize: const Size.fromHeight(48),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
             ),
           ),
         ],

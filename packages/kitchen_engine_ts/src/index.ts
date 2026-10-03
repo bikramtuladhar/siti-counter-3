@@ -2,6 +2,7 @@
  * Pure TypeScript Kitchen Engine for Siti Counter 3.0
  * Shared between Vue 3 Web and Cloudflare Workers API
  */
+import { toDevanagariDigits } from './nepali_calendar.js'
 
 export const UnitConverter = {
   // Mass in grams
@@ -118,6 +119,25 @@ export const UnitConverter = {
   }
 }
 
+export type PantryStatus = 'sufficient' | 'partiallyAvailable' | 'missing'
+
+export interface IngredientPurchasePlan {
+  ingredientId: string
+  ingredientNameEn: string
+  ingredientNameNe: string
+  recipeRequiredGrams: number
+  pantryAvailableGrams: number
+  netNeededGrams: number
+  vendorUnitLabelEn: string
+  vendorUnitLabelNe: string
+  packagesToBuy: number
+  totalPurchasedGrams: number
+  surplusGrams: number
+  surplusSuggestionEn?: string
+  surplusSuggestionNe?: string
+  status: PantryStatus
+}
+
 export interface PurchaseRecommendation {
   ingredientName: string
   recipeQuantityGrams: number
@@ -129,6 +149,71 @@ export interface PurchaseRecommendation {
 }
 
 export const MarketCalculator = {
+  formatVendorUnits(grams: number, preferNepali = false): string {
+    if (grams >= 1000 && grams % 1000 === 0) {
+      const kg = Math.round(grams / 1000)
+      const pau = Math.round(grams / 250)
+      return preferNepali
+        ? `${toDevanagariDigits(kg)} के.जी. (${toDevanagariDigits(pau)} पाउ)`
+        : `${kg} kg (${pau} pau)`
+    }
+    if (grams >= 250 && grams % 250 === 0) {
+      const pau = Math.round(grams / 250)
+      return preferNepali
+        ? `${toDevanagariDigits(pau)} पाउ (${toDevanagariDigits(grams)} ग्राम)`
+        : `${pau} pau (${grams} g)`
+    }
+    return preferNepali
+      ? `${toDevanagariDigits(Math.round(grams))} ग्राम`
+      : `${Math.round(grams)} g`
+  },
+
+  getSurplusSuggestion(
+    ingredientName: string,
+    surplusGrams: number
+  ): { en?: string; ne?: string } {
+    const lower = ingredientName.toLowerCase()
+    if (surplusGrams >= 150) {
+      if (lower.includes('tomato') || lower.includes('गोलभेडा')) {
+        return {
+          en: `Leftover ${Math.round(surplusGrams)}g tomatoes make fresh fire-roasted tomato achar (गोलभेडाको अचार)`,
+          ne: `बाँकी ${Math.round(surplusGrams)} ग्राम गोलभेडा: पोलेको गोलभेडाको ताजा अचार बनाउन उत्तम`
+        }
+      }
+      if (lower.includes('potato') || lower.includes('आलु')) {
+        return {
+          en: `Leftover ${Math.round(surplusGrams)}g potatoes can be used for tomorrow's aloo paratha or tarkari`,
+          ne: `बाँकी ${Math.round(surplusGrams)} ग्राम आलु: भोलिको आलु पराठा वा खाजा बनाउन प्रयोग गर्नुहोस्`
+        }
+      }
+      if (lower.includes('radish') || lower.includes('मूला')) {
+        return {
+          en: `Leftover ${Math.round(surplusGrams)}g radish: Slice and sun-dry for fermented radish achar (मूलाको चाना/अचार)`,
+          ne: `बाँकी ${Math.round(surplusGrams)} ग्राम मूला: चाना बनाएर घाममा सुकाई स्वादिष्ट अचार बनाउनुहोस्`
+        }
+      }
+      if (lower.includes('cauliflower') || lower.includes('काउली')) {
+        return {
+          en: `Leftover ${Math.round(surplusGrams)}g cauliflower: Pair with green peas for tomorrow's curry`,
+          ne: `बाँकी ${Math.round(surplusGrams)} ग्राम काउली: भोलिको लागि केराउसँग तरकारी बनाउनुहोस्`
+        }
+      }
+      if (lower.includes('spinach') || lower.includes('पालुङ्गो') || lower.includes('saag') || lower.includes('साग')) {
+        return {
+          en: 'Cook remaining greens within 2 days or wilt for gundruk fermentation',
+          ne: 'बाँकी साग २ दिनभित्र पकाउनुहोस् वा गुन्द्रुक बनाउन ओइलाउनुहोस्'
+        }
+      }
+      if (lower.includes('ginger') || lower.includes('अदुवा') || lower.includes('garlic') || lower.includes('लसुन')) {
+        return {
+          en: 'Store leftover peeled paste in clean jar with oil and salt',
+          ne: 'बाँकी अदुवा-लसुनको पेस्टमा थोरै तेल र नुन मोलेर सिसाको बट्टामा राख्नुहोस्'
+        }
+      }
+    }
+    return {}
+  },
+
   calculatePurchase(params: {
     ingredientName: string
     recipeQuantityGrams: number
@@ -160,17 +245,7 @@ export const MarketCalculator = {
     const totalAvailable = alreadyHaveGrams + totalPurchasedGrams
     const surplusGrams = totalAvailable - recipeQuantityGrams
 
-    let surplusSuggestion: string | undefined
-    const lowerName = ingredientName.toLowerCase()
-    if (surplusGrams >= 200) {
-      if (lowerName.includes('tomato') || lowerName.includes('गोलभेडा')) {
-        surplusSuggestion = 'Leftover tomatoes make fresh tomato achar (गोलभेडाको अचार)'
-      } else if (lowerName.includes('potato') || lowerName.includes('आलु')) {
-        surplusSuggestion = "Leftover potatoes can be used for tomorrow's khaja or aloo paratha"
-      } else if (lowerName.includes('spinach') || lowerName.includes('पालुङ्गो')) {
-        surplusSuggestion = 'Cook remaining spinach within 2 days to prevent wilting'
-      }
-    }
+    const suggestionObj = this.getSurplusSuggestion(ingredientName, surplusGrams)
 
     return {
       ingredientName,
@@ -179,7 +254,62 @@ export const MarketCalculator = {
       packagesToBuy,
       totalPurchasedGrams,
       surplusGrams,
-      surplusSuggestion
+      surplusSuggestion: suggestionObj.en
+    }
+  },
+
+  calculatePurchasePlan(params: {
+    ingredientId: string
+    nameEn: string
+    nameNe: string
+    recipeQuantityGrams: number
+    standardPackageGrams: number
+    pantryAvailableGrams?: number
+  }): IngredientPurchasePlan {
+    const {
+      ingredientId,
+      nameEn,
+      nameNe,
+      recipeQuantityGrams,
+      standardPackageGrams,
+      pantryAvailableGrams = 0
+    } = params
+
+    const netNeededGrams = Math.max(0, recipeQuantityGrams - pantryAvailableGrams)
+
+    let status: PantryStatus
+    if (netNeededGrams === 0) {
+      status = 'sufficient'
+    } else if (pantryAvailableGrams > 0) {
+      status = 'partiallyAvailable'
+    } else {
+      status = 'missing'
+    }
+
+    const packagesToBuy = netNeededGrams > 0
+      ? Math.ceil(netNeededGrams / standardPackageGrams)
+      : 0
+    const totalPurchasedGrams = packagesToBuy * standardPackageGrams
+    const totalAvailable = pantryAvailableGrams + totalPurchasedGrams
+    const surplusGrams = Math.max(0, totalAvailable - recipeQuantityGrams)
+
+    const suggestion = this.getSurplusSuggestion(nameEn, surplusGrams)
+
+    return {
+      ingredientId,
+      ingredientNameEn: nameEn,
+      ingredientNameNe: nameNe,
+      recipeRequiredGrams: recipeQuantityGrams,
+      pantryAvailableGrams,
+      netNeededGrams,
+      vendorUnitLabelEn: this.formatVendorUnits(totalPurchasedGrams, false),
+      vendorUnitLabelNe: this.formatVendorUnits(totalPurchasedGrams, true),
+      packagesToBuy,
+      totalPurchasedGrams,
+      surplusGrams,
+      surplusSuggestionEn: suggestion.en,
+      surplusSuggestionNe: suggestion.ne,
+      status
     }
   }
 }
