@@ -89,6 +89,11 @@ create_issue() {
   local labels="$3"
   local body="$4"
 
+  if [[ -n "${EXISTING_ISSUES["$title"]:-}" ]]; then
+    echo "  [Skipping] Issue already exists: $title"
+    return 0
+  fi
+
   echo "Creating issue: $title"
   if [ "$DRY_RUN" = false ]; then
     gh issue create \
@@ -119,10 +124,26 @@ create_label "area:commerce" "0e8a16" "Subscriptions, regional shopping, market 
 create_label "area:realtime" "c5def5" "Durable Objects WebSockets, presence, co-cooking"
 create_label "area:ai" "bfd4f2" "AI assistant, Gemini routing, on-device AI"
 create_label "area:displays" "fef2c0" "Smart displays: Alexa skill, Cast web receiver"
+create_label "area:design" "f9d0c4" "W3C Design Tokens, typography, Style Dictionary"
+create_label "area:ui" "d4c5f9" "Design system & user interface components"
+create_label "area:community" "c2e0c6" "Community contributions, moderation, recipes"
+create_label "ux" "e99695" "User experience, onboarding, interaction design"
 create_label "gate:week4" "b60205" "Week 4 Foundation Gate requirement"
 create_label "gate:week12" "b60205" "Week 12 Core Build Gate requirement"
 create_label "gate:week24" "b60205" "Week 24 Open Beta Launch Gate requirement"
 create_label "region-pack" "c2e0c6" "Region Pack content and schema"
+
+echo ""
+echo ">>> Checking existing issues in $REPO..."
+declare -A EXISTING_ISSUES
+if [ "$DRY_RUN" = false ]; then
+  while IFS= read -r line; do
+    if [ -n "$line" ]; then
+      EXISTING_ISSUES["$line"]=1
+    fi
+  done < <(gh issue list --repo "$REPO" --state all --limit 200 --json title -q '.[].title')
+  echo "Found ${#EXISTING_ISSUES[@]} existing issues in repository."
+fi
 
 echo ""
 echo ">>> Creating Milestones..."
