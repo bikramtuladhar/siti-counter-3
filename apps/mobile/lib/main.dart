@@ -1,121 +1,265 @@
 import 'package:flutter/material.dart';
+import 'package:kitchen_engine/nepali_calendar.dart';
+import 'onboarding/onboarding_coordinator.dart';
+import 'onboarding/onboarding_state.dart';
+import 'theme/tokens.dart';
+import 'theme/nepali_typography.dart';
+import 'widgets/six_ritus_indicator.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const SitiCounterApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class SitiCounterApp extends StatefulWidget {
+  const SitiCounterApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<SitiCounterApp> createState() => _SitiCounterAppState();
+}
+
+class _SitiCounterAppState extends State<SitiCounterApp> {
+  OnboardingPreferences? _userPreferences;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Siti Counter 3.0',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: SitiColors.terracotta,
+          primary: SitiColors.terracotta,
+          surface: SitiColors.warmWhite,
+        ),
+        textTheme: NepaliTypography.createTextTheme(SitiColors.dark),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: _userPreferences == null
+          ? OnboardingCoordinator(
+              onComplete: (prefs) {
+                setState(() {
+                  _userPreferences = prefs;
+                });
+              },
+            )
+          : KitchenHomeScreen(
+              preferences: _userPreferences!,
+              onResetOnboarding: () {
+                setState(() {
+                  _userPreferences = null;
+                });
+              },
+            ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class KitchenHomeScreen extends StatefulWidget {
+  final OnboardingPreferences preferences;
+  final VoidCallback onResetOnboarding;
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  const KitchenHomeScreen({
+    super.key,
+    required this.preferences,
+    required this.onResetOnboarding,
+  });
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<KitchenHomeScreen> createState() => _KitchenHomeScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
+  int _whistleCount = 0;
+  bool _isListening = false;
 
-  void _incrementCounter() {
+  bool get _isNepali => widget.preferences.language == 'ne';
+
+  void _incrementWhistle() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _whistleCount++;
+    });
+  }
+
+  void _decrementWhistle() {
+    if (_whistleCount > 0) {
+      setState(() {
+        _whistleCount--;
+      });
+    }
+  }
+
+  void _resetWhistle() {
+    setState(() {
+      _whistleCount = 0;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    // Current date in BS (approx 2081 Ashwin 15)
+    const todayBs = BsDate(year: 2081, month: 7, day: 15);
+
     return Scaffold(
+      backgroundColor: SitiColors.warmWhite,
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        backgroundColor: SitiColors.warmWhite,
+        elevation: 0,
+        title: Text(
+          'Siti Counter 3.0',
+          style: NepaliTypography.titleMedium.copyWith(
+            fontWeight: FontWeight.w700,
+            color: SitiColors.dark,
+          ),
         ),
+        actions: [
+          // Guest Mode Indicator Badge
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.amber.shade100,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.amber.shade700, width: 1),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.person_outline_rounded, size: 14, color: Colors.amber.shade900),
+                const SizedBox(width: 4),
+                Text(
+                  _isNepali ? 'अतिथि (Guest)' : 'Guest Mode',
+                  style: NepaliTypography.labelLarge.copyWith(
+                    color: Colors.amber.shade900,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.tune_rounded, color: SitiColors.dark),
+            tooltip: 'Setup Wizard',
+            onPressed: widget.onResetOnboarding,
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Six Ritus Season Indicator
+              SixRitusIndicator(
+                currentDate: todayBs,
+                preferNepali: _isNepali,
+              ),
+              const SizedBox(height: 24),
+
+              // Whistle Counter Hero Card
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.04),
+                      blurRadius: 16,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      _isNepali ? 'सिट्ठी संख्या' : 'Whistle Count',
+                      style: NepaliTypography.titleMedium.copyWith(
+                        color: Colors.grey.shade600,
+                        letterSpacing: 1.1,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // Massive Counter Display
+                    Text(
+                      _isNepali
+                          ? NepaliCalendar.toDevanagariDigits(_whistleCount)
+                          : '$_whistleCount',
+                      style: SitiTypography.counterArmsLengthStyle.copyWith(
+                        color: SitiColors.terracotta,
+                        height: 1.0,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+
+                    Text(
+                      _isListening
+                          ? (_isNepali ? 'ध्वनि सुन्दैछ... (Listening)' : 'Listening for whistle...')
+                          : (_isNepali ? 'स्ट्यान्डबाइ (Standby)' : 'Standby Mode'),
+                      style: NepaliTypography.bodyMedium.copyWith(
+                        color: _isListening ? SitiColors.freshGreen : Colors.grey.shade500,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Manual Adjustment Buttons
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 16,
+                      runSpacing: 12,
+                      children: [
+                        IconButton.filledTonal(
+                          onPressed: _decrementWhistle,
+                          icon: const Icon(Icons.remove_rounded),
+                          iconSize: 28,
+                          tooltip: '-1 Whistle',
+                        ),
+                        FilledButton.icon(
+                          onPressed: () {
+                            setState(() {
+                              _isListening = !_isListening;
+                            });
+                          },
+                          icon: Icon(
+                            _isListening ? Icons.mic_rounded : Icons.mic_none_rounded,
+                            size: 20,
+                          ),
+                          label: Text(_isListening ? 'Stop' : 'Start Auto-Listen'),
+                          style: FilledButton.styleFrom(
+                            backgroundColor: _isListening ? SitiColors.alert : SitiColors.terracotta,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          ),
+                        ),
+                        IconButton.filledTonal(
+                          onPressed: _incrementWhistle,
+                          icon: const Icon(Icons.add_rounded),
+                          iconSize: 28,
+                          tooltip: '+1 Whistle',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Reset Button
+              Center(
+                child: TextButton.icon(
+                  onPressed: _resetWhistle,
+                  icon: const Icon(Icons.refresh_rounded, size: 16),
+                  label: Text(_isNepali ? 'सिट्ठी रिसेट' : 'Reset Counter'),
+                  style: TextButton.styleFrom(foregroundColor: Colors.grey.shade600),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
