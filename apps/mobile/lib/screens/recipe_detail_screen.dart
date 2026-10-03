@@ -98,6 +98,8 @@ class RecipeDetailScreen extends StatefulWidget {
   final CooktopType initialCooktop;
   final List<RegionIngredient>? ingredientsCatalog;
   final Map<String, bool>? initialPantry;
+  final List<MemberAllergyProfile>? memberAllergies;
+  final List<DietaryRule>? dietaryRules;
   final void Function(RegionRecipe recipe, int whistles, CooktopType cooktop)? onStartCooking;
   final void Function(RegionRecipe recipe, int servings)? onAddAllToGrocery;
   final void Function(List<IngredientPurchasePlan> purchasableItems)? onAddPurchasableToGrocery;
@@ -109,6 +111,8 @@ class RecipeDetailScreen extends StatefulWidget {
     this.initialCooktop = CooktopType.lpgGas,
     this.ingredientsCatalog,
     this.initialPantry,
+    this.memberAllergies,
+    this.dietaryRules,
     this.onStartCooking,
     this.onAddAllToGrocery,
     this.onAddPurchasableToGrocery,
@@ -170,6 +174,22 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
     return _isNepali ? NepaliCalendar.toDevanagariDigits(formattedDouble) : formattedDouble;
   }
 
+  RecipeSafetyVerdict get _safetyVerdict {
+    final ingredientIds = widget.recipe.ingredients.map((i) => i.ingredientId).toList();
+    final declaredMap = <String, List<String>>{};
+    if (widget.ingredientsCatalog != null) {
+      for (final ing in widget.ingredientsCatalog!) {
+        declaredMap[ing.id] = ing.allergens;
+      }
+    }
+    return AllergenEngine.checkRecipeSafety(
+      ingredientIds: ingredientIds,
+      declaredIngredientAllergens: declaredMap,
+      allergyProfiles: widget.memberAllergies ?? const [],
+      dietaryRules: widget.dietaryRules ?? const [],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final recipe = widget.recipe;
@@ -215,6 +235,12 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
               _buildHeroCard(title, subtitle),
               const SizedBox(height: 16),
 
+              // Safety & Allergen Alert Banner (If conflicts detected)
+              if (!_safetyVerdict.isSafe) ...[
+                _buildSafetyAlertCard(_safetyVerdict),
+                const SizedBox(height: 16),
+              ],
+
               // Human-Centric Servings Selector
               _buildServingsSelector(),
               const SizedBox(height: 16),
@@ -251,6 +277,97 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSafetyAlertCard(RecipeSafetyVerdict verdict) {
+    final isSevere = verdict.hasSevereConflict;
+    final cardBg = isSevere ? const Color(0xFFFFF0F0) : const Color(0xFFFFFBEA);
+    final borderColor = isSevere ? Colors.red.shade400 : Colors.amber.shade400;
+    final iconColor = isSevere ? Colors.red.shade700 : Colors.amber.shade900;
+
+    return Container(
+      key: const Key('safety_alert_card'),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: cardBg,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: borderColor, width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: (isSevere ? Colors.red : Colors.amber).withValues(alpha: 0.08),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                isSevere ? Icons.warning_rounded : Icons.info_outline_rounded,
+                color: iconColor,
+                size: 24,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  isSevere
+                      ? (_isNepali ? '🚨 एलर्जी वा आहार प्रतिबन्ध चेतावनी' : '🚨 Severe Allergen / Dietary Alert')
+                      : (_isNepali ? '⚠️ एलर्जी सावधानी' : '⚠️ Allergen Advisory'),
+                  style: NepaliTypography.titleSmall.copyWith(
+                    color: iconColor,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          ...verdict.conflicts.map((conflict) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('• ', style: TextStyle(color: iconColor, fontWeight: FontWeight.bold)),
+                      Expanded(
+                        child: Text(
+                          conflict.reason,
+                          style: NepaliTypography.bodySmall.copyWith(
+                            color: Colors.grey.shade900,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (conflict.suggestedSubstitutions.isNotEmpty) ...[
+                    const SizedBox(height: 4),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Text(
+                        _isNepali
+                            ? '💡 सुरक्षित विकल्प: ${conflict.suggestedSubstitutions.map((s) => s.nameNe).join(' वा ')}'
+                            : '💡 Safe substitution: ${conflict.suggestedSubstitutions.map((s) => s.nameEn).join(' or ')}',
+                        style: NepaliTypography.labelSmall.copyWith(
+                          color: Colors.green.shade800,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            );
+          }),
+        ],
       ),
     );
   }

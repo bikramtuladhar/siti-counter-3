@@ -407,4 +407,37 @@ void main() {
     expect(purchasableList!.any((p) => p.ingredientId == 'kalo_dal'), isFalse);
     expect(find.text('२ वटा किन्ने सामग्री किराना सूचीमा थपियो'), findsOneWidget);
   });
+
+  testWidgets('RecipeDetailScreen displays safety alert card when severe allergen is present',
+      (tester) async {
+    tester.view.physicalSize = const Size(800, 1600);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final recipe = createTestRecipe(); // Contains ghee (hidden dairy)
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: RecipeDetailScreen(
+          recipe: recipe,
+          currentLanguage: 'ne',
+          memberAllergies: const [
+            MemberAllergyProfile(
+              allergen: AllergenCatalog.milk,
+              severity: AllergySeverity.severe,
+              memberName: 'अनिश',
+            ),
+          ],
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    // Verify safety alert card is rendered
+    expect(find.byKey(const Key('safety_alert_card')), findsOneWidget);
+    expect(find.text('🚨 एलर्जी वा आहार प्रतिबन्ध चेतावनी'), findsOneWidget);
+    expect(find.textContaining('ghee contains dairy for अनिश'), findsOneWidget);
+    expect(find.textContaining('💡 सुरक्षित विकल्प:'), findsOneWidget);
+  });
 }
