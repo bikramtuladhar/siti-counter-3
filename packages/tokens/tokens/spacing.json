@@ -1,0 +1,19 @@
+{
+  "spacing": {
+    "touchTargetMin": {
+      "value": "48px",
+      "type": "dimension",
+      "description": "Minimum accessible touch target on mobile"
+    },
+    "displayTouchTargetMin": {
+      "value": "64px",
+      "type": "dimension",
+      "description": "Minimum touch target on kitchen displays"
+    },
+    "xs": { "value": "4px", "type": "dimension" },
+    "sm": { "value": "8px", "type": "dimension" },
+    "md": { "value": "16px", "type": "dimension" },
+    "lg": { "value": "24px", "type": "dimension" },
+    "xl": { "value": "32px", "type": "dimension" }
+  }
+}

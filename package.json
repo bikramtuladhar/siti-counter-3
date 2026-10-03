@@ -1,0 +1,17 @@
+{
+  "name": "siti-counter-3",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Siti Counter 3.0 — Household cooking companion",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "lint": "turbo run lint"
+  },
+  "devDependencies": {
+    "turbo": "^2.4.0",
+    "typescript": "^5.7.0"
+  },
+  "packageManager": "pnpm@10.5.2"
+}

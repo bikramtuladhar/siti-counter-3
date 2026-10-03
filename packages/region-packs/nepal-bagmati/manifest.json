@@ -1,0 +1,28 @@
+{
+  "id": "nepal-bagmati",
+  "version": "1.0.0",
+  "name": "Nepal (Bagmati Province)",
+  "country": "Nepal",
+  "countryCode": "NP",
+  "region": "Bagmati",
+  "status": "verified",
+  "elevationMeters": 1400,
+  "currency": {
+    "code": "NPR",
+    "symbol": "रू",
+    "numberFormat": "lakh-crore"
+  },
+  "languages": ["ne", "en"],
+  "defaultLanguage": "ne",
+  "calendar": "bikram-sambat",
+  "seasonSystem": "six-ritus",
+  "units": {
+    "market": ["pau", "dharni", "mana", "muthi", "bunch", "heap", "piece"],
+    "standard": "metric"
+  },
+  "defaultMealRhythm": [
+    { "id": "morning-dal-bhat", "name": "बिहानी खाना (Dal Bhat)", "time": "09:30" },
+    { "id": "afternoon-khaja", "name": "दिउँसोको खाजा (Khaja)", "time": "14:30" },
+    { "id": "evening-dal-bhat", "name": "बेलुकीको खाना (Dinner)", "time": "19:30" }
+  ]
+}

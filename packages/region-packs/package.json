@@ -1,0 +1,6 @@
+{
+  "name": "@siti-counter/region-packs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Versioned Region Packs for Siti Counter 3.0"
+}

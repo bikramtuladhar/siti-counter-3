@@ -1,0 +1,9 @@
+{
+  "name": "@siti-counter/tokens",
+  "version": "0.1.0",
+  "private": true,
+  "description": "W3C Design Tokens for Siti Counter 3.0 (Flutter, Vue, Web)",
+  "scripts": {
+    "build": "echo 'Tokens build ready'"
+  }
+}

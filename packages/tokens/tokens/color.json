@@ -1,0 +1,50 @@
+{
+  "color": {
+    "primary": {
+      "terracotta": {
+        "value": "#D95328",
+        "type": "color",
+        "description": "Primary accent brand color for Siti Counter"
+      },
+      "terracottaDark": {
+        "value": "#B9421E",
+        "type": "color"
+      }
+    },
+    "background": {
+      "warmWhite": {
+        "value": "#FAF9F6",
+        "type": "color",
+        "description": "Default warm white light mode background"
+      },
+      "cardLight": {
+        "value": "#FFFFFF",
+        "type": "color"
+      },
+      "dark": {
+        "value": "#1A1A1A",
+        "type": "color",
+        "description": "True dark mode background for night cooking"
+      },
+      "cardDark": {
+        "value": "#242424",
+        "type": "color"
+      }
+    },
+    "status": {
+      "freshGreen": {
+        "value": "#2E7D32",
+        "type": "color",
+        "description": "Subtle green for seasonal freshness and target complete states"
+      },
+      "warning": {
+        "value": "#F57C00",
+        "type": "color"
+      },
+      "alert": {
+        "value": "#D32F2F",
+        "type": "color"
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "typography": {
+    "fontFamily": {
+      "sans": {
+        "value": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "type": "fontFamily"
+      },
+      "devanagari": {
+        "value": "'Noto Sans Devanagari', system-ui, sans-serif",
+        "type": "fontFamily"
+      }
+    },
+    "sitiCounter": {
+      "near": { "value": "56px", "type": "dimension" },
+      "armsLength": { "value": "80px", "type": "dimension" },
+      "acrossRoom": { "value": "120px", "type": "dimension" }
+    }
+  }
+}
