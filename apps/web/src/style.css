@@ -1,11 +1,13 @@
+@import './tokens.css';
+
 :root {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: var(--siti-typography-font-family-sans);
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
   color: #213547;
-  background-color: #faf9f6;
+  background-color: var(--siti-color-background-warm-white);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -24,41 +26,42 @@ body {
 #app {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: var(--siti-spacing-lg);
   text-align: center;
 }
 
 .card {
-  padding: 2em;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  margin-top: 1.5rem;
+  padding: var(--siti-spacing-lg);
+  background: var(--siti-color-background-card-light);
+  border-radius: var(--siti-radius-lg);
+  box-shadow: var(--siti-elevation-card);
+  margin-top: var(--siti-spacing-md);
 }
 
 button {
-  border-radius: 8px;
+  min-height: var(--siti-spacing-touch-target-min);
+  border-radius: var(--siti-radius-md);
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  padding: var(--siti-spacing-sm) var(--siti-spacing-md);
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #d95328;
+  background-color: var(--siti-color-primary-terracotta);
   color: #ffffff;
   cursor: pointer;
   transition: background-color 0.25s;
 }
 
 button:hover {
-  background-color: #b9421e;
+  background-color: var(--siti-color-primary-terracotta-dark);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color: #f7f7f7;
-    background-color: #1a1a1a;
+    background-color: var(--siti-color-background-dark);
   }
   .card {
-    background: #242424;
+    background: var(--siti-color-background-card-dark);
   }
 }

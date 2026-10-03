@@ -2,8 +2,14 @@
   "name": "@siti-counter/tokens",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "main": "./dist/tokens.ts",
+  "types": "./dist/tokens.ts",
   "description": "W3C Design Tokens for Siti Counter 3.0 (Flutter, Vue, Web)",
   "scripts": {
-    "build": "echo 'Tokens build ready'"
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "style-dictionary": "^4.3.4"
   }
 }

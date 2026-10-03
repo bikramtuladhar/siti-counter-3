@@ -1,0 +1,37 @@
+/**
+ * Siti Counter 3.0 — Generated Design Tokens
+ * Source: W3C Design Tokens JSON
+ */
+
+:root {
+  --siti-color-primary-terracotta: #D95328;
+  --siti-color-primary-terracotta-dark: #B9421E;
+  --siti-color-background-warm-white: #FAF9F6;
+  --siti-color-background-card-light: #FFFFFF;
+  --siti-color-background-dark: #1A1A1A;
+  --siti-color-background-card-dark: #242424;
+  --siti-color-status-fresh-green: #2E7D32;
+  --siti-color-status-warning: #F57C00;
+  --siti-color-status-alert: #D32F2F;
+  --siti-elevation-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --siti-elevation-card-hover: 0 4px 16px rgba(0, 0, 0, 0.10);
+  --siti-elevation-modal: 0 12px 32px rgba(0, 0, 0, 0.16);
+  --siti-radius-none: 0px;
+  --siti-radius-sm: 4px;
+  --siti-radius-md: 8px;
+  --siti-radius-lg: 12px;
+  --siti-radius-xl: 16px;
+  --siti-radius-full: 9999px;
+  --siti-spacing-touch-target-min: 48px;
+  --siti-spacing-display-touch-target-min: 64px;
+  --siti-spacing-xs: 4px;
+  --siti-spacing-sm: 8px;
+  --siti-spacing-md: 16px;
+  --siti-spacing-lg: 24px;
+  --siti-spacing-xl: 32px;
+  --siti-typography-font-family-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --siti-typography-font-family-devanagari: 'Noto Sans Devanagari', system-ui, sans-serif;
+  --siti-typography-siti-counter-near: 56px;
+  --siti-typography-siti-counter-arms-length: 80px;
+  --siti-typography-siti-counter-across-room: 120px;
+}
