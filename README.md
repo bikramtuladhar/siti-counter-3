@@ -17,34 +17,37 @@ Siti Counter 3.0 accompanies a household across the full food lifecycle:
 
 ---
 
-## 🏗️ Repository Architecture
+## 🏗️ Architecture & Platform Stack
 
-This repository is organized as a TypeScript-first monorepo using **pnpm** and **Turborepo**:
+Based on our architectural decisions, the platforms are separated to leverage the best tool for each surface:
+
+| Platform | Technology | Why Chosen |
+| :--- | :--- | :--- |
+| **Mobile App (iOS & Android)** | **Flutter (Dart 3)** | Superior native ARM performance on 2 GB Android devices; rock-solid 60 fps audio gauge animations; LiteRT/CoreML audio integration; reactive SQLite via **Drift**. |
+| **Web & Tablet Display (PWA)** | **Vue 3 + Vite (TypeScript)** | Instant initial load, minimal bundle size, responsive recipe browsing, desktop weekly planner grid, and high-performance kitchen stand dashboard. |
+| **Backend API & Realtime** | **Cloudflare Workers (Hono + TypeScript)** | Global low-latency edge deployment; serverless SQLite with **D1**; live cooking crew presence via **Durable Objects WebSockets**; 100% free-tier compliant. |
+| **Shared Design Tokens** | **W3C Tokens + Style Dictionary** | Single JSON source of truth compiled to Dart theme constants (Flutter) and CSS/Tailwind variables (Vue 3). |
+| **Shared Content** | **Region Packs (JSON)** | Downloadable, versioned content bundles (Nepal Bagmati pack) consumed by both Flutter and Vue. |
+
+### Monorepo Structure
 
 ```
 siti_counter_3/
 ├── apps/
-│   ├── mobile/              # React Native + Expo (iOS & Android)
-│   ├── web/                 # Expo Router web & PWA
-│   ├── alexa/               # Alexa Skill on Cloudflare Workers with APL
-│   └── cast/                # Google Cast web receiver for Nest Hub & displays
-├── packages/
-│   ├── kitchen-engine/      # Pure TS domain engine: scaling, units, altitude, nutrition, auto-plan
-│   ├── db/                  # Drizzle ORM schema for SQLite (expo-sqlite & Cloudflare D1)
-│   ├── contracts/           # Zod schemas -> OpenAPI 3.1 & typed API client
-│   ├── tokens/              # W3C Design Tokens -> Style Dictionary (React Native, CSS, APL, Swift/Kotlin)
-│   ├── ui/                  # Shared component library (React Native Web)
-│   └── region-packs/        # Versioned Region Packs (Nepal/Bagmati launch pack)
+│   ├── mobile/              # Flutter App (iOS & Android)
+│   └── web/                 # Vue 3 + Vite Web App & PWA
 ├── services/
-│   ├── gateway/             # Cloudflare Workers API Gateway & Auth
-│   ├── sync/                # Delta-sync service (/v1/sync)
-│   ├── realtime/            # Durable Objects WebSocket server for live cooking crew
-│   └── ai-orchestrator/     # AI routing (deterministic -> on-device -> Gemini online)
-├── native/
-│   ├── expo-whistle-detector/ # Kotlin & Swift audio classification native module (LiteRT / Core ML)
-│   └── expo-foreground-cooker/ # Android foreground service & iOS Live Activities
+│   ├── api/                 # Cloudflare Workers API Gateway (Hono + D1 + Drizzle)
+│   └── realtime/            # Durable Objects WebSocket server for live cooking crew
+├── packages/
+│   ├── kitchen_engine_dart/ # Pure Dart domain engine for mobile (scaling, units, altitude, rules)
+│   ├── kitchen_engine_ts/   # Pure TS domain engine for Vue web & Cloudflare Workers
+│   ├── tokens/              # Design tokens -> Style Dictionary (Dart classes & CSS variables)
+│   └── region-packs/        # Versioned Region Packs (Nepal Bagmati launch pack)
 ├── scripts/
-│   └── create-github-issues.sh # Automated GitHub issues & milestones setup
+│   ├── create_issues.py     # GitHub issues and milestones provisioner
+│   └── create-github-issues.sh
+├── README.md
 └── SPECIFICATION.md         # Full unified product specification
 ```
 
@@ -52,12 +55,12 @@ siti_counter_3/
 
 ## 🗺️ Roadmap & Milestones
 
-1. **M1: Foundations & Architecture Spike (Weeks 1–4, Gate 1)**
-   - Monorepo, CI/CD, and Style Dictionary token pipeline.
+1. **[M1: Foundations & Architecture Spikes (Weeks 1–4)](https://github.com/bikramtuladhar/siti-counter-3/milestone/1)**
+   - Monorepo setup (Flutter mobile, Vue web, Cloudflare Workers).
    - Whistle detection audio classifier spike (LiteRT/Core ML, ≥97% accuracy across 30+ recordings).
-   - Core `kitchen-engine` (metric + market units, altitude calculations, yield factors).
+   - Core kitchen engines (Dart for mobile, TS for web/Workers).
    - Cloudflare D1 schema & `/v1/sync` delta-sync prototype.
-2. **M2: P0 Core Cooking Loop & Nepal Beta (Weeks 5–12, Gate 2)**
+2. **[M2: P0 Core Cooking Loop & Nepal Beta (Weeks 5–12)](https://github.com/bikramtuladhar/siti-counter-3/milestone/2)**
    - Nepal Region Pack (Bagmati): ~150 verified recipes, ~60 seasonal ingredients, ritus, festivals.
    - Onboarding (Tour, 5 questions, "Your kitchen is ready" preview, guest mode).
    - Discover & Seasonal Kitchen.
@@ -66,39 +69,27 @@ siti_counter_3/
    - Weekly Planner & Meal Rhythms (Dal bhat / khaja slots, auto-plan).
    - Groceries & Market Mode (haat bazaar checklist, WhatsApp/SMS sharing).
    - Deterministic Allergen & Dietary Safety System.
-3. **M3: P1 Household Intelligence & Collaboration (Weeks 13–18)**
+3. **[M3: P1 Household Intelligence & Collaboration (Weeks 13–18)](https://github.com/bikramtuladhar/siti-counter-3/milestone/3)**
    - Consumption & Nutrition Logging (one-tap meal confirmation, yield factor nutrition).
    - Live Co-Cooking Crew (Durable Objects WebSockets, task splitting, presence, shared alarm).
    - Grounded AI Assistant (on-device first -> Gemini Online with consent).
    - LPG cylinder tracking & power-cut mode.
-4. **M4: P2 Commerce, Content Depth & Launch (Weeks 19–24, Launch Gate)**
+4. **[M4: P2 Commerce, Content Depth & Launch (Weeks 19–24)](https://github.com/bikramtuladhar/siti-counter-3/milestone/4)**
    - Premium household subscription (in-app purchase, Khalti/eSewa/Stripe, entitlements).
    - Regional shopping integrations (Kalimati market daily price boards, deep links).
    - Community recipe & price contributions with moderation pipeline.
-5. **M5: P3 Global Expansion & Smart Displays (Post-Launch)**
+5. **[M5: P3 Global Expansion & Ecosystem (Post-Launch)](https://github.com/bikramtuladhar/siti-counter-3/milestone/5)**
    - Additional Region Packs (India, Australia/Diaspora, High-altitude Andes).
    - Alexa skill (APL) & Nest Hub cast receiver.
    - Multi-dish cooking lanes (>2 cookers) with conflict detection.
 
 ---
 
-## 🛠️ Quickstart
-
-### Prerequisites
-- Node.js 20+
-- pnpm 9+
-- GitHub CLI (`gh`) for tracking issues and repository integration
-
-```bash
-# Install dependencies
-pnpm install
-
-# Run test suite across all packages
-pnpm test
-
-# Launch mobile development server
-pnpm --filter mobile start
-```
+## 🛠️ Tech Stack Quick Links
+- **Mobile**: Flutter 3.x, Riverpod, Drift (SQLite), LiteRT (TFLite)
+- **Web**: Vue 3, Vite, Pinia, TailwindCSS
+- **Backend**: Cloudflare Workers, Hono, D1 (SQLite), Durable Objects, Wrangler
+- **Tokens**: W3C Design Tokens, Style Dictionary
 
 ---
 
