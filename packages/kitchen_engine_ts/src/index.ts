@@ -205,3 +205,5 @@ export const AltitudeCalculator = {
     return `At ${Math.round(elevationMeters)} m: ${adjustedSiti} siti instead of ${originalSiti} (water boils at ${this.boilingPointCelsius(elevationMeters).toFixed(1)}°C)`
   }
 }
+
+export * from './nepali_calendar.js';

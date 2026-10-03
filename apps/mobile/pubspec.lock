@@ -75,6 +75,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  kitchen_engine:
+    dependency: "direct main"
+    description:
+      path: "../../packages/kitchen_engine_dart"
+      relative: true
+    source: path
+    version: "0.1.0"
   leak_tracker:
     dependency: transitive
     description:
