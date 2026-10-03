@@ -37,6 +37,7 @@ dependencies:
   kitchen_engine:
     path: ../../packages/kitchen_engine_dart
   wakelock_plus: ^1.8.1
+  flutter_foreground_task: ^11.0.3
 
 dev_dependencies:
   flutter_test:

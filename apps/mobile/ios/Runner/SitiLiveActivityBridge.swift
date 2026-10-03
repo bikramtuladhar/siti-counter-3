@@ -75,3 +75,48 @@ public class SitiAudioSessionManager: NSObject {
     }
   }
 }
+
+#if canImport(ActivityKit)
+@available(iOS 16.1, *)
+public class SitiActivityManager {
+  public static let shared = SitiActivityManager()
+  private var currentActivity: Activity<SitiActivityAttributes>?
+
+  public func start(dishName: String, cookerType: String, currentSiti: Int, targetSiti: Int, currentStep: String) {
+    let attributes = SitiActivityAttributes(dishName: dishName, cookerType: cookerType)
+    let initialContentState = SitiActivityAttributes.ContentState(
+      currentSiti: currentSiti,
+      targetSiti: targetSiti,
+      currentStep: currentStep
+    )
+    do {
+      let activity = try Activity<SitiActivityAttributes>.request(
+        attributes: attributes,
+        contentState: initialContentState,
+        pushType: nil
+      )
+      self.currentActivity = activity
+    } catch {
+      print("Error starting Live Activity: \(error)")
+    }
+  }
+
+  public func update(currentSiti: Int, targetSiti: Int, currentStep: String) {
+    Task {
+      let updatedContent = SitiActivityAttributes.ContentState(
+        currentSiti: currentSiti,
+        targetSiti: targetSiti,
+        currentStep: currentStep
+      )
+      await currentActivity?.update(using: updatedContent)
+    }
+  }
+
+  public func end() {
+    Task {
+      await currentActivity?.end(dismissalPolicy: .immediate)
+      currentActivity = nil
+    }
+  }
+}
+#endif

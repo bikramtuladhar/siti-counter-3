@@ -7,8 +7,10 @@ import 'package:flutter/services.dart';
 import 'package:kitchen_engine/nepali_calendar.dart';
 import 'package:kitchen_engine/region_pack.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import '../audio/background_cooking_controller.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
+import '../widgets/microphone_privacy_primer_dialog.dart';
 import 'recipe_detail_screen.dart' show CooktopType;
 
 /// Safe platform wrapper for Screen Wake Lock.
@@ -168,8 +170,10 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
   int _currentStepIndex = 0;
   bool _isAlarmActive = false;
   bool _isMuted = false;
+  bool _isAcousticMode = false;
   Timer? _alarmPulseTimer;
   late AnimationController _pulseController;
+  late BackgroundCookingController _backgroundController;
 
   bool get _isNepali => widget.currentLanguage == 'ne';
 
@@ -185,6 +189,37 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
       duration: const Duration(milliseconds: 900),
     );
 
+    final dishName = widget.recipe != null
+        ? (_isNepali ? widget.recipe!.titleNe : widget.recipe!.titleEn)
+        : (_isNepali ? 'प्रेसर कुकर सिट्ठी काउन्टर' : 'Pressure Cooker Siti Counter');
+
+    _backgroundController = BackgroundCookingController(
+      dishName: dishName,
+      cookerType: 'Pressure Cooker',
+      onQuickAction: (action) {
+        if (action == 'plus_1') {
+          _incrementWhistle();
+        } else if (action == 'minus_1') {
+          _decrementWhistle();
+        } else if (action == 'stop') {
+          _stopAlarm();
+        }
+      },
+      onInterruptionAlert: (msg) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(msg),
+              duration: const Duration(seconds: 4),
+            ),
+          );
+        }
+      },
+      onSessionCompleted: () {
+        _triggerAlarm();
+      },
+    );
+
     // Keep screen awake during active cooking session
     KitchenWakeLock.enable();
   }
@@ -193,8 +228,32 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
   void dispose() {
     _alarmPulseTimer?.cancel();
     _pulseController.dispose();
+    _backgroundController.dispose();
     KitchenWakeLock.disable();
     super.dispose();
+  }
+
+  Future<void> _toggleListeningMode() async {
+    if (_isAcousticMode) {
+      await _backgroundController.stopSession();
+      setState(() {
+        _isAcousticMode = false;
+      });
+    } else {
+      final decision = await MicrophonePrivacyPrimerDialog.show(
+        context,
+        language: widget.currentLanguage,
+      );
+      if (decision == MicrophonePrimerDecision.allowAcoustic) {
+        setState(() {
+          _isAcousticMode = true;
+        });
+        await _backgroundController.startSession(
+          currentWhistles: _currentWhistles,
+          targetWhistles: _targetWhistles,
+        );
+      }
+    }
   }
 
   void _triggerAlarm() {
@@ -240,6 +299,10 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
       _currentWhistles++;
     });
     HapticFeedback.heavyImpact();
+    _backgroundController.updateProgress(
+      currentWhistles: _currentWhistles,
+      targetWhistles: _targetWhistles,
+    );
 
     if (_currentWhistles >= _targetWhistles) {
       _triggerAlarm();
@@ -255,6 +318,10 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
         }
       });
       HapticFeedback.lightImpact();
+      _backgroundController.updateProgress(
+        currentWhistles: _currentWhistles,
+        targetWhistles: _targetWhistles,
+      );
     }
   }
 
@@ -264,6 +331,10 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
       _currentWhistles = 0;
     });
     HapticFeedback.mediumImpact();
+    _backgroundController.updateProgress(
+      currentWhistles: _currentWhistles,
+      targetWhistles: _targetWhistles,
+    );
   }
 
   void _nextStep() {
@@ -357,6 +428,10 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
                 const SizedBox(height: 16),
               ],
 
+              // Acoustic vs Manual Mode Toggle Banner with Privacy Primer Link
+              _buildListeningModePill(),
+              const SizedBox(height: 12),
+
               // 2-Meter Glanceable Siti Counter Canvas
               _buildGlanceableSitiCanvas(),
               const SizedBox(height: 16),
@@ -374,6 +449,57 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
               const SizedBox(height: 16),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildListeningModePill() {
+    return InkWell(
+      key: const Key('listening_mode_toggle'),
+      onTap: _toggleListeningMode,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: _isAcousticMode ? Colors.blue.shade50 : Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: _isAcousticMode ? Colors.blue.shade300 : Colors.grey.shade300,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  _isAcousticMode ? Icons.mic_rounded : Icons.touch_app_rounded,
+                  size: 20,
+                  color: _isAcousticMode ? Colors.blue.shade800 : Colors.grey.shade700,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  _isAcousticMode
+                      ? (_isNepali ? 'माइक सक्रिय (पृष्ठभूमि निगरानी)' : 'Mic Active (Background)')
+                      : (_isNepali ? 'म्यानुअल ट्याप मोड' : 'Manual Tap Mode'),
+                  style: NepaliTypography.labelMedium.copyWith(
+                    color: _isAcousticMode ? Colors.blue.shade900 : Colors.grey.shade800,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+            Text(
+              _isAcousticMode
+                  ? (_isNepali ? 'बन्द गर्नुहोस्' : 'Disable')
+                  : (_isNepali ? 'माइक अन गर्नुहोस्' : 'Enable Mic'),
+              style: NepaliTypography.labelSmall.copyWith(
+                color: _isAcousticMode ? Colors.blue.shade700 : SitiColors.terracotta,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
         ),
       ),
     );
