@@ -140,6 +140,59 @@ class RecipeIngredientItem {
   }
 }
 
+class RecipeElevationBand {
+  final int testedElevationMeters;
+  final double boilingPointCelsius;
+  final double waterMultiplier;
+
+  const RecipeElevationBand({
+    required this.testedElevationMeters,
+    required this.boilingPointCelsius,
+    required this.waterMultiplier,
+  });
+
+  factory RecipeElevationBand.fromJson(Map<String, dynamic>? json) {
+    if (json == null) {
+      return const RecipeElevationBand(
+        testedElevationMeters: 1400,
+        boilingPointCelsius: 95.3,
+        waterMultiplier: 1.15,
+      );
+    }
+    return RecipeElevationBand(
+      testedElevationMeters: json['testedElevationMeters'] as int? ?? 1400,
+      boilingPointCelsius: (json['boilingPointCelsius'] as num?)?.toDouble() ?? 95.3,
+      waterMultiplier: (json['waterMultiplier'] as num?)?.toDouble() ?? 1.15,
+    );
+  }
+}
+
+class RecipeStepItem {
+  final int stepNumber;
+  final String instructionEn;
+  final String instructionNe;
+  final int? timerMinutes;
+  final int? whistles;
+
+  const RecipeStepItem({
+    required this.stepNumber,
+    required this.instructionEn,
+    required this.instructionNe,
+    this.timerMinutes,
+    this.whistles,
+  });
+
+  factory RecipeStepItem.fromJson(Map<String, dynamic> json) {
+    return RecipeStepItem(
+      stepNumber: json['stepNumber'] as int? ?? 1,
+      instructionEn: json['instructionEn'] as String? ?? '',
+      instructionNe: json['instructionNe'] as String? ?? '',
+      timerMinutes: json['timerMinutes'] as int?,
+      whistles: json['whistles'] as int?,
+    );
+  }
+}
+
 class RegionRecipe {
   final String id;
   final String titleEn;
@@ -152,9 +205,14 @@ class RegionRecipe {
   final int servings;
   final String difficulty;
   final RecipeWhistleProfile pressureCooker;
+  final RecipeElevationBand? elevationBand;
   final List<RecipeIngredientItem> ingredients;
+  final List<RecipeStepItem> steps;
   final List<String> seasonality;
   final List<String> tags;
+  final double rating;
+  final int caloriesPerServing;
+  final int costEstimateNpr;
 
   const RegionRecipe({
     required this.id,
@@ -168,9 +226,14 @@ class RegionRecipe {
     required this.servings,
     required this.difficulty,
     required this.pressureCooker,
+    this.elevationBand,
     required this.ingredients,
+    this.steps = const [],
     required this.seasonality,
     required this.tags,
+    this.rating = 4.8,
+    this.caloriesPerServing = 220,
+    this.costEstimateNpr = 65,
   });
 
   factory RegionRecipe.fromJson(Map<String, dynamic> json) {
@@ -187,11 +250,22 @@ class RegionRecipe {
       difficulty: json['difficulty'] as String,
       pressureCooker: RecipeWhistleProfile.fromJson(
           json['pressureCooker'] as Map<String, dynamic>),
+      elevationBand: json['elevationBand'] != null
+          ? RecipeElevationBand.fromJson(
+              json['elevationBand'] as Map<String, dynamic>)
+          : null,
       ingredients: (json['ingredients'] as List<dynamic>)
           .map((i) => RecipeIngredientItem.fromJson(i as Map<String, dynamic>))
           .toList(),
+      steps: (json['steps'] as List<dynamic>?)
+              ?.map((s) => RecipeStepItem.fromJson(s as Map<String, dynamic>))
+              .toList() ??
+          [],
       seasonality: (json['seasonality'] as List<dynamic>).cast<String>(),
       tags: (json['tags'] as List<dynamic>).cast<String>(),
+      rating: (json['rating'] as num?)?.toDouble() ?? 4.8,
+      caloriesPerServing: json['caloriesPerServing'] as int? ?? 220,
+      costEstimateNpr: json['costEstimateNpr'] as int? ?? 65,
     );
   }
 }

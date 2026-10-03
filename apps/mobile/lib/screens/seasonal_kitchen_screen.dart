@@ -6,6 +6,7 @@ import 'package:kitchen_engine/region_pack.dart';
 import '../data/region_pack_repository.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
+import 'recipe_detail_screen.dart';
 
 class SeasonalKitchenScreen extends StatefulWidget {
   final RegionPack? initialPack;
@@ -309,6 +310,16 @@ class _SeasonalKitchenScreenState extends State<SeasonalKitchenScreen> {
                                   Navigator.pop(modalContext);
                                   if (widget.onRecipeSelected != null) {
                                     widget.onRecipeSelected!(recipe);
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute<void>(
+                                        builder: (_) => RecipeDetailScreen(
+                                          recipe: recipe,
+                                          currentLanguage: widget.currentLanguage,
+                                        ),
+                                      ),
+                                    );
                                   }
                                 },
                               ),
