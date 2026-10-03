@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import { syncRouter } from './routes/sync.js'
+import { authRouter } from './routes/auth.js'
 
 export const app = new Hono()
 
@@ -17,6 +18,9 @@ app.get('/health', (c) => {
     timestamp: new Date().toISOString()
   })
 })
+
+// Authentication & Identity endpoints (/v1/auth/*)
+app.route('/', authRouter)
 
 // Delta sync endpoint (/v1/sync)
 app.route('/', syncRouter)
