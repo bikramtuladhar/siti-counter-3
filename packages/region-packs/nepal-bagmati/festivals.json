@@ -1,0 +1,291 @@
+[
+  {
+    "id": "dashain",
+    "nameEn": "Dashain (Bijaya Dashami)",
+    "nameNe": "बडा दसैँ",
+    "tithi": "Ashwin Shukla Pratipada to Purnima",
+    "approxGregorianMonth": "October",
+    "descriptionEn": "Nepal's grandest festival celebrating the victory of good over evil. Marked by family reunions, Tika blessings, kites, and rich feasts.",
+    "descriptionNe": "नेपालको सबैभन्दा ठूलो चाड, मान्यजनबाट टीका-जमरा ग्रहण र पारिवारिक जमघट।",
+    "foodTraditions": {
+      "keyDishes": [
+        "khasiko-masu-jhol",
+        "khasiko-pakku",
+        "khasiko-bhutuwa",
+        "sel-roti",
+        "dahi-chiura",
+        "aloo-dum"
+      ],
+      "fastingRules": "Fasting observed by head of household on Ghatasthapana and Maha Ashtami morning until puja.",
+      "significance": "Sacrifice, celebration, rich mutton stews, fried pastries, and fresh yogurt feasts."
+    }
+  },
+  {
+    "id": "tihar",
+    "nameEn": "Tihar (Deepawali / Yama Panchak)",
+    "nameNe": "तिहार (यमपञ्चक)",
+    "tithi": "Kartik Krishna Trayodashi to Shukla Dwitiya",
+    "approxGregorianMonth": "November",
+    "descriptionEn": "Festival of lights honouring crows, dogs, cows, oxen, Goddess Laxmi, and the brother-sister bond during Bhai Tika.",
+    "descriptionNe": "उज्यालो र दाजुभाइ-दिदीबहिनीको महान् चाड, लक्ष्मीपूजा र भाइटीका।",
+    "foodTraditions": {
+      "keyDishes": [
+        "sel-roti",
+        "anarsa",
+        "fini-roti",
+        "aloo-dum",
+        "kheer",
+        "nimki"
+      ],
+      "fastingRules": "Fast observed on Laxmi Puja evening until Goddess Laxmi is welcomed with oil lamps.",
+      "significance": "Artisan handmade fried breads (Sel Roti, Anarsa, Fini) and sweet dry fruit garlands."
+    }
+  },
+  {
+    "id": "teej",
+    "nameEn": "Haritalika Teej & Dar",
+    "nameNe": "हरितालिका तीज र दर",
+    "tithi": "Bhadra Shukla Dwitiya to Chaturthi",
+    "approxGregorianMonth": "August / September",
+    "descriptionEn": "Traditional festival celebrated by women with joyful dancing, Dar feast on the eve, and rigid waterless fasting for marital longevity and family bliss.",
+    "descriptionNe": "महिलाहरूको महान् चाड, दर खाने दिन र हरितालिका निराहार व्रत।",
+    "foodTraditions": {
+      "keyDishes": [
+        "dar-kheer",
+        "dar-tarkari-thali",
+        "aloo-tama-bodi",
+        "sel-roti",
+        "dahi-chiura"
+      ],
+      "fastingRules": "Nirjala (waterless) fast on Teej day after midnight feast of Dar.",
+      "significance": "Dar feasting midnight with rich kheer, fried puris, potatoes, followed by purifying fast."
+    }
+  },
+  {
+    "id": "maghe-sankranti",
+    "nameEn": "Maghe Sankranti (Makar Sankranti)",
+    "nameNe": "माघे सङ्क्रान्ति",
+    "tithi": "1st of Magh",
+    "approxGregorianMonth": "January 14/15",
+    "descriptionEn": "Winter solstice marker when the sun enters Capricorn. People bathe in holy river confluences and eat warming, energy-dense foods.",
+    "descriptionNe": "माघ महिनाको पहिलो दिन, घिउ, चाकु, तिलको लड्डु र तरुल खाने पर्व।",
+    "foodTraditions": {
+      "keyDishes": [
+        "til-ko-laddu",
+        "chaku-ghyu",
+        "ubaleko-tarul",
+        "ubaleko-sakarkhanda",
+        "maghe-khichadi"
+      ],
+      "fastingRules": "Morning holy dip followed by pure sattvic breakfast of root crops, ghee, and molasses.",
+      "significance": "Warming winter foods: Til (sesame), Chaku (molasses), Ghee, Yams (Tarul), and Sweet Potatoes."
+    }
+  },
+  {
+    "id": "janai-purnima-kwati",
+    "nameEn": "Janai Purnima & Kwati Punhi",
+    "nameNe": "जनै पूर्णिमा र क्वाँटी पुन्ही",
+    "tithi": "Shrawan Shukla Purnima",
+    "approxGregorianMonth": "August",
+    "descriptionEn": "Sacred thread renewal and Raksha Bandhan. Celebrated culinarily with Kwati—a nourishing soup of nine sprouted beans.",
+    "descriptionNe": "पवित्र डोरो बाँध्ने र नौ थरी टुसा उम्रेको गेडागुडीको क्वाँटी खाने दिन।",
+    "foodTraditions": {
+      "keyDishes": [
+        "kwati-jhol",
+        "sada-bhat",
+        "golbheda-timur-achar",
+        "aloo-bhutuwa"
+      ],
+      "fastingRules": "No meat or onions; strictly sattvic sprouted bean stew with ajwain and ghee tempering.",
+      "significance": "Immunity-boosting sprouted pulse broth taken during peak monsoon rains."
+    }
+  },
+  {
+    "id": "yomari-punhi",
+    "nameEn": "Yomari Punhi",
+    "nameNe": "योमरी पुन्ही",
+    "tithi": "Mangsir Shukla Purnima",
+    "approxGregorianMonth": "December",
+    "descriptionEn": "Post-harvest Newar celebration thanking Annapurna with steamed rice-flour fig-shaped dumplings filled with molasses and sesame.",
+    "descriptionNe": "धान भित्र्याएपछि नयाँ चामलको पिठोबाट योमरी बनाएर मनाइने नेवारी पर्व।",
+    "foodTraditions": {
+      "keyDishes": [
+        "yomari-chaku",
+        "yomari-khuwa",
+        "aloo-kerau-tarkari",
+        "samay-baji-mini"
+      ],
+      "fastingRules": "Puja to grain goddess Annapurna before tasting freshly steamed Yomaris.",
+      "significance": "Celebration of new winter rice harvest with sweet steamed delicacy."
+    }
+  },
+  {
+    "id": "maha-shivaratri",
+    "nameEn": "Maha Shivaratri",
+    "nameNe": "महाशिवरात्रि",
+    "tithi": "Falgun Krishna Chaturdashi",
+    "approxGregorianMonth": "February / March",
+    "descriptionEn": "The Great Night of Lord Shiva. Thousands gather at Pashupatinath. Devotees fast and consume fruit or milk-based prasad.",
+    "descriptionNe": "पशुपतिनाथ मन्दिरमा विशेष मेला, शिवजीको पूजा-आराधना र फलाहार।",
+    "foodTraditions": {
+      "keyDishes": [
+        "phalahari-aloo",
+        "sabudana-kheer",
+        "kesar-badam-dudh",
+        "mohi"
+      ],
+      "fastingRules": "Strict fast all day; grains, onions, and garlic forbidden; evening phalahar (fruits, milk, boiled root crops).",
+      "significance": "Purifying fast honoring Lord Shiva with sattvic foods."
+    }
+  },
+  {
+    "id": "chhath",
+    "nameEn": "Chhath Puja",
+    "nameNe": "छठ पर्व",
+    "tithi": "Kartik Shukla Shashthi",
+    "approxGregorianMonth": "November",
+    "descriptionEn": "Solemn thanksgiving festival worshipping the Sun God (Surya) and Chhathi Maiya at riverbanks for vitality and well-being.",
+    "descriptionNe": "सूर्यदेव र छठी माइयाको आराधना गर्दै नदि किनारमा मनाइने पवित्र पर्व।",
+    "foodTraditions": {
+      "keyDishes": [
+        "thekuwa",
+        "bhusuwa",
+        "kheer-puri",
+        "fruits-argha"
+      ],
+      "fastingRules": "36-hour continuous waterless fast observed by vrattis culminating in dawn offering.",
+      "significance": "Sacred pure offerings of wheat, jaggery, ghee cookies (Thekuwa) and fresh sugarcane."
+    }
+  },
+  {
+    "id": "asar-15",
+    "nameEn": "National Paddy Day (Asar 15)",
+    "nameNe": "असार १५ (दही चिउरा खाने दिन)",
+    "tithi": "15th of Ashadh",
+    "approxGregorianMonth": "June 29",
+    "descriptionEn": "Celebrates the peak paddy plantation in Nepal's monsoon mud with singing Asare git and eating thick curd and beaten rice.",
+    "descriptionNe": "धान रोपाईंको उत्सव, हिलो खेल्दै दही र चिउरा खाने राष्ट्रिय दिन।",
+    "foodTraditions": {
+      "keyDishes": [
+        "dahi-chiura-kera",
+        "aloo-dum-achar",
+        "aam-bhat"
+      ],
+      "fastingRules": "No fasting; hearty field lunch of beaten rice, thick buffalo curd, bananas, and mangoes.",
+      "significance": "Sustains hard-working farmers with instant cooling energy during peak monsoon transplanting."
+    }
+  },
+  {
+    "id": "saun-15",
+    "nameEn": "Kheer Khane Din (Saun 15)",
+    "nameNe": "साउन १५ (खीर खाने दिन)",
+    "tithi": "15th of Shrawan",
+    "approxGregorianMonth": "July 30",
+    "descriptionEn": "Monsoon celebration marking the completion of paddy planting. Families cook fragrant rich rice pudding (Kheer).",
+    "descriptionNe": "रोपाइँ सकिएको खुसीयालीमा मीठो खीर पकाएर परिवारसँग खाने दिन।",
+    "foodTraditions": {
+      "keyDishes": [
+        "nepali-kheer",
+        "puri-tarkari",
+        "aloo-kerau-achar"
+      ],
+      "fastingRules": "Offered to deities first, then enjoyed warm as comfort food.",
+      "significance": "Sweet aromatic rice pudding cooked in rich milk with cardamom, raisins, and nuts."
+    }
+  },
+  {
+    "id": "krishna-janmashtami",
+    "nameEn": "Krishna Janmashtami",
+    "nameNe": "श्रीकृष्ण जन्माष्टमी",
+    "tithi": "Bhadra Krishna Ashtami",
+    "approxGregorianMonth": "August / September",
+    "descriptionEn": "Celebration of Lord Krishna's birth. Patan Krishna Mandir draws thousands of devotees who fast until midnight.",
+    "descriptionNe": "भगवान् श्रीकृष्णको जन्मोत्सव, पाटन कृष्ण मन्दिरमा पूजा र मध्यरातसम्म व्रत।",
+    "foodTraditions": {
+      "keyDishes": [
+        "makhan-mishri",
+        "panchamrit",
+        "phalahari-kheer",
+        "falful-prasad"
+      ],
+      "fastingRules": "Fasting until midnight birth auspicious hour; unbroken fast concluded with panchamrit and fruits.",
+      "significance": "Milk, butter, and fruit prasad honoring the butter-thief deity."
+    }
+  },
+  {
+    "id": "holi",
+    "nameEn": "Holi (Fagu Purnima)",
+    "nameNe": "होली (फागु पूर्णिमा)",
+    "tithi": "Falgun Shukla Purnima",
+    "approxGregorianMonth": "March",
+    "descriptionEn": "Festival of colours, joyous dancing, water balloons (lola), and vibrant springtime greetings.",
+    "descriptionNe": "रङ्गहरूको उत्सव, वसन्त ऋतुको स्वागत र भ्रातृत्वको प्रतीक।",
+    "foodTraditions": {
+      "keyDishes": [
+        "khaja-platter",
+        "aloo-chop",
+        "malpuwa",
+        "mohi"
+      ],
+      "fastingRules": "Festive day of high indulgence with savory snacks, sweets, and cooling drinks.",
+      "significance": "Spicy street snacks, crispy aloo chop, and sweet malpuwas."
+    }
+  },
+  {
+    "id": "chaite-dashain",
+    "nameEn": "Chaite Dashain & Ram Navami",
+    "nameNe": "चैते दसैँ र राम नवमी",
+    "tithi": "Chaitra Shukla Ashtami to Navami",
+    "approxGregorianMonth": "April",
+    "descriptionEn": "Springtime Dashain commemorating Goddess Durga and Lord Rama's birthday with festive worship and meat curries.",
+    "descriptionNe": "वसन्त ऋतुमा मनाइने चैते दसैँ र मर्यादा पुरुषोत्तम श्रीरामको जन्मदिन।",
+    "foodTraditions": {
+      "keyDishes": [
+        "khasiko-masu-jhol",
+        "sada-bhat",
+        "rayo-saag-tori",
+        "golbheda-achar"
+      ],
+      "fastingRules": "Ashtami puja fast until Bali ritual concludes, then mutton feast.",
+      "significance": "Spring celebration mirroring autumn Dashain with seasonal spring greens."
+    }
+  },
+  {
+    "id": "harishayani-ekadashi",
+    "nameEn": "Harishayani Ekadashi",
+    "nameNe": "हरिशयनी एकादशी (तुलसी रोप्ने दिन)",
+    "tithi": "Ashadh Shukla Ekadashi",
+    "approxGregorianMonth": "July",
+    "descriptionEn": "Commences the four-month sacred Chaturmas when Lord Vishnu enters yogic slumber. Sacred Tulsi plants are planted in courtyards.",
+    "descriptionNe": "चतुर्मास सुरु हुने र घरआँगनमा पवित्र तुलसीको मोठमा बिरुवा रोप्ने दिन।",
+    "foodTraditions": {
+      "keyDishes": [
+        "phapar-ko-roti",
+        "ubaleko-pindalu",
+        "dahi-kera",
+        "singhada-sheera"
+      ],
+      "fastingRules": "Strict non-grain (Phalahar) fast; all rice, lentils, and wheat forbidden.",
+      "significance": "Detoxifying sattvic diet of buckwheat, roots, and yogurt."
+    }
+  },
+  {
+    "id": "haribodhini-ekadashi",
+    "nameEn": "Haribodhini Ekadashi (Thuli Ekadashi)",
+    "nameNe": "हरिबोधिनी एकादशी (ठूली एकादशी)",
+    "tithi": "Kartik Shukla Ekadashi",
+    "approxGregorianMonth": "November",
+    "descriptionEn": "Lord Vishnu awakens from his cosmic sleep. Sacred marriage of Tulsi with Shaligram stone. Major pilgrimage to Budhanilkantha and Char Narayan.",
+    "descriptionNe": "भगवान् विष्णु जागा हुने दिन, तुलसीको विवाह र सखरखण्ड-पिँडालु खाने पर्व।",
+    "foodTraditions": {
+      "keyDishes": [
+        "ubaleko-tarul",
+        "ubaleko-sakarkhanda",
+        "pindalu-fry",
+        "phapar-dhiḍo"
+      ],
+      "fastingRules": "Grains strictly forbidden; feast on boiled yams, sweet potatoes, and roasted peanuts.",
+      "significance": "Seasonal root-vegetable fast marking beginning of winter."
+    }
+  }
+]
