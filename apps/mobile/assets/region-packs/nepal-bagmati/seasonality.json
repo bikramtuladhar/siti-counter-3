@@ -1,0 +1,47 @@
+{
+  "regionId": "nepal-bagmati",
+  "ritus": [
+    {
+      "id": "basanta",
+      "name": "बसन्त (Basanta)",
+      "monthsBS": ["Chaitra", "Baisakh"],
+      "monthsGregorian": ["March", "April"],
+      "signatureProduce": ["Asparagus (कुरिलो)", "Green peas (केराउ)", "Broad beans (बकुल्ला)"]
+    },
+    {
+      "id": "grishma",
+      "name": "ग्रीष्म (Grishma)",
+      "monthsBS": ["Jestha", "Ashadh"],
+      "monthsGregorian": ["May", "June"],
+      "signatureProduce": ["Cucumber (काँक्रो)", "Bitter gourd (तीतो करेला)", "Bottle gourd (लौका)"]
+    },
+    {
+      "id": "barsha",
+      "name": "वर्षा (Barsha)",
+      "monthsBS": ["Shrawan", "Bhadra"],
+      "monthsGregorian": ["July", "August"],
+      "signatureProduce": ["Pumpkin shoots (फर्सीको मुन्टा)", "Snake gourd (चिचिन्डा)", "Sweet corn (मकै)"]
+    },
+    {
+      "id": "sharad",
+      "name": "शरद (Sharad)",
+      "monthsBS": ["Ashwin", "Kartik"],
+      "monthsGregorian": ["September", "October"],
+      "signatureProduce": ["Cauliflower (फूल गोभी)", "Radish (मूला)", "Spinach (पालुङ्गो)", "Rayoko saag (रायोको साग)"]
+    },
+    {
+      "id": "hemanta",
+      "name": "हेमन्त (Hemanta)",
+      "monthsBS": ["Mangsir", "Poush"],
+      "monthsGregorian": ["November", "December"],
+      "signatureProduce": ["Gundruk fermentation", "Mustard greens", "Carrots (गाँजर)", "Yams (तरुल)"]
+    },
+    {
+      "id": "shishir",
+      "name": "शिशिर (Shishir)",
+      "monthsBS": ["Magh", "Falgun"],
+      "monthsGregorian": ["January", "February"],
+      "signatureProduce": ["Broccoli", "Cabbage (बन्दा)", "Turnip (सलगम)", "Winter achar preservation"]
+    }
+  ]
+}

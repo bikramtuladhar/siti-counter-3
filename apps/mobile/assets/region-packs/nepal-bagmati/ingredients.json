@@ -1,0 +1,1688 @@
+[
+  {
+    "id": "potato",
+    "nameEn": "Potato",
+    "nameNe": "आलु",
+    "aliases": [
+      "aloo",
+      "alu",
+      "patata"
+    ],
+    "category": "vegetables",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 21,
+    "allergens": [],
+    "availability": {
+      "basanta": "in_season",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "in_season"
+    }
+  },
+  {
+    "id": "cauliflower",
+    "nameEn": "Cauliflower",
+    "nameNe": "काउली (फूल गोभी)",
+    "aliases": [
+      "kauli",
+      "phool gobi",
+      "gobi",
+      "फूलगोभी"
+    ],
+    "category": "vegetables",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 5,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "limited",
+      "barsha": "out_of_season",
+      "sharad": "peak",
+      "hemanta": "in_season",
+      "shishir": "in_season"
+    }
+  },
+  {
+    "id": "cabbage",
+    "nameEn": "Cabbage",
+    "nameNe": "बन्दा गोभी",
+    "aliases": [
+      "banda",
+      "patta gobi",
+      "bandakopi"
+    ],
+    "category": "vegetables",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 14,
+    "allergens": [],
+    "availability": {
+      "basanta": "in_season",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "in_season",
+      "hemanta": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "tomato",
+    "nameEn": "Tomato",
+    "nameNe": "गोलभेडा (टमाटर)",
+    "aliases": [
+      "golbheda",
+      "tamatar",
+      "golvenda"
+    ],
+    "category": "vegetables",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 7,
+    "allergens": [],
+    "availability": {
+      "basanta": "in_season",
+      "grishma": "peak",
+      "barsha": "available",
+      "sharad": "peak",
+      "hemanta": "available",
+      "shishir": "limited"
+    }
+  },
+  {
+    "id": "onion",
+    "nameEn": "Onion",
+    "nameNe": "प्याज",
+    "aliases": [
+      "pyaz",
+      "pyaaz"
+    ],
+    "category": "vegetables",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 30,
+    "allergens": [],
+    "availability": {
+      "basanta": "in_season",
+      "grishma": "in_season",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "in_season",
+      "shishir": "in_season"
+    }
+  },
+  {
+    "id": "radish",
+    "nameEn": "White Radish",
+    "nameNe": "सेतो मूला",
+    "aliases": [
+      "mula",
+      "mooli",
+      "seto mula"
+    ],
+    "category": "vegetables",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 10,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "limited",
+      "barsha": "out_of_season",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "in_season"
+    }
+  },
+  {
+    "id": "rayo_saag",
+    "nameEn": "Mustard Greens",
+    "nameNe": "रायोको साग",
+    "aliases": [
+      "rayo",
+      "tori ko saag",
+      "mustard green"
+    ],
+    "category": "greens",
+    "standardUnit": "muthi",
+    "marketPackageGrams": 400,
+    "storageDays": 3,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "out_of_season",
+      "barsha": "out_of_season",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "in_season"
+    }
+  },
+  {
+    "id": "spinach",
+    "nameEn": "Spinach",
+    "nameNe": "पालुङ्गो",
+    "aliases": [
+      "palungo",
+      "palak"
+    ],
+    "category": "greens",
+    "standardUnit": "muthi",
+    "marketPackageGrams": 300,
+    "storageDays": 3,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "out_of_season",
+      "barsha": "out_of_season",
+      "sharad": "in_season",
+      "hemanta": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "chamsur_saag",
+    "nameEn": "Garden Cress",
+    "nameNe": "चम्सुरको साग",
+    "aliases": [
+      "chamsur",
+      "cress"
+    ],
+    "category": "greens",
+    "standardUnit": "muthi",
+    "marketPackageGrams": 250,
+    "storageDays": 3,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "out_of_season",
+      "barsha": "out_of_season",
+      "sharad": "in_season",
+      "hemanta": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "methi_saag",
+    "nameEn": "Fenugreek Greens",
+    "nameNe": "मेथीको साग",
+    "aliases": [
+      "methi saag",
+      "fresh fenugreek"
+    ],
+    "category": "greens",
+    "standardUnit": "muthi",
+    "marketPackageGrams": 250,
+    "storageDays": 3,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "out_of_season",
+      "barsha": "out_of_season",
+      "sharad": "in_season",
+      "hemanta": "peak",
+      "shishir": "in_season"
+    }
+  },
+  {
+    "id": "green_peas",
+    "nameEn": "Green Peas",
+    "nameNe": "हरियो केराउ",
+    "aliases": [
+      "kerau",
+      "matar",
+      "hariyo kerau"
+    ],
+    "category": "vegetables",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 5,
+    "allergens": [],
+    "availability": {
+      "basanta": "peak",
+      "grishma": "out_of_season",
+      "barsha": "out_of_season",
+      "sharad": "limited",
+      "hemanta": "in_season",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "french_beans",
+    "nameEn": "French Green Beans",
+    "nameNe": "सिमी",
+    "aliases": [
+      "simi",
+      "hariyo simi",
+      "beans"
+    ],
+    "category": "vegetables",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 6,
+    "allergens": [],
+    "availability": {
+      "basanta": "in_season",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "in_season",
+      "hemanta": "limited",
+      "shishir": "out_of_season"
+    }
+  },
+  {
+    "id": "bodi",
+    "nameEn": "Black Eyed Long Beans",
+    "nameNe": "बोडी",
+    "aliases": [
+      "long beans",
+      "chawli",
+      "hariyo bodi"
+    ],
+    "category": "vegetables",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 5,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "in_season",
+      "hemanta": "out_of_season",
+      "shishir": "out_of_season"
+    }
+  },
+  {
+    "id": "bitter_gourd",
+    "nameEn": "Bitter Gourd",
+    "nameNe": "तीतो करेला",
+    "aliases": [
+      "tito karela",
+      "karela"
+    ],
+    "category": "vegetables",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 7,
+    "allergens": [],
+    "availability": {
+      "basanta": "in_season",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "available",
+      "hemanta": "out_of_season",
+      "shishir": "out_of_season"
+    }
+  },
+  {
+    "id": "bottle_gourd",
+    "nameEn": "Bottle Gourd",
+    "nameNe": "लौका",
+    "aliases": [
+      "lauka",
+      "kaddu",
+      "ghiya"
+    ],
+    "category": "vegetables",
+    "standardUnit": "piece",
+    "marketPackageGrams": 800,
+    "storageDays": 8,
+    "allergens": [],
+    "availability": {
+      "basanta": "in_season",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "available",
+      "hemanta": "limited",
+      "shishir": "out_of_season"
+    }
+  },
+  {
+    "id": "sponge_gourd",
+    "nameEn": "Sponge Gourd",
+    "nameNe": "घिरौंला",
+    "aliases": [
+      "ghiraula",
+      "torai",
+      "nenua"
+    ],
+    "category": "vegetables",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 5,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "limited",
+      "hemanta": "out_of_season",
+      "shishir": "out_of_season"
+    }
+  },
+  {
+    "id": "pointed_gourd",
+    "nameEn": "Pointed Gourd",
+    "nameNe": "परवल",
+    "aliases": [
+      "parwal",
+      "potol"
+    ],
+    "category": "vegetables",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 6,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "available",
+      "hemanta": "out_of_season",
+      "shishir": "out_of_season"
+    }
+  },
+  {
+    "id": "snake_gourd",
+    "nameEn": "Snake Gourd",
+    "nameNe": "चिचिन्डा",
+    "aliases": [
+      "chichinda",
+      "chachinga"
+    ],
+    "category": "vegetables",
+    "standardUnit": "piece",
+    "marketPackageGrams": 500,
+    "storageDays": 6,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "limited",
+      "hemanta": "out_of_season",
+      "shishir": "out_of_season"
+    }
+  },
+  {
+    "id": "lady_finger",
+    "nameEn": "Okra / Lady Finger",
+    "nameNe": "भिन्डी",
+    "aliases": [
+      "bhendi",
+      "bhindi",
+      "ramtori"
+    ],
+    "category": "vegetables",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 5,
+    "allergens": [],
+    "availability": {
+      "basanta": "in_season",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "available",
+      "hemanta": "out_of_season",
+      "shishir": "out_of_season"
+    }
+  },
+  {
+    "id": "pumpkin",
+    "nameEn": "Yellow Pumpkin",
+    "nameNe": "पहेंलो फर्सी",
+    "aliases": [
+      "pharsi",
+      "farsi",
+      "kaddu"
+    ],
+    "category": "vegetables",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 40,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "peak",
+      "sharad": "peak",
+      "hemanta": "in_season",
+      "shishir": "in_season"
+    }
+  },
+  {
+    "id": "pumpkin_shoots",
+    "nameEn": "Pumpkin Shoots",
+    "nameNe": "फर्सीको मुन्टा",
+    "aliases": [
+      "pharsiko munta",
+      "farsi munta"
+    ],
+    "category": "greens",
+    "standardUnit": "muthi",
+    "marketPackageGrams": 300,
+    "storageDays": 2,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "in_season",
+      "hemanta": "out_of_season",
+      "shishir": "out_of_season"
+    }
+  },
+  {
+    "id": "eggplant",
+    "nameEn": "Eggplant / Aubergine",
+    "nameNe": "भन्टा (बैगुन)",
+    "aliases": [
+      "bhanta",
+      "baigun",
+      "brinjal"
+    ],
+    "category": "vegetables",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 7,
+    "allergens": [],
+    "availability": {
+      "basanta": "in_season",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "in_season",
+      "hemanta": "available",
+      "shishir": "limited"
+    }
+  },
+  {
+    "id": "cucumber",
+    "nameEn": "Cucumber",
+    "nameNe": "काँक्रो",
+    "aliases": [
+      "kankro",
+      "kakro",
+      "kheera"
+    ],
+    "category": "vegetables",
+    "standardUnit": "piece",
+    "marketPackageGrams": 400,
+    "storageDays": 6,
+    "allergens": [],
+    "availability": {
+      "basanta": "in_season",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "available",
+      "hemanta": "out_of_season",
+      "shishir": "out_of_season"
+    }
+  },
+  {
+    "id": "yam",
+    "nameEn": "Yam",
+    "nameNe": "तरुल",
+    "aliases": [
+      "tarul",
+      "ghar tarul",
+      "ban tarul"
+    ],
+    "category": "vegetables",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 30,
+    "allergens": [],
+    "availability": {
+      "basanta": "limited",
+      "grishma": "out_of_season",
+      "barsha": "out_of_season",
+      "sharad": "available",
+      "hemanta": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "sweet_potato",
+    "nameEn": "Sweet Potato",
+    "nameNe": "सखरखण्ड",
+    "aliases": [
+      "sakarkhanda",
+      "sakharkhanda"
+    ],
+    "category": "vegetables",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 25,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "out_of_season",
+      "barsha": "out_of_season",
+      "sharad": "in_season",
+      "hemanta": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "colocasia",
+    "nameEn": "Colocasia Root (Taro)",
+    "nameNe": "पिँडालु",
+    "aliases": [
+      "pindalu",
+      "arbi",
+      "taro root"
+    ],
+    "category": "vegetables",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 20,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "out_of_season",
+      "barsha": "available",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "in_season"
+    }
+  },
+  {
+    "id": "colocasia_leaves",
+    "nameEn": "Colocasia Leaves",
+    "nameNe": "कर्कलो र गाभा",
+    "aliases": [
+      "karkalo",
+      "gava",
+      "gaura"
+    ],
+    "category": "greens",
+    "standardUnit": "muthi",
+    "marketPackageGrams": 300,
+    "storageDays": 3,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "in_season",
+      "hemanta": "out_of_season",
+      "shishir": "out_of_season"
+    }
+  },
+  {
+    "id": "asparagus",
+    "nameEn": "Wild Asparagus",
+    "nameNe": "कुरिलो",
+    "aliases": [
+      "kurilo",
+      "asparagus"
+    ],
+    "category": "vegetables",
+    "standardUnit": "bunch",
+    "marketPackageGrams": 250,
+    "storageDays": 4,
+    "allergens": [],
+    "availability": {
+      "basanta": "peak",
+      "grishma": "in_season",
+      "barsha": "available",
+      "sharad": "out_of_season",
+      "hemanta": "out_of_season",
+      "shishir": "out_of_season"
+    }
+  },
+  {
+    "id": "mushroom",
+    "nameEn": "Button/Oyster Mushroom",
+    "nameNe": "च्याउ",
+    "aliases": [
+      "chyau",
+      "kanya chyau",
+      "gobre chyau"
+    ],
+    "category": "vegetables",
+    "standardUnit": "packet",
+    "marketPackageGrams": 200,
+    "storageDays": 3,
+    "allergens": [],
+    "availability": {
+      "basanta": "in_season",
+      "grishma": "available",
+      "barsha": "peak",
+      "sharad": "in_season",
+      "hemanta": "in_season",
+      "shishir": "in_season"
+    }
+  },
+  {
+    "id": "bamboo_shoot",
+    "nameEn": "Fermented Bamboo Shoot",
+    "nameNe": "तामा",
+    "aliases": [
+      "tama",
+      "banso tama"
+    ],
+    "category": "vegetables",
+    "standardUnit": "mana",
+    "marketPackageGrams": 300,
+    "storageDays": 14,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "in_season",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "gundruk",
+    "nameEn": "Fermented Leafy Greens (Gundruk)",
+    "nameNe": "गुन्द्रुक",
+    "aliases": [
+      "gundruk",
+      "sinki",
+      "sukuti saag"
+    ],
+    "category": "fermented",
+    "standardUnit": "mana",
+    "marketPackageGrams": 150,
+    "storageDays": 180,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "sinki",
+    "nameEn": "Fermented Radish Taproot",
+    "nameNe": "सिन्की",
+    "aliases": [
+      "sinki"
+    ],
+    "category": "fermented",
+    "standardUnit": "mana",
+    "marketPackageGrams": 150,
+    "storageDays": 180,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "masyaura",
+    "nameEn": "Sun-dried Lentil Nuggets",
+    "nameNe": "मस्यौरा",
+    "aliases": [
+      "masyaura",
+      "maseura"
+    ],
+    "category": "fermented",
+    "standardUnit": "mana",
+    "marketPackageGrams": 200,
+    "storageDays": 180,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "lapsi",
+    "nameEn": "Nepali Hog Plum",
+    "nameNe": "लप्सी",
+    "aliases": [
+      "lapsi",
+      "hog plum",
+      "paun"
+    ],
+    "category": "fruits",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 14,
+    "allergens": [],
+    "availability": {
+      "basanta": "out_of_season",
+      "grishma": "out_of_season",
+      "barsha": "limited",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "masuro_dal",
+    "nameEn": "Split Red Lentils",
+    "nameNe": "मुसुरो दाल",
+    "aliases": [
+      "musuro",
+      "red lentil",
+      "masoor"
+    ],
+    "category": "pulses",
+    "standardUnit": "mana",
+    "marketPackageGrams": 400,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "kalo_dal",
+    "nameEn": "Black Urad Lentils",
+    "nameNe": "कालो दाल (मास)",
+    "aliases": [
+      "kalo dal",
+      "maas",
+      "urad"
+    ],
+    "category": "pulses",
+    "standardUnit": "mana",
+    "marketPackageGrams": 400,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "rahar_dal",
+    "nameEn": "Pigeon Pea (Toor Dal)",
+    "nameNe": "रहरको दाल",
+    "aliases": [
+      "rahar",
+      "toor",
+      "arhar"
+    ],
+    "category": "pulses",
+    "standardUnit": "mana",
+    "marketPackageGrams": 400,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "mung_dal",
+    "nameEn": "Yellow Moong Dal",
+    "nameNe": "मुङको दाल",
+    "aliases": [
+      "mung",
+      "moong"
+    ],
+    "category": "pulses",
+    "standardUnit": "mana",
+    "marketPackageGrams": 400,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "chana",
+    "nameEn": "Brown Chickpeas",
+    "nameNe": "खैरो चना",
+    "aliases": [
+      "chana",
+      "kala chana",
+      "bhatmas"
+    ],
+    "category": "pulses",
+    "standardUnit": "mana",
+    "marketPackageGrams": 400,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "kwati_mix",
+    "nameEn": "Nine Sprouted Beans Mix",
+    "nameNe": "क्वाँटी गेडागुडी",
+    "aliases": [
+      "kwati",
+      "gedagudi"
+    ],
+    "category": "pulses",
+    "standardUnit": "mana",
+    "marketPackageGrams": 400,
+    "storageDays": 180,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "peak",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "bhatmas",
+    "nameEn": "Soybean (Yellow/Black)",
+    "nameNe": "भटमास",
+    "aliases": [
+      "bhatmas",
+      "kalo bhatmas",
+      "soybean"
+    ],
+    "category": "pulses",
+    "standardUnit": "mana",
+    "marketPackageGrams": 400,
+    "storageDays": 365,
+    "allergens": [
+      "soy"
+    ],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "rice",
+    "nameEn": "Nepali Rice",
+    "nameNe": "चामल",
+    "aliases": [
+      "chamal",
+      "bhat",
+      "basmati",
+      "taichin",
+      "mansuli"
+    ],
+    "category": "grains",
+    "standardUnit": "mana",
+    "marketPackageGrams": 400,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "chiura",
+    "nameEn": "Beaten Rice / Poha",
+    "nameNe": "चिउरा",
+    "aliases": [
+      "chiura",
+      "baji",
+      "taichin chiura"
+    ],
+    "category": "grains",
+    "standardUnit": "mana",
+    "marketPackageGrams": 250,
+    "storageDays": 180,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "wheat_flour",
+    "nameEn": "Whole Wheat Flour",
+    "nameNe": "गहुँको पिठो",
+    "aliases": [
+      "atta",
+      "pitho",
+      "wheat flour"
+    ],
+    "category": "flour",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 90,
+    "allergens": [
+      "gluten"
+    ],
+    "availability": {
+      "basanta": "peak",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "rice_flour",
+    "nameEn": "Rice Flour",
+    "nameNe": "चामलको पिठो",
+    "aliases": [
+      "chamal pitho",
+      "chawal atta"
+    ],
+    "category": "flour",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 90,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "peak",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "millet_flour",
+    "nameEn": "Finger Millet Flour",
+    "nameNe": "कोदोको पिठो",
+    "aliases": [
+      "kodo ko pitho",
+      "ragi",
+      "kodo"
+    ],
+    "category": "flour",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 90,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "buckwheat_flour",
+    "nameEn": "Buckwheat Flour",
+    "nameNe": "फापरको पिठो",
+    "aliases": [
+      "phapar pitho",
+      "kuttu"
+    ],
+    "category": "flour",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 90,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "semolina",
+    "nameEn": "Semolina / Suji",
+    "nameNe": "सुजी",
+    "aliases": [
+      "suji",
+      "rava"
+    ],
+    "category": "flour",
+    "standardUnit": "packet",
+    "marketPackageGrams": 500,
+    "storageDays": 120,
+    "allergens": [
+      "gluten"
+    ],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "mustard_oil",
+    "nameEn": "Mustard Oil",
+    "nameNe": "तोरीको तेल",
+    "aliases": [
+      "tori tel",
+      "sarson tel"
+    ],
+    "category": "oils",
+    "standardUnit": "l",
+    "marketPackageGrams": 910,
+    "storageDays": 365,
+    "allergens": [
+      "mustard"
+    ],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "ghee",
+    "nameEn": "Clarified Butter (Ghee)",
+    "nameNe": "घ्यू",
+    "aliases": [
+      "ghyu",
+      "ghee",
+      "makhan"
+    ],
+    "category": "dairy",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 180,
+    "allergens": [
+      "dairy"
+    ],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "ginger",
+    "nameEn": "Ginger",
+    "nameNe": "अदुवा",
+    "aliases": [
+      "aduwa",
+      "adrak"
+    ],
+    "category": "aromatics",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 21,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "in_season",
+      "hemanta": "peak",
+      "shishir": "in_season"
+    }
+  },
+  {
+    "id": "garlic",
+    "nameEn": "Garlic",
+    "nameNe": "लसुन",
+    "aliases": [
+      "lasun",
+      "lahsun"
+    ],
+    "category": "aromatics",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 60,
+    "allergens": [],
+    "availability": {
+      "basanta": "in_season",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "in_season",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "green_chili",
+    "nameEn": "Fresh Green Chili",
+    "nameNe": "हरियो खुर्सानी",
+    "aliases": [
+      "hariyo khursani",
+      "mirchi"
+    ],
+    "category": "aromatics",
+    "standardUnit": "pau",
+    "marketPackageGrams": 100,
+    "storageDays": 10,
+    "allergens": [],
+    "availability": {
+      "basanta": "in_season",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "in_season",
+      "hemanta": "available",
+      "shishir": "limited"
+    }
+  },
+  {
+    "id": "red_chili",
+    "nameEn": "Dry Red Chili",
+    "nameNe": "सुकेको रातो खुर्सानी",
+    "aliases": [
+      "sukeko khursani",
+      "rato khursani"
+    ],
+    "category": "spices",
+    "standardUnit": "packet",
+    "marketPackageGrams": 100,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "turmeric",
+    "nameEn": "Turmeric Powder",
+    "nameNe": "बेसार",
+    "aliases": [
+      "beshar",
+      "besar",
+      "haldi"
+    ],
+    "category": "spices",
+    "standardUnit": "packet",
+    "marketPackageGrams": 200,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "cumin",
+    "nameEn": "Cumin Seeds",
+    "nameNe": "जीरा",
+    "aliases": [
+      "jeera",
+      "jira"
+    ],
+    "category": "spices",
+    "standardUnit": "packet",
+    "marketPackageGrams": 200,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "coriander_fresh",
+    "nameEn": "Fresh Coriander Leaves",
+    "nameNe": "धनियाँको पात",
+    "aliases": [
+      "dhaniya",
+      "dhaniya patta"
+    ],
+    "category": "greens",
+    "standardUnit": "muthi",
+    "marketPackageGrams": 100,
+    "storageDays": 4,
+    "allergens": [],
+    "availability": {
+      "basanta": "in_season",
+      "grishma": "limited",
+      "barsha": "limited",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "coriander_powder",
+    "nameEn": "Coriander Powder",
+    "nameNe": "धनियाँको धुलो",
+    "aliases": [
+      "dhaniya dhulo"
+    ],
+    "category": "spices",
+    "standardUnit": "packet",
+    "marketPackageGrams": 200,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "fenugreek_seeds",
+    "nameEn": "Fenugreek Seeds",
+    "nameNe": "मेथीको गेडा",
+    "aliases": [
+      "methi geda",
+      "methi"
+    ],
+    "category": "spices",
+    "standardUnit": "packet",
+    "marketPackageGrams": 100,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "jimbu",
+    "nameEn": "Himalayan Dried Chives (Jimbu)",
+    "nameNe": "जिम्बु",
+    "aliases": [
+      "jimbu",
+      "himalayan chive"
+    ],
+    "category": "spices",
+    "standardUnit": "packet",
+    "marketPackageGrams": 50,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "peak",
+      "hemanta": "in_season",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "timur",
+    "nameEn": "Timur (Sichuan Pepper)",
+    "nameNe": "टिमुर",
+    "aliases": [
+      "timur",
+      "nepal pepper",
+      "timmur"
+    ],
+    "category": "spices",
+    "standardUnit": "packet",
+    "marketPackageGrams": 100,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "peak",
+      "hemanta": "in_season",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "sesame",
+    "nameEn": "White / Black Sesame",
+    "nameNe": "तिल",
+    "aliases": [
+      "til",
+      "seto til",
+      "kalo til"
+    ],
+    "category": "seeds",
+    "standardUnit": "packet",
+    "marketPackageGrams": 200,
+    "storageDays": 180,
+    "allergens": [
+      "sesame"
+    ],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "ajwain",
+    "nameEn": "Carom Seeds (Ajwain)",
+    "nameNe": "जुवानो",
+    "aliases": [
+      "juwano",
+      "jwano"
+    ],
+    "category": "spices",
+    "standardUnit": "packet",
+    "marketPackageGrams": 100,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "cardamom",
+    "nameEn": "Large Black Cardamom",
+    "nameNe": "अलैँची",
+    "aliases": [
+      "alaichi",
+      "black cardamom"
+    ],
+    "category": "spices",
+    "standardUnit": "packet",
+    "marketPackageGrams": 50,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "cinnamon",
+    "nameEn": "Cinnamon Bark / Bay Leaf",
+    "nameNe": "दालचिनी र तेजपत्ता",
+    "aliases": [
+      "dalchini",
+      "tejpatta"
+    ],
+    "category": "spices",
+    "standardUnit": "packet",
+    "marketPackageGrams": 50,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "salt",
+    "nameEn": "Salt",
+    "nameNe": "नुन",
+    "aliases": [
+      "noon",
+      "namak"
+    ],
+    "category": "spices",
+    "standardUnit": "packet",
+    "marketPackageGrams": 1000,
+    "storageDays": 730,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "yogurt",
+    "nameEn": "Plain Curd / Yogurt",
+    "nameNe": "दही",
+    "aliases": [
+      "dahi",
+      "curd",
+      "juju dhau"
+    ],
+    "category": "dairy",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 5,
+    "allergens": [
+      "dairy"
+    ],
+    "availability": {
+      "basanta": "available",
+      "grishma": "peak",
+      "barsha": "in_season",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "milk",
+    "nameEn": "Fresh Whole Milk",
+    "nameNe": "दूध",
+    "aliases": [
+      "dudh",
+      "milk"
+    ],
+    "category": "dairy",
+    "standardUnit": "l",
+    "marketPackageGrams": 1000,
+    "storageDays": 3,
+    "allergens": [
+      "dairy"
+    ],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "paneer",
+    "nameEn": "Fresh Cottage Cheese",
+    "nameNe": "पनिर",
+    "aliases": [
+      "paneer"
+    ],
+    "category": "dairy",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 7,
+    "allergens": [
+      "dairy"
+    ],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "goat_meat",
+    "nameEn": "Goat Meat (Mutton)",
+    "nameNe": "खसीको मासु",
+    "aliases": [
+      "khasiko masu",
+      "mutton",
+      "goat"
+    ],
+    "category": "meat",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 2,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "chicken",
+    "nameEn": "Chicken",
+    "nameNe": "कुखुराको मासु",
+    "aliases": [
+      "kukhura",
+      "chicken"
+    ],
+    "category": "meat",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 2,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "buff_meat",
+    "nameEn": "Water Buffalo Meat",
+    "nameNe": "राँगाको मासु",
+    "aliases": [
+      "buff",
+      "ranga",
+      "heku"
+    ],
+    "category": "meat",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 2,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "fish",
+    "nameEn": "Fresh River/Pond Fish",
+    "nameNe": "ताजा माछा",
+    "aliases": [
+      "machha",
+      "fish"
+    ],
+    "category": "meat",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 2,
+    "allergens": [
+      "fish"
+    ],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "limited",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "in_season"
+    }
+  },
+  {
+    "id": "chaku",
+    "nameEn": "Hardened Molasses / Jaggery",
+    "nameNe": "चाकु",
+    "aliases": [
+      "chaku",
+      "gur",
+      "molasses"
+    ],
+    "category": "sweeteners",
+    "standardUnit": "packet",
+    "marketPackageGrams": 250,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "limited",
+      "barsha": "limited",
+      "sharad": "available",
+      "hemanta": "peak",
+      "shishir": "peak"
+    }
+  }
+]

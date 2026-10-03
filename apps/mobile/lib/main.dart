@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kitchen_engine/nepali_calendar.dart';
 import 'onboarding/onboarding_coordinator.dart';
 import 'onboarding/onboarding_state.dart';
+import 'screens/seasonal_kitchen_screen.dart';
 import 'theme/tokens.dart';
 import 'theme/nepali_typography.dart';
 import 'widgets/six_ritus_indicator.dart';
@@ -69,6 +70,7 @@ class KitchenHomeScreen extends StatefulWidget {
 }
 
 class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
+  int _currentTabIndex = 0;
   int _whistleCount = 0;
   bool _isListening = false;
 
@@ -96,6 +98,15 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_currentTabIndex == 1) {
+      return Scaffold(
+        body: SeasonalKitchenScreen(
+          currentLanguage: widget.preferences.language,
+        ),
+        bottomNavigationBar: _buildBottomNav(),
+      );
+    }
+
     // Current date in BS (approx 2081 Ashwin 15)
     const todayBs = BsDate(year: 2081, month: 7, day: 15);
 
@@ -261,6 +272,30 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: _buildBottomNav(),
+    );
+  }
+
+  Widget _buildBottomNav() {
+    return NavigationBar(
+      selectedIndex: _currentTabIndex,
+      onDestinationSelected: (index) {
+        setState(() {
+          _currentTabIndex = index;
+        });
+      },
+      destinations: [
+        NavigationDestination(
+          icon: const Icon(Icons.soup_kitchen_outlined),
+          selectedIcon: const Icon(Icons.soup_kitchen_rounded),
+          label: _isNepali ? 'भान्सा' : 'Kitchen',
+        ),
+        NavigationDestination(
+          icon: const Icon(Icons.explore_outlined),
+          selectedIcon: const Icon(Icons.explore_rounded),
+          label: _isNepali ? 'खोज्नुहोस्' : 'Discover',
+        ),
+      ],
     );
   }
 }

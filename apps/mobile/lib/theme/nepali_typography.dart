@@ -34,10 +34,35 @@ class NepaliTypography {
         letterSpacing: 0.1,
       );
 
+  static TextStyle get headlineSmall => const TextStyle(
+        fontFamily: fontPrimary,
+        fontFamilyFallback: fontFallbacks,
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        height: headlineLineHeight,
+        letterSpacing: 0.1,
+      );
+
+  static TextStyle get titleLarge => const TextStyle(
+        fontFamily: fontPrimary,
+        fontFamilyFallback: fontFallbacks,
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        height: standardLineHeight,
+      );
+
   static TextStyle get titleMedium => const TextStyle(
         fontFamily: fontPrimary,
         fontFamilyFallback: fontFallbacks,
         fontSize: 18,
+        fontWeight: FontWeight.w600,
+        height: standardLineHeight,
+      );
+
+  static TextStyle get titleSmall => const TextStyle(
+        fontFamily: fontPrimary,
+        fontFamilyFallback: fontFallbacks,
+        fontSize: 14,
         fontWeight: FontWeight.w600,
         height: standardLineHeight,
       );
@@ -58,6 +83,14 @@ class NepaliTypography {
         height: bodyLineHeight,
       );
 
+  static TextStyle get bodySmall => const TextStyle(
+        fontFamily: fontPrimary,
+        fontFamilyFallback: fontFallbacks,
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        height: bodyLineHeight,
+      );
+
   static TextStyle get labelLarge => const TextStyle(
         fontFamily: fontPrimary,
         fontFamilyFallback: fontFallbacks,
@@ -66,14 +99,36 @@ class NepaliTypography {
         height: standardLineHeight,
       );
 
+  static TextStyle get labelMedium => const TextStyle(
+        fontFamily: fontPrimary,
+        fontFamilyFallback: fontFallbacks,
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+        height: standardLineHeight,
+      );
+
+  static TextStyle get labelSmall => const TextStyle(
+        fontFamily: fontPrimary,
+        fontFamilyFallback: fontFallbacks,
+        fontSize: 11,
+        fontWeight: FontWeight.w600,
+        height: standardLineHeight,
+      );
+
   static TextTheme createTextTheme(Color textColor) {
     return TextTheme(
       displayLarge: displayLarge.copyWith(color: textColor),
       headlineMedium: headlineMedium.copyWith(color: textColor),
+      headlineSmall: headlineSmall.copyWith(color: textColor),
+      titleLarge: titleLarge.copyWith(color: textColor),
       titleMedium: titleMedium.copyWith(color: textColor),
+      titleSmall: titleSmall.copyWith(color: textColor),
       bodyLarge: bodyLarge.copyWith(color: textColor),
       bodyMedium: bodyMedium.copyWith(color: textColor),
+      bodySmall: bodySmall.copyWith(color: textColor),
       labelLarge: labelLarge.copyWith(color: textColor),
+      labelMedium: labelMedium.copyWith(color: textColor),
+      labelSmall: labelSmall.copyWith(color: textColor),
     );
   }
 }

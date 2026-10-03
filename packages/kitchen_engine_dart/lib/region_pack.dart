@@ -231,3 +231,173 @@ class RegionFestival {
     );
   }
 }
+
+class RituSeason {
+  final String id;
+  final String name;
+  final List<String> monthsBS;
+  final List<String> monthsGregorian;
+  final List<String> signatureProduce;
+
+  const RituSeason({
+    required this.id,
+    required this.name,
+    required this.monthsBS,
+    required this.monthsGregorian,
+    required this.signatureProduce,
+  });
+
+  factory RituSeason.fromJson(Map<String, dynamic> json) {
+    return RituSeason(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      monthsBS: (json['monthsBS'] as List<dynamic>).cast<String>(),
+      monthsGregorian: (json['monthsGregorian'] as List<dynamic>).cast<String>(),
+      signatureProduce: (json['signatureProduce'] as List<dynamic>).cast<String>(),
+    );
+  }
+}
+
+class RegionSeasonality {
+  final String regionId;
+  final List<RituSeason> ritus;
+
+  const RegionSeasonality({
+    required this.regionId,
+    required this.ritus,
+  });
+
+  factory RegionSeasonality.fromJson(Map<String, dynamic> json) {
+    return RegionSeasonality(
+      regionId: json['regionId'] as String,
+      ritus: (json['ritus'] as List<dynamic>)
+          .map((r) => RituSeason.fromJson(r as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+}
+
+enum AvailabilityLevel {
+  peak,
+  inSeason,
+  available,
+  limited,
+  outOfSeason;
+
+  static AvailabilityLevel fromString(String? value) {
+    switch (value?.toLowerCase()) {
+      case 'peak':
+        return AvailabilityLevel.peak;
+      case 'in_season':
+      case 'inseason':
+        return AvailabilityLevel.inSeason;
+      case 'available':
+        return AvailabilityLevel.available;
+      case 'limited':
+        return AvailabilityLevel.limited;
+      case 'out_of_season':
+      case 'outofseason':
+      default:
+        return AvailabilityLevel.outOfSeason;
+    }
+  }
+
+  String get labelEn {
+    switch (this) {
+      case AvailabilityLevel.peak:
+        return 'Peak Season';
+      case AvailabilityLevel.inSeason:
+        return 'In Season';
+      case AvailabilityLevel.available:
+        return 'Available';
+      case AvailabilityLevel.limited:
+        return 'Limited';
+      case AvailabilityLevel.outOfSeason:
+        return 'Out of Season';
+    }
+  }
+
+  String get labelNe {
+    switch (this) {
+      case AvailabilityLevel.peak:
+        return 'उत्कृष्ट सिजन (Peak)';
+      case AvailabilityLevel.inSeason:
+        return 'सिजनमा (In Season)';
+      case AvailabilityLevel.available:
+        return 'उपलब्ध (Available)';
+      case AvailabilityLevel.limited:
+        return 'सीमित (Limited)';
+      case AvailabilityLevel.outOfSeason:
+        return 'अफ सिजन (Off-season)';
+    }
+  }
+}
+
+class PreservationSuggestion {
+  final String id;
+  final String titleEn;
+  final String titleNe;
+  final String descriptionEn;
+  final String descriptionNe;
+  final String targetSeason;
+  final List<String> primaryIngredients;
+  final String method;
+
+  const PreservationSuggestion({
+    required this.id,
+    required this.titleEn,
+    required this.titleNe,
+    required this.descriptionEn,
+    required this.descriptionNe,
+    required this.targetSeason,
+    required this.primaryIngredients,
+    required this.method,
+  });
+
+  factory PreservationSuggestion.fromJson(Map<String, dynamic> json) {
+    return PreservationSuggestion(
+      id: json['id'] as String,
+      titleEn: json['titleEn'] as String,
+      titleNe: json['titleNe'] as String,
+      descriptionEn: json['descriptionEn'] as String,
+      descriptionNe: json['descriptionNe'] as String,
+      targetSeason: json['targetSeason'] as String,
+      primaryIngredients: (json['primaryIngredients'] as List<dynamic>).cast<String>(),
+      method: json['method'] as String,
+    );
+  }
+}
+
+class RegionPack {
+  final RegionPackManifest manifest;
+  final RegionSeasonality seasonality;
+  final List<RegionIngredient> ingredients;
+  final List<RegionRecipe> recipes;
+  final List<RegionFestival> festivals;
+  final List<PreservationSuggestion> preservationSuggestions;
+
+  const RegionPack({
+    required this.manifest,
+    required this.seasonality,
+    required this.ingredients,
+    required this.recipes,
+    required this.festivals,
+    this.preservationSuggestions = const [],
+  });
+
+  List<RegionRecipe> getRecipesForIngredient(String ingredientId) {
+    return recipes
+        .where((r) => r.ingredients.any((i) => i.ingredientId == ingredientId))
+        .toList();
+  }
+
+  AvailabilityLevel getIngredientAvailability(String ingredientId, String rituId) {
+    final ing = ingredients.cast<RegionIngredient?>().firstWhere(
+          (i) => i?.id == ingredientId,
+          orElse: () => null,
+        );
+    if (ing == null) return AvailabilityLevel.outOfSeason;
+    final val = ing.availability[rituId];
+    return AvailabilityLevel.fromString(val);
+  }
+}

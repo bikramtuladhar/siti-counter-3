@@ -64,5 +64,46 @@ void main() {
       expect(dashain.nameNe, contains('दसैँ'));
       expect(dashain.keyDishes.isNotEmpty, isTrue);
     });
+
+    test('loads seasonality and constructs RegionPack correctly', () {
+      final seasonFile = File('${packDir.path}/seasonality.json');
+      expect(seasonFile.existsSync(), isTrue);
+
+      final seasonJson = jsonDecode(seasonFile.readAsStringSync()) as Map<String, dynamic>;
+      final seasonality = RegionSeasonality.fromJson(seasonJson);
+      expect(seasonality.ritus.length, equals(6));
+
+      final sharad = seasonality.ritus.firstWhere((r) => r.id == 'sharad');
+      expect(sharad.monthsBS, contains('Ashwin'));
+
+      final manifest = RegionPackManifest.fromJson(
+        jsonDecode(File('${packDir.path}/manifest.json').readAsStringSync()) as Map<String, dynamic>,
+      );
+      final ingredients = (jsonDecode(File('${packDir.path}/ingredients.json').readAsStringSync()) as List)
+          .map((i) => RegionIngredient.fromJson(i as Map<String, dynamic>))
+          .toList();
+      final recipes = (jsonDecode(File('${packDir.path}/recipes.json').readAsStringSync()) as List)
+          .map((r) => RegionRecipe.fromJson(r as Map<String, dynamic>))
+          .toList();
+      final festivals = (jsonDecode(File('${packDir.path}/festivals.json').readAsStringSync()) as List)
+          .map((f) => RegionFestival.fromJson(f as Map<String, dynamic>))
+          .toList();
+
+      final pack = RegionPack(
+        manifest: manifest,
+        seasonality: seasonality,
+        ingredients: ingredients,
+        recipes: recipes,
+        festivals: festivals,
+      );
+
+      final potatoRecipes = pack.getRecipesForIngredient('potato');
+      expect(potatoRecipes.isNotEmpty, isTrue);
+
+      final potatoSharad = pack.getIngredientAvailability('potato', 'sharad');
+      expect(potatoSharad, equals(AvailabilityLevel.peak));
+      expect(potatoSharad.labelEn, equals('Peak Season'));
+      expect(potatoSharad.labelNe, contains('उत्कृष्ट सिजन'));
+    });
   });
 }
