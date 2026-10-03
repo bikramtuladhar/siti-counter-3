@@ -276,26 +276,36 @@ Key domain entities:
 
 ## 23. Mobile app design
 
-- React Native + Expo (Hermes, New Architecture).
-- Background whistle detection via Android Foreground Service and iOS Background Audio / Live Activities.
-- Offline-first local SQLite with Drizzle ORM.
+- **Framework**: Flutter (Dart 3.x) compiling to native ARM AOT for iOS & Android.
+  - Selected for maximum performance and low memory footprint on entry-level Android devices (2 GB RAM).
+  - High-performance 60 fps custom canvas widgets for the signature Siti Counter dial and steam indicators.
+- **Background Cooking**:
+  - Android: `flutter_foreground_task` foreground service with persistent notification and controls (+1, -1, Stop).
+  - iOS: Background audio session with native Swift ActivityKit integration for Live Activities & Dynamic Island.
+- **Offline Storage**: Local SQLite powered by **Drift** (reactive, type-safe queries and client-side outbox queue).
+- **Acoustic Engine**: On-device LiteRT (TensorFlow Lite) on Android and Core ML on iOS for real-time whistle classification.
 
-## 24. Development stack & Monorepo
+## 24. Development stack & Multi-Platform Architecture
 
-- Monorepo: `pnpm` workspaces + `Turborepo`.
-- Shared TypeScript engine: `packages/kitchen-engine`.
-- Shared DB schema: `packages/db`.
-- Shared API contracts: `packages/contracts` (Zod -> OpenAPI 3.1).
-- Native audio module: Kotlin & Swift via Expo Modules with LiteRT / Core ML.
+- **Mobile (`apps/mobile`)**: Flutter (iOS & Android) with Riverpod and Drift.
+- **Web (`apps/web`)**: Vue 3 + Vite + TypeScript + Pinia + TailwindCSS (instant initial load, lightweight PWA & kitchen tablet display).
+- **Backend (`services/api`)**: Cloudflare Workers with Hono (TypeScript), Cloudflare D1 (Serverless SQLite + FTS5), and Durable Objects (WebSockets).
+- **Core Domain Engine**:
+  - `packages/kitchen_engine_dart`: Pure Dart domain engine for mobile offline execution (units, scaling, altitude math, allergen rules, auto-planning).
+  - `packages/kitchen_engine_ts`: Pure TypeScript domain engine shared between Vue 3 web and Cloudflare Workers.
+- **Shared Content**:
+  - `packages/region-packs`: Versioned JSON content bundles (Nepal Bagmati launch pack).
 
 ## 25. Responsive design system
 
-- W3C Design Tokens -> Style Dictionary -> React Native, Web, APL, Swift/Kotlin constants.
-- Storybook component library.
+- W3C Design Tokens JSON compiled via Style Dictionary into:
+  - Dart theme classes and constants for Flutter (`apps/mobile`).
+  - CSS variables and Tailwind theme extensions for Vue 3 (`apps/web`).
+  - Alexa Presentation Language (APL) styles and Swift/Kotlin constants.
 
 ## 26. Monetization & Regional commerce
 
-- Free core loop; low-cost annual household subscription (purchasing power parity: NPR 999, ₹499, $14.99).
+- Free core loop; low-cost annual household subscription (purchasing power parity: NPR 999, ₹499, USD 14.99).
 - Regional shopping handoffs: deep links, Kalimati daily market prices, partner carts.
 
 ## 27. Prioritization roadmap
@@ -308,14 +318,21 @@ Key domain entities:
 ## 28. MVP scope & timeline
 
 - 24-week plan to open beta with 4 gates:
-  - Week 4 Gate: Foundations & Whistle Detection Spike (>=97% accuracy).
-  - Week 12 Gate: P0 Core Loop & Nepal Beta complete on Android & Web.
+  - Week 4 Gate: Foundations & Whistle Detection Spike (>=97% accuracy on Flutter).
+  - Week 12 Gate: P0 Core Loop & Nepal Beta complete on Android (Flutter) & Web (Vue 3).
   - Week 16 Gate: Closed Beta (>=99.5% crash-free, >=40% weekly cooking rate).
   - Week 24 Gate: Open Beta launch.
 
+### 28.1 Team Structure
+- 1 Product & Design Lead (spec, design tokens, research).
+- 1 Flutter Mobile Engineer (Flutter, Riverpod, Drift, background services).
+- 1 Full-Stack Engineer (Vue 3, Cloudflare Workers, D1 SQLite).
+- 1 Mobile Audio / ML Engineer, part-time (acoustic classifier training, LiteRT/CoreML).
+- 1 Content & Nutrition Lead, part-time (recipes, ritus, allergen mapping).
+
 ## 29. Risks and open questions
 
-- Whistle detection accuracy in noisy environments.
-- iOS background listening limitations.
-- Low-end Android 2 GB RAM performance.
-- Region pack expert review & verification pipeline.
+- Whistle detection accuracy in noisy environments (acoustics spike in week 4).
+- iOS background listening & ActivityKit lifecycle constraints.
+- Low-end Android 2 GB RAM performance (Flutter AOT benchmarked in week 4 gate).
+- Region pack expert review & verification pipeline for Nepal launch.
