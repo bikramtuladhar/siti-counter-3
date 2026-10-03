@@ -17,6 +17,11 @@ build/
 *.mobileprovision
 *.orig.*
 
+# Dart / Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+
 # Environment & secrets
 .env
 .env.local
