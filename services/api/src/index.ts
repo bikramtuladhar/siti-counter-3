@@ -1,8 +1,9 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
+import { syncRouter } from './routes/sync.js'
 
-const app = new Hono()
+export const app = new Hono()
 
 app.use('*', logger())
 app.use('*', cors())
@@ -17,15 +18,12 @@ app.get('/health', (c) => {
   })
 })
 
-// Delta sync endpoint skeleton (Section 21.3)
-app.post('/v1/sync', async (c) => {
-  const body = await c.req.json().catch(() => ({}))
-  return c.json({
-    syncToken: `sync_${Date.now()}`,
-    applied: 0,
-    conflicts: [],
-    changes: []
-  })
+// Delta sync endpoint (/v1/sync)
+app.route('/', syncRouter)
+
+// 404 fallback
+app.notFound((c) => {
+  return c.json({ error: 'NOT_FOUND', message: 'Route not found' }, 404)
 })
 
 export default app
