@@ -7,6 +7,7 @@ import 'package:kitchen_engine/region_pack.dart';
 import '../data/region_pack_repository.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
+import 'active_cooking_session_screen.dart';
 
 enum CooktopType {
   lpgGas,
@@ -1428,14 +1429,14 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
         if (widget.onStartCooking != null) {
           widget.onStartCooking!(widget.recipe, _effectiveWhistles, _selectedCooktop);
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                _isNepali
-                    ? 'सिट्ठी काउन्टर सुरु भयो: $_effectiveWhistles सिट्ठी'
-                    : 'Started Siti Counter for $_effectiveWhistles whistles',
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ActiveCookingSessionScreen(
+                recipe: widget.recipe,
+                targetWhistles: _effectiveWhistles,
+                cooktop: _selectedCooktop,
+                currentLanguage: widget.currentLanguage,
               ),
-              behavior: SnackBarBehavior.floating,
             ),
           );
         }

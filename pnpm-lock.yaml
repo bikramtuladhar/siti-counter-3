@@ -17,6 +17,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@siti-counter/kitchen-engine':
+        specifier: workspace:*
+        version: link:../../packages/kitchen_engine_ts
       vue:
         specifier: ^3.5.13
         version: 3.5.43(typescript@5.9.3)

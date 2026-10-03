@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kitchen_engine/nepali_calendar.dart';
 import 'onboarding/onboarding_coordinator.dart';
 import 'onboarding/onboarding_state.dart';
+import 'screens/active_cooking_session_screen.dart';
 import 'screens/seasonal_kitchen_screen.dart';
 import 'theme/tokens.dart';
 import 'theme/nepali_typography.dart';
@@ -258,6 +259,37 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
                 ),
               ),
               const SizedBox(height: 20),
+
+              // Full-Screen Active Session Button
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ActiveCookingSessionScreen(
+                        targetWhistles: 4,
+                        currentLanguage: widget.preferences.language,
+                        initialWhistles: _whistleCount,
+                      ),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.fullscreen_rounded, size: 22),
+                label: Text(
+                  _isNepali ? 'सक्रिय भान्सा मोड खोल्नुहोस् (Active Mode)' : 'Open Full-Screen Kitchen Mode',
+                  style: NepaliTypography.titleSmall.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: SitiColors.terracotta,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size.fromHeight(50),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  elevation: 1,
+                ),
+              ),
+              const SizedBox(height: 12),
 
               // Reset Button
               Center(

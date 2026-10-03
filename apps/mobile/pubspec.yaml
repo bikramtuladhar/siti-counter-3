@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   kitchen_engine:
     path: ../../packages/kitchen_engine_dart
+  wakelock_plus: ^1.8.1
 
 dev_dependencies:
   flutter_test:
