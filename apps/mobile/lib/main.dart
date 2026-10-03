@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kitchen_engine/nepali_calendar.dart';
 import 'onboarding/onboarding_coordinator.dart';
 import 'onboarding/onboarding_state.dart';
+import 'planner/planner_repository.dart';
+import 'planner/weekly_planner_screen.dart';
 import 'screens/active_cooking_session_screen.dart';
 import 'screens/seasonal_kitchen_screen.dart';
 import 'theme/tokens.dart';
@@ -59,11 +61,13 @@ class _SitiCounterAppState extends State<SitiCounterApp> {
 class KitchenHomeScreen extends StatefulWidget {
   final OnboardingPreferences preferences;
   final VoidCallback onResetOnboarding;
+  final WeeklyPlannerRepository? plannerRepository;
 
   const KitchenHomeScreen({
     super.key,
     required this.preferences,
     required this.onResetOnboarding,
+    this.plannerRepository,
   });
 
   @override
@@ -74,8 +78,30 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
   int _currentTabIndex = 0;
   int _whistleCount = 0;
   bool _isListening = false;
+  WeeklyPlannerRepository? _plannerRepo;
 
   bool get _isNepali => widget.preferences.language == 'ne';
+
+  @override
+  void initState() {
+    super.initState();
+    _plannerRepo = widget.plannerRepository;
+  }
+
+  /// Opens the local planner database lazily, the first time the Planner tab is shown.
+  Future<void> _ensurePlannerRepo() async {
+    if (_plannerRepo != null) return;
+    try {
+      final repo = await WeeklyPlannerRepository.openOnDisk();
+      if (mounted) {
+        setState(() {
+          _plannerRepo = repo;
+        });
+      }
+    } catch (_) {
+      // Storage unavailable: planner tab keeps showing its loading state.
+    }
+  }
 
   void _incrementWhistle() {
     setState(() {
@@ -100,6 +126,18 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
   @override
   Widget build(BuildContext context) {
     if (_currentTabIndex == 1) {
+      return Scaffold(
+        body: _plannerRepo != null
+            ? WeeklyPlannerScreen(
+                repository: _plannerRepo!,
+                currentLanguage: widget.preferences.language,
+              )
+            : const Center(child: CircularProgressIndicator()),
+        bottomNavigationBar: _buildBottomNav(),
+      );
+    }
+
+    if (_currentTabIndex == 2) {
       return Scaffold(
         body: SeasonalKitchenScreen(
           currentLanguage: widget.preferences.language,
@@ -315,12 +353,20 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
         setState(() {
           _currentTabIndex = index;
         });
+        if (index == 1) {
+          _ensurePlannerRepo();
+        }
       },
       destinations: [
         NavigationDestination(
           icon: const Icon(Icons.soup_kitchen_outlined),
           selectedIcon: const Icon(Icons.soup_kitchen_rounded),
           label: _isNepali ? 'भान्सा' : 'Kitchen',
+        ),
+        NavigationDestination(
+          icon: const Icon(Icons.calendar_month_outlined),
+          selectedIcon: const Icon(Icons.calendar_month_rounded),
+          label: _isNepali ? 'योजना' : 'Planner',
         ),
         NavigationDestination(
           icon: const Icon(Icons.explore_outlined),
