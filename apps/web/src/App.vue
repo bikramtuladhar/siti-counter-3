@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { toDevanagariDigits } from '@siti-counter/kitchen-engine'
 import CastReceiver from './components/CastReceiver.vue'
+import WebCheckout from './components/WebCheckout.vue'
 
 type Cooktop = 'lpgGas' | 'induction' | 'infrared' | 'electricCoil'
 
@@ -222,6 +223,15 @@ async function releaseWakeLock() {
 }
 
 const isCastMode = ref(false)
+const isCheckoutOpen = ref(false)
+const householdId = ref('hh_web_default')
+const isPremiumActive = ref(false)
+
+function onSubscriptionUpdated(entitlement: Record<string, unknown>) {
+  if (entitlement.tier === 'householdAnnual') {
+    isPremiumActive.value = true
+  }
+}
 
 onMounted(() => {
   requestWakeLock()
@@ -230,8 +240,19 @@ onMounted(() => {
     if (params.get('receiver') === 'true' || params.get('receiver') === '1' || params.get('mode') === 'cast') {
       isCastMode.value = true
     }
+    if (params.get('gift') || params.get('checkout') === 'true') {
+      isCheckoutOpen.value = true
+    }
+    const cached = localStorage.getItem(`siti_entitlement_${householdId.value}`)
+    if (cached) {
+      const parsed = JSON.parse(cached)
+      if (parsed.tier === 'householdAnnual') {
+        isPremiumActive.value = true
+      }
+    }
   } catch (_) {}
 })
+
 
 onUnmounted(() => {
   stopAlarm()
@@ -277,6 +298,15 @@ watch(effectiveTarget, (newTarget) => {
         <!-- Audio Mute Button -->
         <button class="icon-btn" @click="toggleMute" :title="isMuted ? 'Unmute' : 'Mute'">
           {{ isMuted ? '🔇' : '🔔' }}
+        </button>
+
+        <!-- Premium Subscription / Gifting Button -->
+        <button
+          class="premium-toggle-btn"
+          @click="isCheckoutOpen = true"
+          :title="isNepali ? 'प्रिमियम सदस्यता / उपहार' : 'Premium Subscription / Family Gift'"
+        >
+          {{ isPremiumActive ? '⭐️ ' + (isNepali ? 'प्रिमियम सक्रिय' : 'Premium Active') : '⭐️ ' + (isNepali ? 'प्रिमियम' : 'Go Premium') }}
         </button>
 
         <!-- Language Switcher -->
@@ -429,11 +459,37 @@ watch(effectiveTarget, (newTarget) => {
         </div>
       </section>
     </main>
+
+    <!-- Web Checkout & Entitlements Modal -->
+    <WebCheckout
+      v-if="isCheckoutOpen"
+      :household-id="householdId"
+      :language="language"
+      @close="isCheckoutOpen = false"
+      @subscription-updated="onSubscriptionUpdated"
+    />
   </div>
 </template>
 
 <style scoped>
+.premium-toggle-btn {
+  background-color: #FFF3E0;
+  color: #E65100;
+  border: 1px solid #FFE0B2;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: var(--siti-radius-md);
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.premium-toggle-btn:hover {
+  background-color: #FFE0B2;
+}
+
 .kitchen-mode-container {
+
   max-width: 960px;
   margin: 0 auto;
   padding: 1.2rem;

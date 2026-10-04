@@ -6,6 +6,7 @@ import { authRouter } from './routes/auth.js'
 import { coCookingRouter } from './routes/co_cooking.js'
 import { aiRouter } from './routes/ai.js'
 import { alexaRouter } from './routes/alexa.js'
+import { checkoutRouter } from './routes/checkout.js'
 
 export const app = new Hono()
 
@@ -36,6 +37,10 @@ app.route('/', aiRouter)
 
 // Smart Display Alexa Skill endpoint (/v1/alexa)
 app.route('/', alexaRouter)
+
+// Web Checkout & Entitlements endpoints (/v1/checkout/*, /v1/subscriptions/*, /v1/entitlements/*)
+app.route('/', checkoutRouter)
+
 
 // 404 fallback
 app.notFound((c) => {

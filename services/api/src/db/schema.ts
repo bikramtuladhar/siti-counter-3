@@ -50,3 +50,53 @@ export const syncEntries = sqliteTable('sync_entries', {
   deleted: integer('deleted', { mode: 'boolean' }).notNull().default(false),
   timestamp: integer('timestamp').notNull() // Unix epoch ms
 })
+
+export const subscriptions = sqliteTable('subscriptions', {
+  id: text('id').primaryKey(),
+  householdId: text('household_id').notNull(),
+  tier: text('tier', { enum: ['free', 'householdAnnual'] }).notNull().default('householdAnnual'),
+  status: text('status', { enum: ['active', 'past_due', 'cancelled', 'expired'] }).notNull().default('active'),
+  provider: text('provider', { enum: ['khalti', 'esewa', 'stripe', 'in_app', 'gift'] }).notNull(),
+  transactionId: text('transaction_id'),
+  currency: text('currency').notNull().default('NPR'),
+  amount: integer('amount').notNull(),
+  isGift: integer('is_gift', { mode: 'boolean' }).notNull().default(false),
+  purchaserEmail: text('purchaser_email'),
+  recipientEmail: text('recipient_email'),
+  recipientName: text('recipient_name'),
+  giftMessage: text('gift_message'),
+  giftCode: text('gift_code'),
+  currentPeriodStart: integer('current_period_start', { mode: 'timestamp' }).notNull(),
+  currentPeriodEnd: integer('current_period_end', { mode: 'timestamp' }).notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+})
+
+export const entitlements = sqliteTable('entitlements', {
+  id: text('id').primaryKey(),
+  householdId: text('household_id').notNull(),
+  tier: text('tier', { enum: ['free', 'householdAnnual'] }).notNull().default('free'),
+  status: text('status', { enum: ['active', 'expired'] }).notNull().default('active'),
+  features: text('features', { mode: 'json' }).$type<string[]>().default([]),
+  offlineToken: text('offline_token'),
+  signature: text('signature'),
+  expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+})
+
+export const giftCodes = sqliteTable('gift_codes', {
+  code: text('code').primaryKey(), // GIFT-SITI-XXXX-XXXX
+  purchaserHouseholdId: text('purchaser_household_id'),
+  purchaserEmail: text('purchaser_email'),
+  recipientEmail: text('recipient_email'),
+  recipientName: text('recipient_name'),
+  giftMessage: text('gift_message'),
+  subscriptionId: text('subscription_id').notNull(),
+  status: text('status', { enum: ['unredeemed', 'redeemed', 'expired'] }).notNull().default('unredeemed'),
+  redeemedByHouseholdId: text('redeemed_by_household_id'),
+  redeemedAt: integer('redeemed_at', { mode: 'timestamp' }),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+  expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
+})
+
