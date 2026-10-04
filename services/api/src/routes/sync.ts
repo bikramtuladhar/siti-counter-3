@@ -1,12 +1,14 @@
 import { Hono } from 'hono'
+import { UuidV7, SyncChange, SyncConflictResolver } from '@siti-counter/kitchen-engine'
 
 export interface ClientSyncChange {
   id: string
-  entityType: 'household' | 'member' | 'recipe' | 'meal_plan' | 'grocery_item' | 'batch' | 'consumption'
+  entityType: 'household' | 'member' | 'recipe' | 'meal_plan' | 'grocery_item' | 'batch' | 'consumption' | 'pantry_item'
   entityId: string
   version: number
   payload: Record<string, unknown>
   deleted?: boolean
+  createdAt?: number
 }
 
 export interface SyncRequest {
@@ -15,18 +17,66 @@ export interface SyncRequest {
   changes: ClientSyncChange[]
 }
 
+export interface SyncConflictInfo {
+  id: string
+  entityId: string
+  entityType: string
+  reason: string
+  message: string
+  requiresPrompt?: boolean
+  safeMergedPayload?: Record<string, unknown>
+}
+
 export interface SyncResponse {
   syncToken: string
   applied: number
   serverTime: string
-  conflicts: Array<{ id: string; reason: string }>
+  conflicts: SyncConflictInfo[]
   remoteChanges: ClientSyncChange[]
+}
+
+// In-memory sync log storage for fast serverless runtime / tests
+// In production D1, this is backed by the sync_entries table
+const householdSyncStore = new Map<string, Map<string, ClientSyncChange & { serverTimestamp: number }>>()
+
+export function resetSyncStore(): void {
+  householdSyncStore.clear()
 }
 
 export const syncRouter = new Hono()
 
+const MAX_PAYLOAD_BYTES = 30 * 1024 // 30 KB budget per Section 21.3
+
 syncRouter.post('/v1/sync', async (c) => {
-  const body = (await c.req.json().catch(() => null)) as SyncRequest | null
+  // Low-bandwidth payload size validation (<30KB)
+  const contentLength = c.req.header('content-length')
+  if (contentLength && parseInt(contentLength, 10) > MAX_PAYLOAD_BYTES) {
+    return c.json(
+      {
+        error: 'PAYLOAD_TOO_LARGE',
+        message: `Sync payload exceeds ${MAX_PAYLOAD_BYTES / 1024}KB low-bandwidth budget.`
+      },
+      413
+    )
+  }
+
+  const rawBody = await c.req.text().catch(() => null)
+  if (!rawBody || rawBody.length > MAX_PAYLOAD_BYTES) {
+    return c.json(
+      {
+        error: 'PAYLOAD_TOO_LARGE',
+        message: `Sync payload exceeds ${MAX_PAYLOAD_BYTES / 1024}KB low-bandwidth budget.`
+      },
+      413
+    )
+  }
+
+  let body: SyncRequest
+  try {
+    body = JSON.parse(rawBody) as SyncRequest
+  } catch {
+    return c.json({ error: 'INVALID_JSON', message: 'Malformed JSON payload' }, 400)
+  }
 
   if (!body || !body.householdId) {
     return c.json(
@@ -42,13 +92,121 @@ syncRouter.post('/v1/sync', async (c) => {
   const serverNow = Date.now()
   const nextSyncToken = `st_${serverNow}`
 
-  // In production, changes are persisted into D1 sync_entries
-  // and remote changes newer than lastSyncToken are fetched.
+  // Ensure household map exists in store
+  if (!householdSyncStore.has(householdId)) {
+    householdSyncStore.set(householdId, new Map())
+  }
+  const entityMap = householdSyncStore.get(householdId)!
+
+  const appliedChanges: ClientSyncChange[] = []
+  const conflicts: SyncConflictInfo[] = []
+  const uploadedIds = new Set<string>()
+
+  for (const clientChange of changes) {
+    uploadedIds.add(clientChange.id)
+
+    // Validate UUIDv7
+    if (!UuidV7.isValid(clientChange.id)) {
+      conflicts.push({
+        id: clientChange.id,
+        entityId: clientChange.entityId,
+        entityType: clientChange.entityType,
+        reason: 'INVALID_UUIDV7',
+        message: `Change ID '${clientChange.id}' is not a valid RFC 9562 UUIDv7.`
+      })
+      continue
+    }
+
+    const entityKey = `${clientChange.entityType}:${clientChange.entityId}`
+    const existing = entityMap.get(entityKey)
+
+    if (existing) {
+      // Convert to engine SyncChange models for resolution
+      const localEngineChange: SyncChange = {
+        id: existing.id,
+        householdId,
+        entityType: existing.entityType,
+        entityId: existing.entityId,
+        version: existing.version,
+        payload: existing.payload,
+        deleted: existing.deleted,
+        createdAt: existing.createdAt ?? existing.serverTimestamp
+      }
+
+      const clientEngineChange: SyncChange = {
+        id: clientChange.id,
+        householdId,
+        entityType: clientChange.entityType,
+        entityId: clientChange.entityId,
+        version: clientChange.version,
+        payload: clientChange.payload,
+        deleted: clientChange.deleted,
+        createdAt: clientChange.createdAt ?? UuidV7.getTimestampMs(clientChange.id) ?? serverNow
+      }
+
+      const resolution = SyncConflictResolver.resolve({
+        local: localEngineChange,
+        remote: clientEngineChange
+      })
+
+      if (resolution.action === 'promptUser') {
+        conflicts.push({
+          id: clientChange.id,
+          entityId: clientChange.entityId,
+          entityType: clientChange.entityType,
+          reason: resolution.conflict?.reason ?? 'SAFETY_CONFLICT',
+          message: 'Allergy modification requires explicit user confirmation.',
+          requiresPrompt: true,
+          safeMergedPayload: resolution.effectivePayload
+        })
+        continue
+      } else if (resolution.action === 'keepLocal') {
+        conflicts.push({
+          id: clientChange.id,
+          entityId: clientChange.entityId,
+          entityType: clientChange.entityType,
+          reason: 'OUTDATED_VERSION',
+          message: `Server already holds a newer or equal version (${existing.version}) of this entity.`
+        })
+        continue
+      }
+    }
+
+    // Apply change to store
+    entityMap.set(entityKey, {
+      ...clientChange,
+      createdAt: clientChange.createdAt ?? UuidV7.getTimestampMs(clientChange.id) ?? serverNow,
+      serverTimestamp: serverNow
+    })
+    appliedChanges.push(clientChange)
+  }
+
+  // Parse lastSyncToken to find remote changes since then
+  let lastSyncTime = 0
+  if (lastSyncToken && lastSyncToken.startsWith('st_')) {
+    lastSyncTime = parseInt(lastSyncToken.replace('st_', ''), 10) || 0
+  }
+
+  const remoteChanges: ClientSyncChange[] = []
+  for (const stored of entityMap.values()) {
+    if (stored.serverTimestamp > lastSyncTime && !uploadedIds.has(stored.id)) {
+      remoteChanges.push({
+        id: stored.id,
+        entityType: stored.entityType,
+        entityId: stored.entityId,
+        version: stored.version,
+        payload: stored.payload,
+        deleted: stored.deleted,
+        createdAt: stored.createdAt
+      })
+    }
+  }
+
   return c.json<SyncResponse>({
     syncToken: nextSyncToken,
-    applied: changes.length,
+    applied: appliedChanges.length,
     serverTime: new Date(serverNow).toISOString(),
-    conflicts: [],
-    remoteChanges: []
+    conflicts,
+    remoteChanges
   })
 })
