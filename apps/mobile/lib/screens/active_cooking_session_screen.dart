@@ -4,10 +4,13 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kitchen_engine/kitchen_engine.dart';
 import 'package:kitchen_engine/nepali_calendar.dart';
 import 'package:kitchen_engine/region_pack.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import '../audio/background_cooking_controller.dart';
+import '../audio/kitchen_voice_controller.dart';
+import '../widgets/kitchen_voice_bar.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
 import '../widgets/microphone_privacy_primer_dialog.dart';
@@ -147,6 +150,7 @@ class ActiveCookingSessionScreen extends StatefulWidget {
   final String currentLanguage;
   final int initialWhistles;
   final VoidCallback? onSessionComplete;
+  final KitchenVoiceController? voiceController;
 
   const ActiveCookingSessionScreen({
     super.key,
@@ -156,6 +160,7 @@ class ActiveCookingSessionScreen extends StatefulWidget {
     this.currentLanguage = 'ne',
     this.initialWhistles = 0,
     this.onSessionComplete,
+    this.voiceController,
   });
 
   @override
@@ -174,6 +179,10 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
   Timer? _alarmPulseTimer;
   late AnimationController _pulseController;
   late BackgroundCookingController _backgroundController;
+  late KitchenVoiceController _voiceController;
+  Timer? _voiceCountdownTimer;
+  int _voiceTimerSecondsRemaining = 0;
+  bool _isVoiceTimerRunning = false;
 
   bool get _isNepali => widget.currentLanguage == 'ne';
 
@@ -220,15 +229,134 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
       },
     );
 
+    _voiceController = widget.voiceController ??
+        KitchenVoiceController(defaultLanguage: widget.currentLanguage);
+    _voiceController.lastCommandNotifier.addListener(_onVoiceCommandChanged);
+
     // Keep screen awake during active cooking session
     KitchenWakeLock.enable();
   }
 
+  void _onVoiceCommandChanged() {
+    final cmd = _voiceController.lastCommand;
+    if (cmd == null || !mounted) return;
+    switch (cmd.intent) {
+      case KitchenVoiceIntent.nextStep:
+        _nextStep();
+        break;
+      case KitchenVoiceIntent.previousStep:
+        _prevStep();
+        break;
+      case KitchenVoiceIntent.repeatStep:
+        final step = widget.recipe != null &&
+                _currentStepIndex < widget.recipe!.steps.length
+            ? widget.recipe!.steps[_currentStepIndex]
+            : null;
+        final stepText = step != null
+            ? (_isNepali ? step.instructionNe : step.instructionEn)
+            : '';
+        if (mounted && stepText.isNotEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(stepText),
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
+        break;
+      case KitchenVoiceIntent.setTimer:
+        if (cmd.timerMinutes != null) {
+          _startVoiceTimer(cmd.timerMinutes!);
+        }
+        break;
+      case KitchenVoiceIntent.pauseTimer:
+        _pauseVoiceTimer();
+        break;
+      case KitchenVoiceIntent.resumeTimer:
+        _resumeVoiceTimer();
+        break;
+      case KitchenVoiceIntent.addGrocery:
+        if (cmd.groceryItem != null && mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                _isNepali
+                    ? 'बजार सूचीमा "${cmd.groceryItem}" थपियो'
+                    : 'Added "${cmd.groceryItem}" to grocery list',
+              ),
+              backgroundColor: SitiColors.terracotta,
+            ),
+          );
+        }
+        break;
+      case KitchenVoiceIntent.queryWhistles:
+        final remaining =
+            (_targetWhistles - _currentWhistles).clamp(0, _targetWhistles);
+        final statusMsg = _isNepali
+            ? 'हालसम्म $_currentWhistles सिट्ठी भयो, $remaining सिट्ठी बाँकी छ।'
+            : '$_currentWhistles whistles counted, $remaining remaining.';
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(statusMsg),
+              backgroundColor: SitiColors.terracotta,
+            ),
+          );
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  void _startVoiceTimer(int minutes) {
+    _voiceCountdownTimer?.cancel();
+    setState(() {
+      _voiceTimerSecondsRemaining = minutes * 60;
+      _isVoiceTimerRunning = true;
+    });
+    _voiceCountdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+      if (_voiceTimerSecondsRemaining > 0) {
+        setState(() {
+          _voiceTimerSecondsRemaining--;
+        });
+      } else {
+        timer.cancel();
+        setState(() {
+          _isVoiceTimerRunning = false;
+        });
+        _triggerAlarm();
+      }
+    });
+  }
+
+  void _pauseVoiceTimer() {
+    _voiceCountdownTimer?.cancel();
+    setState(() {
+      _isVoiceTimerRunning = false;
+    });
+  }
+
+  void _resumeVoiceTimer() {
+    if (_voiceTimerSecondsRemaining > 0 && !_isVoiceTimerRunning) {
+      _startVoiceTimer((_voiceTimerSecondsRemaining / 60).ceil());
+    }
+  }
+
   @override
   void dispose() {
+    _voiceController.lastCommandNotifier.removeListener(_onVoiceCommandChanged);
     _alarmPulseTimer?.cancel();
+    _voiceCountdownTimer?.cancel();
     _pulseController.dispose();
     _backgroundController.dispose();
+    if (widget.voiceController == null) {
+      _voiceController.dispose();
+    }
     KitchenWakeLock.disable();
     super.dispose();
   }
@@ -428,6 +556,12 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
                 const SizedBox(height: 16),
               ],
 
+              // Voice Timer Card (if set via voice)
+              if (_voiceTimerSecondsRemaining > 0) ...[
+                _buildVoiceTimerCard(),
+                const SizedBox(height: 12),
+              ],
+
               // Acoustic vs Manual Mode Toggle Banner with Privacy Primer Link
               _buildListeningModePill(),
               const SizedBox(height: 12),
@@ -450,6 +584,79 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: KitchenVoiceBar(
+        controller: _voiceController,
+        currentLanguage: widget.currentLanguage,
+      ),
+    );
+  }
+
+  Widget _buildVoiceTimerCard() {
+    final mins = _voiceTimerSecondsRemaining ~/ 60;
+    final secs = _voiceTimerSecondsRemaining % 60;
+    final formattedTime =
+        '${mins.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.amber.shade50,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.amber.shade400, width: 1.5),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.timer_rounded, color: Colors.amber.shade900, size: 24),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _isNepali ? 'सक्रिय टाइमर' : 'Active Kitchen Timer',
+                  style: NepaliTypography.labelSmall.copyWith(
+                    color: Colors.amber.shade900,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  formattedTime,
+                  style: NepaliTypography.titleLarge.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: Colors.amber.shade900,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: Icon(
+              _isVoiceTimerRunning
+                  ? Icons.pause_circle_filled_rounded
+                  : Icons.play_circle_filled_rounded,
+              color: Colors.amber.shade900,
+              size: 32,
+            ),
+            onPressed: () {
+              if (_isVoiceTimerRunning) {
+                _pauseVoiceTimer();
+              } else {
+                _resumeVoiceTimer();
+              }
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.close_rounded, size: 20),
+            color: Colors.amber.shade800,
+            onPressed: () {
+              _voiceCountdownTimer?.cancel();
+              setState(() {
+                _voiceTimerSecondsRemaining = 0;
+                _isVoiceTimerRunning = false;
+              });
+            },
+          ),
+        ],
       ),
     );
   }
