@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { toDevanagariDigits } from '@siti-counter/kitchen-engine'
+import CastReceiver from './components/CastReceiver.vue'
 
 type Cooktop = 'lpgGas' | 'induction' | 'infrared' | 'electricCoil'
 
@@ -220,8 +221,16 @@ async function releaseWakeLock() {
   isWakeLockActive.value = false
 }
 
+const isCastMode = ref(false)
+
 onMounted(() => {
   requestWakeLock()
+  try {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('receiver') === 'true' || params.get('receiver') === '1' || params.get('mode') === 'cast') {
+      isCastMode.value = true
+    }
+  } catch (_) {}
 })
 
 onUnmounted(() => {
@@ -239,7 +248,8 @@ watch(effectiveTarget, (newTarget) => {
 </script>
 
 <template>
-  <div :class="['kitchen-mode-container', { 'alarm-mode': isAlarmActive }]">
+  <CastReceiver v-if="isCastMode" />
+  <div v-else :class="['kitchen-mode-container', { 'alarm-mode': isAlarmActive }]">
     <!-- Header -->
     <header class="app-header">
       <div class="brand">
@@ -250,6 +260,15 @@ watch(effectiveTarget, (newTarget) => {
       </div>
 
       <div class="header-actions">
+        <!-- Smart Display / Nest Hub Cast Mode Toggle -->
+        <button
+          class="icon-btn"
+          @click="isCastMode = true"
+          :title="isNepali ? 'नेस्ट हब / स्मार्ट डिस्प्ले मोड' : 'Nest Hub / Cast Display Mode'"
+        >
+          📺
+        </button>
+
         <!-- Wake Lock Status -->
         <span class="badge wake-badge" :title="isWakeLockActive ? 'Screen kept awake' : 'Wake lock inactive'">
           ⚡ {{ isNepali ? (isWakeLockActive ? 'स्क्रिन अन' : 'स्ट्यान्डबाइ') : (isWakeLockActive ? 'Screen Awake' : 'Standby') }}

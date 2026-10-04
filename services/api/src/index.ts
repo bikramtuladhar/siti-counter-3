@@ -5,6 +5,7 @@ import { syncRouter } from './routes/sync.js'
 import { authRouter } from './routes/auth.js'
 import { coCookingRouter } from './routes/co_cooking.js'
 import { aiRouter } from './routes/ai.js'
+import { alexaRouter } from './routes/alexa.js'
 
 export const app = new Hono()
 
@@ -32,6 +33,9 @@ app.route('/', coCookingRouter)
 
 // AI Assistant endpoint (/v1/ai/assistant)
 app.route('/', aiRouter)
+
+// Smart Display Alexa Skill endpoint (/v1/alexa)
+app.route('/', alexaRouter)
 
 // 404 fallback
 app.notFound((c) => {
