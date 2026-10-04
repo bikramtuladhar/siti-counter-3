@@ -51,6 +51,15 @@ class WeeklyPlannerRepository {
       )
     ''');
 
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS pantry_items (
+        ingredient_id TEXT PRIMARY KEY,
+        quantity_grams REAL NOT NULL DEFAULT 0,
+        unit TEXT NOT NULL DEFAULT 'g',
+        updated_at TEXT NOT NULL
+      )
+    ''');
+
     // Seed default Nepali meal rhythm if empty
     final existingSlots = await db.query('meal_rhythm_slots');
     if (existingSlots.isEmpty) {
@@ -182,6 +191,49 @@ class WeeklyPlannerRepository {
       where: 'id = ?',
       whereArgs: [leftoverId],
     );
+  }
+
+  // --- Pantry Items ---
+
+  /// Retrieves all pantry items mapped from ingredientId to quantity in grams.
+  Future<Map<String, double>> getPantryItems() async {
+    final rows = await _db.query('pantry_items');
+    final map = <String, double>{};
+    for (final row in rows) {
+      final id = row['ingredient_id'] as String;
+      final grams = (row['quantity_grams'] as num).toDouble();
+      map[id] = grams;
+    }
+    return map;
+  }
+
+  /// Sets or updates a pantry item's quantity in grams.
+  Future<void> setPantryItem(String ingredientId, double quantityGrams, {String unit = 'g'}) async {
+    final nowIso = DateTime.now().toIso8601String();
+    await _db.insert(
+      'pantry_items',
+      {
+        'ingredient_id': ingredientId,
+        'quantity_grams': quantityGrams,
+        'unit': unit,
+        'updated_at': nowIso,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  /// Removes an ingredient from the pantry.
+  Future<void> removePantryItem(String ingredientId) async {
+    await _db.delete(
+      'pantry_items',
+      where: 'ingredient_id = ?',
+      whereArgs: [ingredientId],
+    );
+  }
+
+  /// Clears all items in the pantry.
+  Future<void> clearPantry() async {
+    await _db.delete('pantry_items');
   }
 
   static String _formatDateIso(DateTime dt) {

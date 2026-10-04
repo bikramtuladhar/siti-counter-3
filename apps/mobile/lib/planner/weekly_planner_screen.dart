@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kitchen_engine/nepali_calendar.dart';
 import 'package:kitchen_engine/region_pack.dart';
 import '../data/region_pack_repository.dart';
+import '../groceries/grocery_list_screen.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
 import 'planner_models.dart';
@@ -75,6 +76,18 @@ class _WeeklyPlannerScreenState extends State<WeeklyPlannerScreen> {
       _weekStart = _weekStart.subtract(const Duration(days: 7));
     });
     _loadPlannerData();
+  }
+
+  void _openGroceryListScreen() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => GroceryListScreen(
+          weekStart: _weekStart,
+          repository: widget.repository,
+          currentLanguage: widget.currentLanguage,
+        ),
+      ),
+    );
   }
 
   String _formatDateIso(DateTime dt) {
@@ -313,6 +326,12 @@ class _WeeklyPlannerScreenState extends State<WeeklyPlannerScreen> {
           ),
         ),
         actions: [
+          IconButton(
+            key: const Key('open_grocery_list_btn'),
+            icon: const Icon(Icons.shopping_basket_rounded, color: SitiColors.terracotta),
+            tooltip: _isNepali ? 'किनमेल सूची (Grocery List)' : 'Weekly Grocery List',
+            onPressed: _openGroceryListScreen,
+          ),
           IconButton(
             icon: const Icon(Icons.tune_rounded, color: SitiColors.dark),
             tooltip: _isNepali ? 'भोजन समय अनुकूलन (Rhythms)' : 'Configure Meal Rhythms',

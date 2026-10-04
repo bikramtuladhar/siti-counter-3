@@ -339,3 +339,4 @@ export const AltitudeCalculator = {
 export * from './nepali_calendar.js';
 export * from './allergen_engine.js';
 export * from './auto_plan.js';
+export * from './grocery_engine.js';
