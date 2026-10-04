@@ -884,22 +884,6 @@
           "dateIso": "2026-10-05",
           "dayIndex": 0,
           "slotId": "morning_dal_bhat",
-          "recipeId": "nimbu-ko-achar",
-          "category": "achar",
-          "isSeasonal": false,
-          "peakIngredientIds": [],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 8,
-          "wasteScore": 0,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-05",
-          "dayIndex": 0,
-          "slotId": "afternoon_khaja",
           "recipeId": "phulka-roti",
           "category": "roti_mithai",
           "isSeasonal": false,
@@ -914,17 +898,37 @@
         {
           "dateIso": "2026-10-05",
           "dayIndex": 0,
-          "slotId": "evening_dal_bhat",
-          "recipeId": "aam-ko-khatto-achar",
-          "category": "achar",
-          "isSeasonal": false,
-          "peakIngredientIds": [],
+          "slotId": "afternoon_khaja",
+          "recipeId": "sada-bhat",
+          "category": "bhat",
+          "isSeasonal": true,
+          "peakIngredientIds": [
+            "rice"
+          ],
           "dietaryBadges": [
             "gluten-free",
             "vegetarian"
           ],
           "goalScore": 10,
-          "wasteScore": 0.79,
+          "wasteScore": 0,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-05",
+          "dayIndex": 0,
+          "slotId": "evening_dal_bhat",
+          "recipeId": "taichin-bhat",
+          "category": "bhat",
+          "isSeasonal": true,
+          "peakIngredientIds": [
+            "rice"
+          ],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 10,
+          "wasteScore": 1,
           "repeatedWithinGap": false
         },
         {
@@ -942,49 +946,13 @@
             "vegetarian"
           ],
           "goalScore": 10,
-          "wasteScore": 0.1,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-06",
-          "dayIndex": 1,
-          "slotId": "afternoon_khaja",
-          "recipeId": "sada-bhat",
-          "category": "bhat",
-          "isSeasonal": true,
-          "peakIngredientIds": [
-            "rice"
-          ],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 10,
           "wasteScore": 0,
           "repeatedWithinGap": false
         },
         {
           "dateIso": "2026-10-06",
           "dayIndex": 1,
-          "slotId": "evening_dal_bhat",
-          "recipeId": "taichin-bhat",
-          "category": "bhat",
-          "isSeasonal": true,
-          "peakIngredientIds": [
-            "rice"
-          ],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 10,
-          "wasteScore": 1,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-07",
-          "dayIndex": 2,
-          "slotId": "morning_dal_bhat",
+          "slotId": "afternoon_khaja",
           "recipeId": "gwaramari-newari",
           "category": "khaja",
           "isSeasonal": false,
@@ -993,13 +961,13 @@
             "vegetarian"
           ],
           "goalScore": 11,
-          "wasteScore": 0.99,
+          "wasteScore": 0.97,
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-07",
-          "dayIndex": 2,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-06",
+          "dayIndex": 1,
+          "slotId": "evening_dal_bhat",
           "recipeId": "mula-ko-saag",
           "category": "saag",
           "isSeasonal": true,
@@ -1017,7 +985,7 @@
         {
           "dateIso": "2026-10-07",
           "dayIndex": 2,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "ubaleko-sakarkhanda",
           "category": "tarkari",
           "isSeasonal": false,
@@ -1031,9 +999,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-08",
-          "dayIndex": 3,
-          "slotId": "morning_dal_bhat",
+          "dateIso": "2026-10-07",
+          "dayIndex": 2,
+          "slotId": "afternoon_khaja",
           "recipeId": "mula-ko-tarkari",
           "category": "tarkari",
           "isSeasonal": true,
@@ -1049,9 +1017,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-08",
-          "dayIndex": 3,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-07",
+          "dayIndex": 2,
+          "slotId": "evening_dal_bhat",
           "recipeId": "bhendi-bhutuwa",
           "category": "tarkari",
           "isSeasonal": false,
@@ -1067,7 +1035,7 @@
         {
           "dateIso": "2026-10-08",
           "dayIndex": 3,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "parwal-fry",
           "category": "tarkari",
           "isSeasonal": false,
@@ -1081,9 +1049,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-09",
-          "dayIndex": 4,
-          "slotId": "morning_dal_bhat",
+          "dateIso": "2026-10-08",
+          "dayIndex": 3,
+          "slotId": "afternoon_khaja",
           "recipeId": "chichinda-tarkari",
           "category": "tarkari",
           "isSeasonal": false,
@@ -1097,26 +1065,8 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-09",
-          "dayIndex": 4,
-          "slotId": "afternoon_khaja",
-          "recipeId": "ubaleko-tarul-sandheko",
-          "category": "tarkari",
-          "isSeasonal": true,
-          "peakIngredientIds": [
-            "timur"
-          ],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 14,
-          "wasteScore": 0.07,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-09",
-          "dayIndex": 4,
+          "dateIso": "2026-10-08",
+          "dayIndex": 3,
           "slotId": "evening_dal_bhat",
           "recipeId": "pharsi-ko-tarkari",
           "category": "tarkari",
@@ -1133,9 +1083,27 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-10",
-          "dayIndex": 5,
+          "dateIso": "2026-10-09",
+          "dayIndex": 4,
           "slotId": "morning_dal_bhat",
+          "recipeId": "ubaleko-tarul-sandheko",
+          "category": "tarkari",
+          "isSeasonal": true,
+          "peakIngredientIds": [
+            "timur"
+          ],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 14,
+          "wasteScore": 0.05,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-09",
+          "dayIndex": 4,
+          "slotId": "afternoon_khaja",
           "recipeId": "mula-bodi-tarkari",
           "category": "tarkari",
           "isSeasonal": true,
@@ -1151,9 +1119,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-10",
-          "dayIndex": 5,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-09",
+          "dayIndex": 4,
+          "slotId": "evening_dal_bhat",
           "recipeId": "bhatmas-jhol",
           "category": "dal",
           "isSeasonal": true,
@@ -1173,7 +1141,7 @@
         {
           "dateIso": "2026-10-10",
           "dayIndex": 5,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "karkalo-gaura-tarkari",
           "category": "tarkari",
           "isSeasonal": false,
@@ -1183,13 +1151,13 @@
             "vegetarian"
           ],
           "goalScore": 15,
-          "wasteScore": 0.13,
+          "wasteScore": 0.12,
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-11",
-          "dayIndex": 6,
-          "slotId": "morning_dal_bhat",
+          "dateIso": "2026-10-10",
+          "dayIndex": 5,
+          "slotId": "afternoon_khaja",
           "recipeId": "pharsi-munta-saag",
           "category": "saag",
           "isSeasonal": false,
@@ -1203,9 +1171,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-11",
-          "dayIndex": 6,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-10",
+          "dayIndex": 5,
+          "slotId": "evening_dal_bhat",
           "recipeId": "baigun-bharta",
           "category": "tarkari",
           "isSeasonal": false,
@@ -1215,13 +1183,13 @@
             "vegetarian"
           ],
           "goalScore": 15,
-          "wasteScore": 0.12,
+          "wasteScore": 0.11,
           "repeatedWithinGap": false
         },
         {
           "dateIso": "2026-10-11",
           "dayIndex": 6,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "tito-karela-bhutuwa",
           "category": "tarkari",
           "isSeasonal": false,
@@ -1232,6 +1200,38 @@
           ],
           "goalScore": 15,
           "wasteScore": 0.1,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-11",
+          "dayIndex": 6,
+          "slotId": "afternoon_khaja",
+          "recipeId": "lauka-ko-tarkari",
+          "category": "tarkari",
+          "isSeasonal": false,
+          "peakIngredientIds": [],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 15,
+          "wasteScore": 0.08,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-11",
+          "dayIndex": 6,
+          "slotId": "evening_dal_bhat",
+          "recipeId": "karkalo-gaura-saag",
+          "category": "saag",
+          "isSeasonal": false,
+          "peakIngredientIds": [],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 16,
+          "wasteScore": 0.89,
           "repeatedWithinGap": false
         }
       ],
@@ -1293,16 +1293,31 @@
           ]
         },
         {
-          "ingredientId": "colocasia_leaves",
-          "totalRequiredGrams": 350,
+          "ingredientId": "bottle_gourd",
+          "totalRequiredGrams": 500,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 350,
+          "netNeededGrams": 500,
+          "marketPackageGrams": 800,
+          "packagesToBuy": 1,
+          "totalPurchasedGrams": 800,
+          "surplusGrams": 300,
+          "availability": "available",
+          "usedByRecipeIds": [
+            "lauka-ko-tarkari"
+          ]
+        },
+        {
+          "ingredientId": "colocasia_leaves",
+          "totalRequiredGrams": 750,
+          "pantryAvailableGrams": 0,
+          "netNeededGrams": 750,
           "marketPackageGrams": 300,
-          "packagesToBuy": 2,
-          "totalPurchasedGrams": 600,
-          "surplusGrams": 250,
+          "packagesToBuy": 3,
+          "totalPurchasedGrams": 900,
+          "surplusGrams": 150,
           "availability": "in_season",
           "usedByRecipeIds": [
+            "karkalo-gaura-saag",
             "karkalo-gaura-tarkari"
           ]
         },
@@ -1322,16 +1337,17 @@
         },
         {
           "ingredientId": "cumin",
-          "totalRequiredGrams": 5,
+          "totalRequiredGrams": 10,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 5,
+          "netNeededGrams": 10,
           "marketPackageGrams": 200,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 200,
-          "surplusGrams": 195,
+          "surplusGrams": 190,
           "availability": "available",
           "usedByRecipeIds": [
-            "chichinda-tarkari"
+            "chichinda-tarkari",
+            "lauka-ko-tarkari"
           ]
         },
         {
@@ -1350,20 +1366,18 @@
         },
         {
           "ingredientId": "fenugreek_seeds",
-          "totalRequiredGrams": 14,
+          "totalRequiredGrams": 8,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 14,
+          "netNeededGrams": 8,
           "marketPackageGrams": 100,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 100,
-          "surplusGrams": 86,
+          "surplusGrams": 92,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
             "bhendi-bhutuwa",
             "mula-ko-saag",
             "mula-ko-tarkari",
-            "nimbu-ko-achar",
             "pharsi-ko-tarkari"
           ]
         },
@@ -1383,17 +1397,18 @@
         },
         {
           "ingredientId": "garlic",
-          "totalRequiredGrams": 90,
+          "totalRequiredGrams": 115,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 90,
+          "netNeededGrams": 115,
           "marketPackageGrams": 250,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 250,
-          "surplusGrams": 160,
+          "surplusGrams": 135,
           "availability": "available",
           "usedByRecipeIds": [
             "baigun-bharta",
             "bhatmas-jhol",
+            "karkalo-gaura-saag",
             "karkalo-gaura-tarkari",
             "pharsi-munta-saag",
             "simi-dal-jhol"
@@ -1401,32 +1416,32 @@
         },
         {
           "ingredientId": "ginger",
-          "totalRequiredGrams": 20,
+          "totalRequiredGrams": 30,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 20,
+          "netNeededGrams": 30,
           "marketPackageGrams": 250,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 250,
-          "surplusGrams": 230,
+          "surplusGrams": 220,
           "availability": "in_season",
           "usedByRecipeIds": [
+            "lauka-ko-tarkari",
             "mula-bodi-tarkari",
             "pharsi-ko-tarkari"
           ]
         },
         {
           "ingredientId": "green_chili",
-          "totalRequiredGrams": 55,
+          "totalRequiredGrams": 25,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 55,
+          "netNeededGrams": 25,
           "marketPackageGrams": 100,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 100,
-          "surplusGrams": 45,
+          "surplusGrams": 75,
           "availability": "in_season",
           "usedByRecipeIds": [
             "baigun-bharta",
-            "nimbu-ko-achar",
             "ubaleko-tarul-sandheko"
           ]
         },
@@ -1460,26 +1475,26 @@
         },
         {
           "ingredientId": "mustard_oil",
-          "totalRequiredGrams": 555,
+          "totalRequiredGrams": 525,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 555,
+          "netNeededGrams": 525,
           "marketPackageGrams": 910,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 910,
-          "surplusGrams": 355,
+          "surplusGrams": 385,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
             "baigun-bharta",
             "bhatmas-jhol",
             "bhendi-bhutuwa",
             "chichinda-tarkari",
             "gwaramari-newari",
+            "karkalo-gaura-saag",
             "karkalo-gaura-tarkari",
+            "lauka-ko-tarkari",
             "mula-bodi-tarkari",
             "mula-ko-saag",
             "mula-ko-tarkari",
-            "nimbu-ko-achar",
             "parwal-fry",
             "pharsi-ko-tarkari",
             "pharsi-munta-saag",
@@ -1548,16 +1563,15 @@
         },
         {
           "ingredientId": "red_chili",
-          "totalRequiredGrams": 23,
+          "totalRequiredGrams": 8,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 23,
+          "netNeededGrams": 8,
           "marketPackageGrams": 100,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 100,
-          "surplusGrams": 77,
+          "surplusGrams": 92,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
             "karkalo-gaura-tarkari",
             "pharsi-munta-saag"
           ]
@@ -1650,20 +1664,18 @@
         },
         {
           "ingredientId": "turmeric",
-          "totalRequiredGrams": 46,
+          "totalRequiredGrams": 30,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 46,
+          "netNeededGrams": 30,
           "marketPackageGrams": 200,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 200,
-          "surplusGrams": 154,
+          "surplusGrams": 170,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
             "bhendi-bhutuwa",
             "chichinda-tarkari",
             "mula-ko-tarkari",
-            "nimbu-ko-achar",
             "parwal-fry",
             "simi-dal-jhol",
             "tito-karela-bhutuwa"
@@ -1700,12 +1712,12 @@
         }
       ],
       "totals": {
-        "estimatedCostNpr": 1060,
-        "proteinGrams": 272,
-        "distinctIngredients": 30,
+        "estimatedCostNpr": 1112,
+        "proteinGrams": 288.8,
+        "distinctIngredients": 31,
         "pantryCoveredGrams": 0,
-        "purchasedGrams": 15210,
-        "estimatedSurplusGrams": 6804
+        "purchasedGrams": 16310,
+        "estimatedSurplusGrams": 7061
       },
       "exclusions": [],
       "unfilledSlots": []
@@ -1892,38 +1904,6 @@
           "dateIso": "2026-10-08",
           "dayIndex": 3,
           "slotId": "afternoon_khaja",
-          "recipeId": "aam-ko-khatto-achar",
-          "category": "achar",
-          "isSeasonal": false,
-          "peakIngredientIds": [],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 15,
-          "wasteScore": 0.85,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-08",
-          "dayIndex": 3,
-          "slotId": "evening_dal_bhat",
-          "recipeId": "nimbu-ko-achar",
-          "category": "achar",
-          "isSeasonal": false,
-          "peakIngredientIds": [],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 15,
-          "wasteScore": 0.83,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-09",
-          "dayIndex": 4,
-          "slotId": "morning_dal_bhat",
           "recipeId": "mula-kanche-achar",
           "category": "achar",
           "isSeasonal": true,
@@ -1935,13 +1915,13 @@
             "vegetarian"
           ],
           "goalScore": 15,
-          "wasteScore": 0.83,
+          "wasteScore": 0.8,
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-09",
-          "dayIndex": 4,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-08",
+          "dayIndex": 3,
+          "slotId": "evening_dal_bhat",
           "recipeId": "mula-ko-achar-traditional",
           "category": "achar",
           "isSeasonal": true,
@@ -1959,7 +1939,7 @@
         {
           "dateIso": "2026-10-09",
           "dayIndex": 4,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "lasun-khursani-chhop",
           "category": "achar",
           "isSeasonal": false,
@@ -1969,13 +1949,13 @@
             "vegetarian"
           ],
           "goalScore": 15,
-          "wasteScore": 0.71,
+          "wasteScore": 0.67,
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-10",
-          "dayIndex": 5,
-          "slotId": "morning_dal_bhat",
+          "dateIso": "2026-10-09",
+          "dayIndex": 4,
+          "slotId": "afternoon_khaja",
           "recipeId": "timmur-ko-chhop",
           "category": "achar",
           "isSeasonal": true,
@@ -1991,9 +1971,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-10",
-          "dayIndex": 5,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-09",
+          "dayIndex": 4,
+          "slotId": "evening_dal_bhat",
           "recipeId": "gundruk-sandheko",
           "category": "achar",
           "isSeasonal": true,
@@ -2011,7 +1991,7 @@
         {
           "dateIso": "2026-10-10",
           "dayIndex": 5,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "bhatmas-sandheko",
           "category": "achar",
           "isSeasonal": true,
@@ -2028,9 +2008,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-11",
-          "dayIndex": 6,
-          "slotId": "morning_dal_bhat",
+          "dateIso": "2026-10-10",
+          "dayIndex": 5,
+          "slotId": "afternoon_khaja",
           "recipeId": "golbheda-timur-achar",
           "category": "achar",
           "isSeasonal": true,
@@ -2048,9 +2028,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-11",
-          "dayIndex": 6,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-10",
+          "dayIndex": 5,
+          "slotId": "evening_dal_bhat",
           "recipeId": "golbheda-til-achar",
           "category": "achar",
           "isSeasonal": true,
@@ -2069,7 +2049,7 @@
         {
           "dateIso": "2026-10-11",
           "dayIndex": 6,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "til-ko-chhop",
           "category": "achar",
           "isSeasonal": true,
@@ -2083,6 +2063,44 @@
           ],
           "goalScore": 15,
           "wasteScore": 0.69,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-11",
+          "dayIndex": 6,
+          "slotId": "afternoon_khaja",
+          "recipeId": "alu-bodi-ko-achar",
+          "category": "achar",
+          "isSeasonal": true,
+          "peakIngredientIds": [
+            "potato",
+            "sesame"
+          ],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 15,
+          "wasteScore": 0.48,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-11",
+          "dayIndex": 6,
+          "slotId": "evening_dal_bhat",
+          "recipeId": "aloo-ko-achar-nepali",
+          "category": "achar",
+          "isSeasonal": true,
+          "peakIngredientIds": [
+            "potato",
+            "sesame"
+          ],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 15,
+          "wasteScore": 0.78,
           "repeatedWithinGap": false
         }
       ],
@@ -2099,6 +2117,20 @@
           "availability": "peak",
           "usedByRecipeIds": [
             "bhatmas-sandheko"
+          ]
+        },
+        {
+          "ingredientId": "bodi",
+          "totalRequiredGrams": 200,
+          "pantryAvailableGrams": 0,
+          "netNeededGrams": 200,
+          "marketPackageGrams": 250,
+          "packagesToBuy": 1,
+          "totalPurchasedGrams": 250,
+          "surplusGrams": 50,
+          "availability": "in_season",
+          "usedByRecipeIds": [
+            "alu-bodi-ko-achar"
           ]
         },
         {
@@ -2144,6 +2176,20 @@
           ]
         },
         {
+          "ingredientId": "cucumber",
+          "totalRequiredGrams": 200,
+          "pantryAvailableGrams": 0,
+          "netNeededGrams": 200,
+          "marketPackageGrams": 400,
+          "packagesToBuy": 1,
+          "totalPurchasedGrams": 400,
+          "surplusGrams": 200,
+          "availability": "available",
+          "usedByRecipeIds": [
+            "aloo-ko-achar-nepali"
+          ]
+        },
+        {
           "ingredientId": "fenugreek_seeds",
           "totalRequiredGrams": 11,
           "pantryAvailableGrams": 0,
@@ -2154,10 +2200,10 @@
           "surplusGrams": 89,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
+            "aloo-ko-achar-nepali",
+            "alu-bodi-ko-achar",
             "mula-kanche-achar",
-            "mula-ko-saag",
-            "nimbu-ko-achar"
+            "mula-ko-saag"
           ]
         },
         {
@@ -2185,22 +2231,22 @@
         },
         {
           "ingredientId": "green_chili",
-          "totalRequiredGrams": 180,
+          "totalRequiredGrams": 175,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 180,
+          "netNeededGrams": 175,
           "marketPackageGrams": 100,
           "packagesToBuy": 2,
           "totalPurchasedGrams": 200,
-          "surplusGrams": 20,
+          "surplusGrams": 25,
           "availability": "in_season",
           "usedByRecipeIds": [
+            "aloo-ko-achar-nepali",
             "bhatmas-sandheko",
             "golbheda-til-achar",
             "golbheda-timur-achar",
             "gundruk-saag-bhutuwa",
             "gundruk-sandheko",
-            "mula-kanche-achar",
-            "nimbu-ko-achar"
+            "mula-kanche-achar"
           ]
         },
         {
@@ -2244,7 +2290,8 @@
           "surplusGrams": 300,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
+            "aloo-ko-achar-nepali",
+            "alu-bodi-ko-achar",
             "bhatmas-sandheko",
             "chamsur-methi-saag",
             "golbheda-til-achar",
@@ -2256,7 +2303,6 @@
             "mula-kanche-achar",
             "mula-ko-achar-traditional",
             "mula-ko-saag",
-            "nimbu-ko-achar",
             "palungo-saag-sadha",
             "pharsi-munta-saag",
             "rayo-saag-tori",
@@ -2281,15 +2327,17 @@
         },
         {
           "ingredientId": "potato",
-          "totalRequiredGrams": 300,
+          "totalRequiredGrams": 1400,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 300,
+          "netNeededGrams": 1400,
           "marketPackageGrams": 250,
-          "packagesToBuy": 2,
-          "totalPurchasedGrams": 500,
-          "surplusGrams": 200,
+          "packagesToBuy": 6,
+          "totalPurchasedGrams": 1500,
+          "surplusGrams": 100,
           "availability": "peak",
           "usedByRecipeIds": [
+            "aloo-ko-achar-nepali",
+            "alu-bodi-ko-achar",
             "methi-saag-aloo"
           ]
         },
@@ -2340,16 +2388,15 @@
         },
         {
           "ingredientId": "red_chili",
-          "totalRequiredGrams": 218,
+          "totalRequiredGrams": 203,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 218,
+          "netNeededGrams": 203,
           "marketPackageGrams": 100,
           "packagesToBuy": 3,
           "totalPurchasedGrams": 300,
-          "surplusGrams": 82,
+          "surplusGrams": 97,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
             "lasun-khursani-chhop",
             "mula-ko-achar-traditional",
             "pharsi-munta-saag",
@@ -2361,15 +2408,17 @@
         },
         {
           "ingredientId": "sesame",
-          "totalRequiredGrams": 120,
+          "totalRequiredGrams": 175,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 120,
+          "netNeededGrams": 175,
           "marketPackageGrams": 200,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 200,
-          "surplusGrams": 80,
+          "surplusGrams": 25,
           "availability": "peak",
           "usedByRecipeIds": [
+            "aloo-ko-achar-nepali",
+            "alu-bodi-ko-achar",
             "golbheda-til-achar",
             "til-ko-chhop"
           ]
@@ -2425,29 +2474,27 @@
         },
         {
           "ingredientId": "turmeric",
-          "totalRequiredGrams": 30,
+          "totalRequiredGrams": 14,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 30,
+          "netNeededGrams": 14,
           "marketPackageGrams": 200,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 200,
-          "surplusGrams": 170,
+          "surplusGrams": 186,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
             "mula-kanche-achar",
-            "mula-ko-achar-traditional",
-            "nimbu-ko-achar"
+            "mula-ko-achar-traditional"
           ]
         }
       ],
       "totals": {
-        "estimatedCostNpr": 1508,
-        "proteinGrams": 312.8,
-        "distinctIngredients": 21,
+        "estimatedCostNpr": 1624,
+        "proteinGrams": 342.4,
+        "distinctIngredients": 23,
         "pantryCoveredGrams": 0,
-        "purchasedGrams": 12260,
-        "estimatedSurplusGrams": 2930
+        "purchasedGrams": 13910,
+        "estimatedSurplusGrams": 3061
       },
       "exclusions": [],
       "unfilledSlots": []
@@ -3234,22 +3281,6 @@
           "dateIso": "2026-10-05",
           "dayIndex": 0,
           "slotId": "morning_dal_bhat",
-          "recipeId": "nimbu-ko-achar",
-          "category": "achar",
-          "isSeasonal": false,
-          "peakIngredientIds": [],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 8,
-          "wasteScore": 0,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-05",
-          "dayIndex": 0,
-          "slotId": "afternoon_khaja",
           "recipeId": "phulka-roti",
           "category": "roti_mithai",
           "isSeasonal": false,
@@ -3264,17 +3295,37 @@
         {
           "dateIso": "2026-10-05",
           "dayIndex": 0,
-          "slotId": "evening_dal_bhat",
-          "recipeId": "aam-ko-khatto-achar",
-          "category": "achar",
-          "isSeasonal": false,
-          "peakIngredientIds": [],
+          "slotId": "afternoon_khaja",
+          "recipeId": "sada-bhat",
+          "category": "bhat",
+          "isSeasonal": true,
+          "peakIngredientIds": [
+            "rice"
+          ],
           "dietaryBadges": [
             "gluten-free",
             "vegetarian"
           ],
           "goalScore": 10,
-          "wasteScore": 0.79,
+          "wasteScore": 0,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-05",
+          "dayIndex": 0,
+          "slotId": "evening_dal_bhat",
+          "recipeId": "taichin-bhat",
+          "category": "bhat",
+          "isSeasonal": true,
+          "peakIngredientIds": [
+            "rice"
+          ],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 10,
+          "wasteScore": 1,
           "repeatedWithinGap": false
         },
         {
@@ -3292,49 +3343,13 @@
             "vegetarian"
           ],
           "goalScore": 10,
-          "wasteScore": 0.1,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-06",
-          "dayIndex": 1,
-          "slotId": "afternoon_khaja",
-          "recipeId": "sada-bhat",
-          "category": "bhat",
-          "isSeasonal": true,
-          "peakIngredientIds": [
-            "rice"
-          ],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 10,
           "wasteScore": 0,
           "repeatedWithinGap": false
         },
         {
           "dateIso": "2026-10-06",
           "dayIndex": 1,
-          "slotId": "evening_dal_bhat",
-          "recipeId": "taichin-bhat",
-          "category": "bhat",
-          "isSeasonal": true,
-          "peakIngredientIds": [
-            "rice"
-          ],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 10,
-          "wasteScore": 1,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-07",
-          "dayIndex": 2,
-          "slotId": "morning_dal_bhat",
+          "slotId": "afternoon_khaja",
           "recipeId": "gwaramari-newari",
           "category": "khaja",
           "isSeasonal": false,
@@ -3343,13 +3358,13 @@
             "vegetarian"
           ],
           "goalScore": 11,
-          "wasteScore": 0.99,
+          "wasteScore": 0.97,
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-07",
-          "dayIndex": 2,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-06",
+          "dayIndex": 1,
+          "slotId": "evening_dal_bhat",
           "recipeId": "mula-ko-saag",
           "category": "saag",
           "isSeasonal": true,
@@ -3367,7 +3382,7 @@
         {
           "dateIso": "2026-10-07",
           "dayIndex": 2,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "ubaleko-sakarkhanda",
           "category": "tarkari",
           "isSeasonal": false,
@@ -3381,9 +3396,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-08",
-          "dayIndex": 3,
-          "slotId": "morning_dal_bhat",
+          "dateIso": "2026-10-07",
+          "dayIndex": 2,
+          "slotId": "afternoon_khaja",
           "recipeId": "mula-ko-tarkari",
           "category": "tarkari",
           "isSeasonal": true,
@@ -3399,9 +3414,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-08",
-          "dayIndex": 3,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-07",
+          "dayIndex": 2,
+          "slotId": "evening_dal_bhat",
           "recipeId": "bhendi-bhutuwa",
           "category": "tarkari",
           "isSeasonal": false,
@@ -3417,7 +3432,7 @@
         {
           "dateIso": "2026-10-08",
           "dayIndex": 3,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "parwal-fry",
           "category": "tarkari",
           "isSeasonal": false,
@@ -3431,9 +3446,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-09",
-          "dayIndex": 4,
-          "slotId": "morning_dal_bhat",
+          "dateIso": "2026-10-08",
+          "dayIndex": 3,
+          "slotId": "afternoon_khaja",
           "recipeId": "chichinda-tarkari",
           "category": "tarkari",
           "isSeasonal": false,
@@ -3447,26 +3462,8 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-09",
-          "dayIndex": 4,
-          "slotId": "afternoon_khaja",
-          "recipeId": "ubaleko-tarul-sandheko",
-          "category": "tarkari",
-          "isSeasonal": true,
-          "peakIngredientIds": [
-            "timur"
-          ],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 14,
-          "wasteScore": 0.07,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-09",
-          "dayIndex": 4,
+          "dateIso": "2026-10-08",
+          "dayIndex": 3,
           "slotId": "evening_dal_bhat",
           "recipeId": "pharsi-ko-tarkari",
           "category": "tarkari",
@@ -3483,9 +3480,27 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-10",
-          "dayIndex": 5,
+          "dateIso": "2026-10-09",
+          "dayIndex": 4,
           "slotId": "morning_dal_bhat",
+          "recipeId": "ubaleko-tarul-sandheko",
+          "category": "tarkari",
+          "isSeasonal": true,
+          "peakIngredientIds": [
+            "timur"
+          ],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 14,
+          "wasteScore": 0.05,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-09",
+          "dayIndex": 4,
+          "slotId": "afternoon_khaja",
           "recipeId": "mula-bodi-tarkari",
           "category": "tarkari",
           "isSeasonal": true,
@@ -3501,9 +3516,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-10",
-          "dayIndex": 5,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-09",
+          "dayIndex": 4,
+          "slotId": "evening_dal_bhat",
           "recipeId": "bhatmas-jhol",
           "category": "dal",
           "isSeasonal": true,
@@ -3523,7 +3538,7 @@
         {
           "dateIso": "2026-10-10",
           "dayIndex": 5,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "karkalo-gaura-tarkari",
           "category": "tarkari",
           "isSeasonal": false,
@@ -3533,13 +3548,13 @@
             "vegetarian"
           ],
           "goalScore": 15,
-          "wasteScore": 0.13,
+          "wasteScore": 0.12,
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-11",
-          "dayIndex": 6,
-          "slotId": "morning_dal_bhat",
+          "dateIso": "2026-10-10",
+          "dayIndex": 5,
+          "slotId": "afternoon_khaja",
           "recipeId": "pharsi-munta-saag",
           "category": "saag",
           "isSeasonal": false,
@@ -3553,9 +3568,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-11",
-          "dayIndex": 6,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-10",
+          "dayIndex": 5,
+          "slotId": "evening_dal_bhat",
           "recipeId": "baigun-bharta",
           "category": "tarkari",
           "isSeasonal": false,
@@ -3565,13 +3580,13 @@
             "vegetarian"
           ],
           "goalScore": 15,
-          "wasteScore": 0.12,
+          "wasteScore": 0.11,
           "repeatedWithinGap": false
         },
         {
           "dateIso": "2026-10-11",
           "dayIndex": 6,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "tito-karela-bhutuwa",
           "category": "tarkari",
           "isSeasonal": false,
@@ -3582,6 +3597,38 @@
           ],
           "goalScore": 15,
           "wasteScore": 0.1,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-11",
+          "dayIndex": 6,
+          "slotId": "afternoon_khaja",
+          "recipeId": "lauka-ko-tarkari",
+          "category": "tarkari",
+          "isSeasonal": false,
+          "peakIngredientIds": [],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 15,
+          "wasteScore": 0.08,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-11",
+          "dayIndex": 6,
+          "slotId": "evening_dal_bhat",
+          "recipeId": "karkalo-gaura-saag",
+          "category": "saag",
+          "isSeasonal": false,
+          "peakIngredientIds": [],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 16,
+          "wasteScore": 0.89,
           "repeatedWithinGap": false
         }
       ],
@@ -3643,16 +3690,31 @@
           ]
         },
         {
-          "ingredientId": "colocasia_leaves",
-          "totalRequiredGrams": 350,
+          "ingredientId": "bottle_gourd",
+          "totalRequiredGrams": 500,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 350,
+          "netNeededGrams": 500,
+          "marketPackageGrams": 800,
+          "packagesToBuy": 1,
+          "totalPurchasedGrams": 800,
+          "surplusGrams": 300,
+          "availability": "available",
+          "usedByRecipeIds": [
+            "lauka-ko-tarkari"
+          ]
+        },
+        {
+          "ingredientId": "colocasia_leaves",
+          "totalRequiredGrams": 750,
+          "pantryAvailableGrams": 0,
+          "netNeededGrams": 750,
           "marketPackageGrams": 300,
-          "packagesToBuy": 2,
-          "totalPurchasedGrams": 600,
-          "surplusGrams": 250,
+          "packagesToBuy": 3,
+          "totalPurchasedGrams": 900,
+          "surplusGrams": 150,
           "availability": "in_season",
           "usedByRecipeIds": [
+            "karkalo-gaura-saag",
             "karkalo-gaura-tarkari"
           ]
         },
@@ -3672,16 +3734,17 @@
         },
         {
           "ingredientId": "cumin",
-          "totalRequiredGrams": 5,
+          "totalRequiredGrams": 10,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 5,
+          "netNeededGrams": 10,
           "marketPackageGrams": 200,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 200,
-          "surplusGrams": 195,
+          "surplusGrams": 190,
           "availability": "available",
           "usedByRecipeIds": [
-            "chichinda-tarkari"
+            "chichinda-tarkari",
+            "lauka-ko-tarkari"
           ]
         },
         {
@@ -3700,20 +3763,18 @@
         },
         {
           "ingredientId": "fenugreek_seeds",
-          "totalRequiredGrams": 14,
+          "totalRequiredGrams": 8,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 14,
+          "netNeededGrams": 8,
           "marketPackageGrams": 100,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 100,
-          "surplusGrams": 86,
+          "surplusGrams": 92,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
             "bhendi-bhutuwa",
             "mula-ko-saag",
             "mula-ko-tarkari",
-            "nimbu-ko-achar",
             "pharsi-ko-tarkari"
           ]
         },
@@ -3733,17 +3794,18 @@
         },
         {
           "ingredientId": "garlic",
-          "totalRequiredGrams": 90,
+          "totalRequiredGrams": 115,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 90,
+          "netNeededGrams": 115,
           "marketPackageGrams": 250,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 250,
-          "surplusGrams": 160,
+          "surplusGrams": 135,
           "availability": "available",
           "usedByRecipeIds": [
             "baigun-bharta",
             "bhatmas-jhol",
+            "karkalo-gaura-saag",
             "karkalo-gaura-tarkari",
             "pharsi-munta-saag",
             "simi-dal-jhol"
@@ -3751,32 +3813,32 @@
         },
         {
           "ingredientId": "ginger",
-          "totalRequiredGrams": 20,
+          "totalRequiredGrams": 30,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 20,
+          "netNeededGrams": 30,
           "marketPackageGrams": 250,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 250,
-          "surplusGrams": 230,
+          "surplusGrams": 220,
           "availability": "in_season",
           "usedByRecipeIds": [
+            "lauka-ko-tarkari",
             "mula-bodi-tarkari",
             "pharsi-ko-tarkari"
           ]
         },
         {
           "ingredientId": "green_chili",
-          "totalRequiredGrams": 55,
+          "totalRequiredGrams": 25,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 55,
+          "netNeededGrams": 25,
           "marketPackageGrams": 100,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 100,
-          "surplusGrams": 45,
+          "surplusGrams": 75,
           "availability": "in_season",
           "usedByRecipeIds": [
             "baigun-bharta",
-            "nimbu-ko-achar",
             "ubaleko-tarul-sandheko"
           ]
         },
@@ -3810,26 +3872,26 @@
         },
         {
           "ingredientId": "mustard_oil",
-          "totalRequiredGrams": 555,
+          "totalRequiredGrams": 525,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 555,
+          "netNeededGrams": 525,
           "marketPackageGrams": 910,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 910,
-          "surplusGrams": 355,
+          "surplusGrams": 385,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
             "baigun-bharta",
             "bhatmas-jhol",
             "bhendi-bhutuwa",
             "chichinda-tarkari",
             "gwaramari-newari",
+            "karkalo-gaura-saag",
             "karkalo-gaura-tarkari",
+            "lauka-ko-tarkari",
             "mula-bodi-tarkari",
             "mula-ko-saag",
             "mula-ko-tarkari",
-            "nimbu-ko-achar",
             "parwal-fry",
             "pharsi-ko-tarkari",
             "pharsi-munta-saag",
@@ -3898,16 +3960,15 @@
         },
         {
           "ingredientId": "red_chili",
-          "totalRequiredGrams": 23,
+          "totalRequiredGrams": 8,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 23,
+          "netNeededGrams": 8,
           "marketPackageGrams": 100,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 100,
-          "surplusGrams": 77,
+          "surplusGrams": 92,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
             "karkalo-gaura-tarkari",
             "pharsi-munta-saag"
           ]
@@ -4000,20 +4061,18 @@
         },
         {
           "ingredientId": "turmeric",
-          "totalRequiredGrams": 46,
+          "totalRequiredGrams": 30,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 46,
+          "netNeededGrams": 30,
           "marketPackageGrams": 200,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 200,
-          "surplusGrams": 154,
+          "surplusGrams": 170,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
             "bhendi-bhutuwa",
             "chichinda-tarkari",
             "mula-ko-tarkari",
-            "nimbu-ko-achar",
             "parwal-fry",
             "simi-dal-jhol",
             "tito-karela-bhutuwa"
@@ -4050,14 +4109,19 @@
         }
       ],
       "totals": {
-        "estimatedCostNpr": 1060,
-        "proteinGrams": 272,
-        "distinctIngredients": 30,
+        "estimatedCostNpr": 1112,
+        "proteinGrams": 288.8,
+        "distinctIngredients": 31,
         "pantryCoveredGrams": 0,
-        "purchasedGrams": 15210,
-        "estimatedSurplusGrams": 6804
+        "purchasedGrams": 16310,
+        "estimatedSurplusGrams": 7061
       },
       "exclusions": [
+        {
+          "recipeId": "bara-wo-egg",
+          "blockedAllergen": null,
+          "blockedDietaryRule": null
+        },
         {
           "recipeId": "buff-momo-kathmandu",
           "blockedAllergen": null,
@@ -6506,22 +6570,6 @@
           "dateIso": "2026-10-05",
           "dayIndex": 0,
           "slotId": "morning_dal_bhat",
-          "recipeId": "nimbu-ko-achar",
-          "category": "achar",
-          "isSeasonal": false,
-          "peakIngredientIds": [],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 8,
-          "wasteScore": 0,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-05",
-          "dayIndex": 0,
-          "slotId": "afternoon_khaja",
           "recipeId": "phulka-roti",
           "category": "roti_mithai",
           "isSeasonal": false,
@@ -6536,17 +6584,37 @@
         {
           "dateIso": "2026-10-05",
           "dayIndex": 0,
-          "slotId": "evening_dal_bhat",
-          "recipeId": "aam-ko-khatto-achar",
-          "category": "achar",
-          "isSeasonal": false,
-          "peakIngredientIds": [],
+          "slotId": "afternoon_khaja",
+          "recipeId": "sada-bhat",
+          "category": "bhat",
+          "isSeasonal": true,
+          "peakIngredientIds": [
+            "rice"
+          ],
           "dietaryBadges": [
             "gluten-free",
             "vegetarian"
           ],
           "goalScore": 10,
-          "wasteScore": 0.79,
+          "wasteScore": 0,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-05",
+          "dayIndex": 0,
+          "slotId": "evening_dal_bhat",
+          "recipeId": "taichin-bhat",
+          "category": "bhat",
+          "isSeasonal": true,
+          "peakIngredientIds": [
+            "rice"
+          ],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 10,
+          "wasteScore": 1,
           "repeatedWithinGap": false
         },
         {
@@ -6564,49 +6632,13 @@
             "vegetarian"
           ],
           "goalScore": 10,
-          "wasteScore": 0.1,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-06",
-          "dayIndex": 1,
-          "slotId": "afternoon_khaja",
-          "recipeId": "sada-bhat",
-          "category": "bhat",
-          "isSeasonal": true,
-          "peakIngredientIds": [
-            "rice"
-          ],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 10,
           "wasteScore": 0,
           "repeatedWithinGap": false
         },
         {
           "dateIso": "2026-10-06",
           "dayIndex": 1,
-          "slotId": "evening_dal_bhat",
-          "recipeId": "taichin-bhat",
-          "category": "bhat",
-          "isSeasonal": true,
-          "peakIngredientIds": [
-            "rice"
-          ],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 10,
-          "wasteScore": 1,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-07",
-          "dayIndex": 2,
-          "slotId": "morning_dal_bhat",
+          "slotId": "afternoon_khaja",
           "recipeId": "gwaramari-newari",
           "category": "khaja",
           "isSeasonal": false,
@@ -6615,13 +6647,13 @@
             "vegetarian"
           ],
           "goalScore": 11,
-          "wasteScore": 0.99,
+          "wasteScore": 0.97,
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-07",
-          "dayIndex": 2,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-06",
+          "dayIndex": 1,
+          "slotId": "evening_dal_bhat",
           "recipeId": "mula-ko-saag",
           "category": "saag",
           "isSeasonal": true,
@@ -6639,7 +6671,7 @@
         {
           "dateIso": "2026-10-07",
           "dayIndex": 2,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "ubaleko-sakarkhanda",
           "category": "tarkari",
           "isSeasonal": false,
@@ -6653,9 +6685,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-08",
-          "dayIndex": 3,
-          "slotId": "morning_dal_bhat",
+          "dateIso": "2026-10-07",
+          "dayIndex": 2,
+          "slotId": "afternoon_khaja",
           "recipeId": "mula-ko-tarkari",
           "category": "tarkari",
           "isSeasonal": true,
@@ -6671,9 +6703,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-08",
-          "dayIndex": 3,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-07",
+          "dayIndex": 2,
+          "slotId": "evening_dal_bhat",
           "recipeId": "bhendi-bhutuwa",
           "category": "tarkari",
           "isSeasonal": false,
@@ -6689,7 +6721,7 @@
         {
           "dateIso": "2026-10-08",
           "dayIndex": 3,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "parwal-fry",
           "category": "tarkari",
           "isSeasonal": false,
@@ -6703,9 +6735,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-09",
-          "dayIndex": 4,
-          "slotId": "morning_dal_bhat",
+          "dateIso": "2026-10-08",
+          "dayIndex": 3,
+          "slotId": "afternoon_khaja",
           "recipeId": "chichinda-tarkari",
           "category": "tarkari",
           "isSeasonal": false,
@@ -6719,26 +6751,8 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-09",
-          "dayIndex": 4,
-          "slotId": "afternoon_khaja",
-          "recipeId": "ubaleko-tarul-sandheko",
-          "category": "tarkari",
-          "isSeasonal": true,
-          "peakIngredientIds": [
-            "timur"
-          ],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 14,
-          "wasteScore": 0.07,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-09",
-          "dayIndex": 4,
+          "dateIso": "2026-10-08",
+          "dayIndex": 3,
           "slotId": "evening_dal_bhat",
           "recipeId": "pharsi-ko-tarkari",
           "category": "tarkari",
@@ -6755,9 +6769,27 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-10",
-          "dayIndex": 5,
+          "dateIso": "2026-10-09",
+          "dayIndex": 4,
           "slotId": "morning_dal_bhat",
+          "recipeId": "ubaleko-tarul-sandheko",
+          "category": "tarkari",
+          "isSeasonal": true,
+          "peakIngredientIds": [
+            "timur"
+          ],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 14,
+          "wasteScore": 0.05,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-09",
+          "dayIndex": 4,
+          "slotId": "afternoon_khaja",
           "recipeId": "mula-bodi-tarkari",
           "category": "tarkari",
           "isSeasonal": true,
@@ -6773,9 +6805,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-10",
-          "dayIndex": 5,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-09",
+          "dayIndex": 4,
+          "slotId": "evening_dal_bhat",
           "recipeId": "bhatmas-jhol",
           "category": "dal",
           "isSeasonal": true,
@@ -6795,7 +6827,7 @@
         {
           "dateIso": "2026-10-10",
           "dayIndex": 5,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "karkalo-gaura-tarkari",
           "category": "tarkari",
           "isSeasonal": false,
@@ -6805,13 +6837,13 @@
             "vegetarian"
           ],
           "goalScore": 15,
-          "wasteScore": 0.13,
+          "wasteScore": 0.12,
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-11",
-          "dayIndex": 6,
-          "slotId": "morning_dal_bhat",
+          "dateIso": "2026-10-10",
+          "dayIndex": 5,
+          "slotId": "afternoon_khaja",
           "recipeId": "pharsi-munta-saag",
           "category": "saag",
           "isSeasonal": false,
@@ -6825,9 +6857,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-11",
-          "dayIndex": 6,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-10",
+          "dayIndex": 5,
+          "slotId": "evening_dal_bhat",
           "recipeId": "baigun-bharta",
           "category": "tarkari",
           "isSeasonal": false,
@@ -6837,13 +6869,13 @@
             "vegetarian"
           ],
           "goalScore": 15,
-          "wasteScore": 0.12,
+          "wasteScore": 0.11,
           "repeatedWithinGap": false
         },
         {
           "dateIso": "2026-10-11",
           "dayIndex": 6,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "tito-karela-bhutuwa",
           "category": "tarkari",
           "isSeasonal": false,
@@ -6854,6 +6886,38 @@
           ],
           "goalScore": 15,
           "wasteScore": 0.1,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-11",
+          "dayIndex": 6,
+          "slotId": "afternoon_khaja",
+          "recipeId": "lauka-ko-tarkari",
+          "category": "tarkari",
+          "isSeasonal": false,
+          "peakIngredientIds": [],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 15,
+          "wasteScore": 0.08,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-11",
+          "dayIndex": 6,
+          "slotId": "evening_dal_bhat",
+          "recipeId": "karkalo-gaura-saag",
+          "category": "saag",
+          "isSeasonal": false,
+          "peakIngredientIds": [],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 16,
+          "wasteScore": 0.89,
           "repeatedWithinGap": false
         }
       ],
@@ -6915,16 +6979,31 @@
           ]
         },
         {
-          "ingredientId": "colocasia_leaves",
-          "totalRequiredGrams": 350,
+          "ingredientId": "bottle_gourd",
+          "totalRequiredGrams": 500,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 350,
+          "netNeededGrams": 500,
+          "marketPackageGrams": 800,
+          "packagesToBuy": 1,
+          "totalPurchasedGrams": 800,
+          "surplusGrams": 300,
+          "availability": "available",
+          "usedByRecipeIds": [
+            "lauka-ko-tarkari"
+          ]
+        },
+        {
+          "ingredientId": "colocasia_leaves",
+          "totalRequiredGrams": 750,
+          "pantryAvailableGrams": 0,
+          "netNeededGrams": 750,
           "marketPackageGrams": 300,
-          "packagesToBuy": 2,
-          "totalPurchasedGrams": 600,
-          "surplusGrams": 250,
+          "packagesToBuy": 3,
+          "totalPurchasedGrams": 900,
+          "surplusGrams": 150,
           "availability": "in_season",
           "usedByRecipeIds": [
+            "karkalo-gaura-saag",
             "karkalo-gaura-tarkari"
           ]
         },
@@ -6944,16 +7023,17 @@
         },
         {
           "ingredientId": "cumin",
-          "totalRequiredGrams": 5,
+          "totalRequiredGrams": 10,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 5,
+          "netNeededGrams": 10,
           "marketPackageGrams": 200,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 200,
-          "surplusGrams": 195,
+          "surplusGrams": 190,
           "availability": "available",
           "usedByRecipeIds": [
-            "chichinda-tarkari"
+            "chichinda-tarkari",
+            "lauka-ko-tarkari"
           ]
         },
         {
@@ -6972,20 +7052,18 @@
         },
         {
           "ingredientId": "fenugreek_seeds",
-          "totalRequiredGrams": 14,
+          "totalRequiredGrams": 8,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 14,
+          "netNeededGrams": 8,
           "marketPackageGrams": 100,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 100,
-          "surplusGrams": 86,
+          "surplusGrams": 92,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
             "bhendi-bhutuwa",
             "mula-ko-saag",
             "mula-ko-tarkari",
-            "nimbu-ko-achar",
             "pharsi-ko-tarkari"
           ]
         },
@@ -7005,17 +7083,18 @@
         },
         {
           "ingredientId": "garlic",
-          "totalRequiredGrams": 90,
+          "totalRequiredGrams": 115,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 90,
+          "netNeededGrams": 115,
           "marketPackageGrams": 250,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 250,
-          "surplusGrams": 160,
+          "surplusGrams": 135,
           "availability": "available",
           "usedByRecipeIds": [
             "baigun-bharta",
             "bhatmas-jhol",
+            "karkalo-gaura-saag",
             "karkalo-gaura-tarkari",
             "pharsi-munta-saag",
             "simi-dal-jhol"
@@ -7023,32 +7102,32 @@
         },
         {
           "ingredientId": "ginger",
-          "totalRequiredGrams": 20,
+          "totalRequiredGrams": 30,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 20,
+          "netNeededGrams": 30,
           "marketPackageGrams": 250,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 250,
-          "surplusGrams": 230,
+          "surplusGrams": 220,
           "availability": "in_season",
           "usedByRecipeIds": [
+            "lauka-ko-tarkari",
             "mula-bodi-tarkari",
             "pharsi-ko-tarkari"
           ]
         },
         {
           "ingredientId": "green_chili",
-          "totalRequiredGrams": 55,
+          "totalRequiredGrams": 25,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 55,
+          "netNeededGrams": 25,
           "marketPackageGrams": 100,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 100,
-          "surplusGrams": 45,
+          "surplusGrams": 75,
           "availability": "in_season",
           "usedByRecipeIds": [
             "baigun-bharta",
-            "nimbu-ko-achar",
             "ubaleko-tarul-sandheko"
           ]
         },
@@ -7082,26 +7161,26 @@
         },
         {
           "ingredientId": "mustard_oil",
-          "totalRequiredGrams": 555,
+          "totalRequiredGrams": 525,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 555,
+          "netNeededGrams": 525,
           "marketPackageGrams": 910,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 910,
-          "surplusGrams": 355,
+          "surplusGrams": 385,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
             "baigun-bharta",
             "bhatmas-jhol",
             "bhendi-bhutuwa",
             "chichinda-tarkari",
             "gwaramari-newari",
+            "karkalo-gaura-saag",
             "karkalo-gaura-tarkari",
+            "lauka-ko-tarkari",
             "mula-bodi-tarkari",
             "mula-ko-saag",
             "mula-ko-tarkari",
-            "nimbu-ko-achar",
             "parwal-fry",
             "pharsi-ko-tarkari",
             "pharsi-munta-saag",
@@ -7170,16 +7249,15 @@
         },
         {
           "ingredientId": "red_chili",
-          "totalRequiredGrams": 23,
+          "totalRequiredGrams": 8,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 23,
+          "netNeededGrams": 8,
           "marketPackageGrams": 100,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 100,
-          "surplusGrams": 77,
+          "surplusGrams": 92,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
             "karkalo-gaura-tarkari",
             "pharsi-munta-saag"
           ]
@@ -7272,20 +7350,18 @@
         },
         {
           "ingredientId": "turmeric",
-          "totalRequiredGrams": 46,
+          "totalRequiredGrams": 30,
           "pantryAvailableGrams": 0,
-          "netNeededGrams": 46,
+          "netNeededGrams": 30,
           "marketPackageGrams": 200,
           "packagesToBuy": 1,
           "totalPurchasedGrams": 200,
-          "surplusGrams": 154,
+          "surplusGrams": 170,
           "availability": "available",
           "usedByRecipeIds": [
-            "aam-ko-khatto-achar",
             "bhendi-bhutuwa",
             "chichinda-tarkari",
             "mula-ko-tarkari",
-            "nimbu-ko-achar",
             "parwal-fry",
             "simi-dal-jhol",
             "tito-karela-bhutuwa"
@@ -7322,18 +7398,23 @@
         }
       ],
       "totals": {
-        "estimatedCostNpr": 1060,
-        "proteinGrams": 272,
-        "distinctIngredients": 30,
+        "estimatedCostNpr": 1112,
+        "proteinGrams": 288.8,
+        "distinctIngredients": 31,
         "pantryCoveredGrams": 0,
-        "purchasedGrams": 15210,
-        "estimatedSurplusGrams": 6804
+        "purchasedGrams": 16310,
+        "estimatedSurplusGrams": 7061
       },
       "exclusions": [
         {
           "recipeId": "anarsa-tihar",
           "blockedAllergen": "dairy",
           "blockedDietaryRule": null
+        },
+        {
+          "recipeId": "bara-wo-egg",
+          "blockedAllergen": null,
+          "blockedDietaryRule": "vegetarian"
         },
         {
           "recipeId": "buff-momo-kathmandu",
@@ -7735,38 +7816,6 @@
           "dateIso": "2026-10-06",
           "dayIndex": 1,
           "slotId": "evening_dal_bhat",
-          "recipeId": "aam-ko-khatto-achar",
-          "category": "achar",
-          "isSeasonal": false,
-          "peakIngredientIds": [],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 15,
-          "wasteScore": 0.99,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-07",
-          "dayIndex": 2,
-          "slotId": "morning_dal_bhat",
-          "recipeId": "nimbu-ko-achar",
-          "category": "achar",
-          "isSeasonal": false,
-          "peakIngredientIds": [],
-          "dietaryBadges": [
-            "gluten-free",
-            "vegetarian"
-          ],
-          "goalScore": 15,
-          "wasteScore": 0.94,
-          "repeatedWithinGap": false
-        },
-        {
-          "dateIso": "2026-10-07",
-          "dayIndex": 2,
-          "slotId": "afternoon_khaja",
           "recipeId": "alu-bodi-ko-achar",
           "category": "achar",
           "isSeasonal": true,
@@ -7785,7 +7834,7 @@
         {
           "dateIso": "2026-10-07",
           "dayIndex": 2,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "aloo-ko-achar-nepali",
           "category": "achar",
           "isSeasonal": true,
@@ -7802,9 +7851,9 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-08",
-          "dayIndex": 3,
-          "slotId": "morning_dal_bhat",
+          "dateIso": "2026-10-07",
+          "dayIndex": 2,
+          "slotId": "afternoon_khaja",
           "recipeId": "til-ko-chhop",
           "category": "achar",
           "isSeasonal": true,
@@ -7817,13 +7866,13 @@
             "vegetarian"
           ],
           "goalScore": 15,
-          "wasteScore": 0.65,
+          "wasteScore": 0.53,
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-08",
-          "dayIndex": 3,
-          "slotId": "afternoon_khaja",
+          "dateIso": "2026-10-07",
+          "dayIndex": 2,
+          "slotId": "evening_dal_bhat",
           "recipeId": "timmur-ko-chhop",
           "category": "achar",
           "isSeasonal": true,
@@ -7835,13 +7884,13 @@
             "vegetarian"
           ],
           "goalScore": 15,
-          "wasteScore": 0.78,
+          "wasteScore": 0.71,
           "repeatedWithinGap": false
         },
         {
           "dateIso": "2026-10-08",
           "dayIndex": 3,
-          "slotId": "evening_dal_bhat",
+          "slotId": "morning_dal_bhat",
           "recipeId": "kakro-ko-achar",
           "category": "achar",
           "isSeasonal": true,
@@ -7857,9 +7906,27 @@
           "repeatedWithinGap": false
         },
         {
-          "dateIso": "2026-10-09",
-          "dayIndex": 4,
-          "slotId": "morning_dal_bhat",
+          "dateIso": "2026-10-08",
+          "dayIndex": 3,
+          "slotId": "afternoon_khaja",
+          "recipeId": "nimbu-ko-achar",
+          "category": "achar",
+          "isSeasonal": true,
+          "peakIngredientIds": [
+            "lemon"
+          ],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 15,
+          "wasteScore": 0.22,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-08",
+          "dayIndex": 3,
+          "slotId": "evening_dal_bhat",
           "recipeId": "golbheda-til-achar",
           "category": "achar",
           "isSeasonal": true,
@@ -7867,6 +7934,22 @@
             "sesame",
             "tomato"
           ],
+          "dietaryBadges": [
+            "gluten-free",
+            "vegetarian"
+          ],
+          "goalScore": 15,
+          "wasteScore": 0.15,
+          "repeatedWithinGap": false
+        },
+        {
+          "dateIso": "2026-10-09",
+          "dayIndex": 4,
+          "slotId": "morning_dal_bhat",
+          "recipeId": "aam-ko-khatto-achar",
+          "category": "achar",
+          "isSeasonal": false,
+          "peakIngredientIds": [],
           "dietaryBadges": [
             "gluten-free",
             "vegetarian"
@@ -8163,6 +8246,20 @@
           ]
         },
         {
+          "ingredientId": "green_mango",
+          "totalRequiredGrams": 400,
+          "pantryAvailableGrams": 0,
+          "netNeededGrams": 400,
+          "marketPackageGrams": 250,
+          "packagesToBuy": 2,
+          "totalPurchasedGrams": 500,
+          "surplusGrams": 100,
+          "availability": "out_of_season",
+          "usedByRecipeIds": [
+            "aam-ko-khatto-achar"
+          ]
+        },
+        {
           "ingredientId": "green_peas",
           "totalRequiredGrams": 200,
           "pantryAvailableGrams": 0,
@@ -8188,6 +8285,20 @@
           "availability": "peak",
           "usedByRecipeIds": [
             "lapsi-khatto-mittho-achar"
+          ]
+        },
+        {
+          "ingredientId": "lemon",
+          "totalRequiredGrams": 300,
+          "pantryAvailableGrams": 0,
+          "netNeededGrams": 300,
+          "marketPackageGrams": 150,
+          "packagesToBuy": 2,
+          "totalPurchasedGrams": 300,
+          "surplusGrams": 0,
+          "availability": "peak",
+          "usedByRecipeIds": [
+            "nimbu-ko-achar"
           ]
         },
         {
@@ -8393,12 +8504,12 @@
         }
       ],
       "totals": {
-        "estimatedCostNpr": 1700,
-        "proteinGrams": 252,
-        "distinctIngredients": 22,
+        "estimatedCostNpr": 1804,
+        "proteinGrams": 258,
+        "distinctIngredients": 24,
         "pantryCoveredGrams": 0,
-        "purchasedGrams": 15410,
-        "estimatedSurplusGrams": 4060
+        "purchasedGrams": 16210,
+        "estimatedSurplusGrams": 4160
       },
       "exclusions": [
         {
@@ -8428,6 +8539,11 @@
         },
         {
           "recipeId": "bakulla-ko-tarkari",
+          "blockedAllergen": null,
+          "blockedDietaryRule": "hinduFasting"
+        },
+        {
+          "recipeId": "bara-wo-egg",
           "blockedAllergen": null,
           "blockedDietaryRule": "hinduFasting"
         },
@@ -8678,16 +8794,6 @@
         },
         {
           "recipeId": "maghe-khichadi",
-          "blockedAllergen": null,
-          "blockedDietaryRule": "hinduFasting"
-        },
-        {
-          "recipeId": "makai-ko-dhido",
-          "blockedAllergen": null,
-          "blockedDietaryRule": "hinduFasting"
-        },
-        {
-          "recipeId": "makai-ko-roti",
           "blockedAllergen": null,
           "blockedDietaryRule": "hinduFasting"
         },

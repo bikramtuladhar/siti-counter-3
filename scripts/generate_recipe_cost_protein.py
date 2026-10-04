@@ -81,6 +81,11 @@ PRICE_OVERRIDES = {
     "red_chili": 900,
     "turmeric": 500,
     "ajwain": 800,
+    "corn_flour": 100,
+    "banana": 120,
+    "green_mango": 140,
+    "lemon": 160,
+    "egg": 300,
 }
 
 PROTEIN_OVERRIDES = {
@@ -99,6 +104,11 @@ PROTEIN_OVERRIDES = {
     "millet_flour": 11.0,
     "buckwheat_flour": 13.0,
     "semolina": 11.0,
+    "corn_flour": 9.0,
+    "banana": 1.1,
+    "green_mango": 0.8,
+    "lemon": 1.0,
+    "egg": 13.0,
     "masuro_dal": 24.0,
     "kalo_dal": 24.0,
     "rahar_dal": 22.0,

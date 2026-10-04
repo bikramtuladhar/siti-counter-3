@@ -2065,7 +2065,8 @@
     "category": "bhat",
     "cuisine": "pan-nepali",
     "dietary": [
-      "vegetarian"
+      "vegetarian",
+      "gluten-free"
     ],
     "prepTimeMinutes": 5,
     "cookTimeMinutes": 20,
@@ -2085,7 +2086,7 @@
     },
     "ingredients": [
       {
-        "ingredientId": "wheat_flour",
+        "ingredientId": "corn_flour",
         "quantity": 200,
         "unit": "g"
       },
@@ -2132,8 +2133,8 @@
       "bhat",
       "carbs"
     ],
-    "costEstimateNpr": 16,
-    "proteinGramsPerServing": 5.5
+    "costEstimateNpr": 17,
+    "proteinGramsPerServing": 4.5
   },
   {
     "id": "bhatmas-chiura",
@@ -2347,6 +2348,11 @@
         "ingredientId": "yogurt",
         "quantity": 300,
         "unit": "g"
+      },
+      {
+        "ingredientId": "banana",
+        "quantity": 400,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -2386,8 +2392,8 @@
       "bhat",
       "carbs"
     ],
-    "costEstimateNpr": 33,
-    "proteinGramsPerServing": 7.6
+    "costEstimateNpr": 45,
+    "proteinGramsPerServing": 8.7
   },
   {
     "id": "aloo-gobi-tarkari",
@@ -10204,6 +10210,11 @@
     },
     "ingredients": [
       {
+        "ingredientId": "green_mango",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
         "ingredientId": "mustard_oil",
         "quantity": 45,
         "unit": "g"
@@ -10261,8 +10272,8 @@
       "timur",
       "side-dish"
     ],
-    "costEstimateNpr": 10,
-    "proteinGramsPerServing": 0.5
+    "costEstimateNpr": 24,
+    "proteinGramsPerServing": 1.3
   },
   {
     "id": "nimbu-ko-achar",
@@ -10291,6 +10302,11 @@
       "waterMultiplier": 1.15
     },
     "ingredients": [
+      {
+        "ingredientId": "lemon",
+        "quantity": 300,
+        "unit": "g"
+      },
       {
         "ingredientId": "mustard_oil",
         "quantity": 45,
@@ -10349,8 +10365,8 @@
       "timur",
       "side-dish"
     ],
-    "costEstimateNpr": 8,
-    "proteinGramsPerServing": 0.4
+    "costEstimateNpr": 20,
+    "proteinGramsPerServing": 1.1
   },
   {
     "id": "bhatmas-sandheko",
@@ -11383,7 +11399,8 @@
     "category": "khaja",
     "cuisine": "newari",
     "dietary": [
-      "vegetarian"
+      "non-vegetarian",
+      "gluten-free"
     ],
     "prepTimeMinutes": 20,
     "cookTimeMinutes": 15,
@@ -11405,6 +11422,11 @@
       {
         "ingredientId": "kalo_dal",
         "quantity": 250,
+        "unit": "g"
+      },
+      {
+        "ingredientId": "egg",
+        "quantity": 240,
         "unit": "g"
       },
       {
@@ -11455,8 +11477,8 @@
       "street-food",
       "tea-time"
     ],
-    "costEstimateNpr": 19,
-    "proteinGramsPerServing": 15.1
+    "costEstimateNpr": 37,
+    "proteinGramsPerServing": 22.9
   },
   {
     "id": "chataamari-plain",
@@ -12973,7 +12995,8 @@
     "category": "roti_mithai",
     "cuisine": "pan-nepali",
     "dietary": [
-      "vegetarian"
+      "vegetarian",
+      "gluten-free"
     ],
     "prepTimeMinutes": 15,
     "cookTimeMinutes": 20,
@@ -12993,7 +13016,7 @@
     },
     "ingredients": [
       {
-        "ingredientId": "wheat_flour",
+        "ingredientId": "corn_flour",
         "quantity": 400,
         "unit": "g"
       },
@@ -13039,8 +13062,8 @@
       "dashain",
       "traditional"
     ],
-    "costEstimateNpr": 21,
-    "proteinGramsPerServing": 11.0
+    "costEstimateNpr": 22,
+    "proteinGramsPerServing": 9.0
   },
   {
     "id": "suji-ko-haluwa",

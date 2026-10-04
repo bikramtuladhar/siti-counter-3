@@ -1684,5 +1684,129 @@
       "hemanta": "peak",
       "shishir": "peak"
     }
+  },
+  {
+    "id": "corn_flour",
+    "nameEn": "Corn Flour / Cornmeal",
+    "nameNe": "मकैको पिठो",
+    "aliases": [
+      "cornmeal",
+      "makai ko pitho",
+      "makai",
+      "corn flour",
+      "makai pitho"
+    ],
+    "category": "flour",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 60,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "peak",
+      "sharad": "peak",
+      "hemanta": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "banana",
+    "nameEn": "Banana",
+    "nameNe": "केरा",
+    "aliases": [
+      "kera",
+      "kela",
+      "banana"
+    ],
+    "category": "fruits",
+    "standardUnit": "piece",
+    "marketPackageGrams": 120,
+    "storageDays": 4,
+    "allergens": [],
+    "availability": {
+      "basanta": "available",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "limited"
+    }
+  },
+  {
+    "id": "green_mango",
+    "nameEn": "Raw Green Mango",
+    "nameNe": "काँचो आँप",
+    "aliases": [
+      "kacho aam",
+      "green mango",
+      "aam",
+      "kacha aam",
+      "raw mango"
+    ],
+    "category": "fruits",
+    "standardUnit": "pau",
+    "marketPackageGrams": 250,
+    "storageDays": 10,
+    "allergens": [],
+    "availability": {
+      "basanta": "limited",
+      "grishma": "peak",
+      "barsha": "peak",
+      "sharad": "out_of_season",
+      "hemanta": "out_of_season",
+      "shishir": "out_of_season"
+    }
+  },
+  {
+    "id": "lemon",
+    "nameEn": "Hill Lemon (Nibhuwa)",
+    "nameNe": "निबुवा / कागती",
+    "aliases": [
+      "nimbu",
+      "nibhuwa",
+      "lemon",
+      "kagati",
+      "hill lemon"
+    ],
+    "category": "fruits",
+    "standardUnit": "piece",
+    "marketPackageGrams": 150,
+    "storageDays": 14,
+    "allergens": [],
+    "availability": {
+      "basanta": "limited",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "peak",
+      "hemanta": "peak",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "egg",
+    "nameEn": "Egg",
+    "nameNe": "अन्डा",
+    "aliases": [
+      "anda",
+      "egg",
+      "eggs",
+      "kukhura ko anda"
+    ],
+    "category": "meat",
+    "standardUnit": "piece",
+    "marketPackageGrams": 60,
+    "storageDays": 14,
+    "allergens": [
+      "eggs"
+    ],
+    "availability": {
+      "basanta": "available",
+      "grishma": "available",
+      "barsha": "available",
+      "sharad": "available",
+      "hemanta": "available",
+      "shishir": "available"
+    }
   }
 ]
