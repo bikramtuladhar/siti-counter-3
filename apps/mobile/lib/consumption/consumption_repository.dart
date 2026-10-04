@@ -8,6 +8,8 @@ import 'package:sqflite/sqflite.dart';
 class ConsumptionRepository {
   final Database _db;
 
+  Database get db => _db;
+
   ConsumptionRepository(this._db);
 
   /// Initializes the SQLite schema for consumption logs, outside foods, vessels, and members.

@@ -9,6 +9,8 @@ import 'household_vessel_calibration_dialog.dart';
 import 'quick_add_outside_food_dialog.dart';
 import 'post_meal_usual_dialog.dart';
 import 'leftover_screen.dart';
+import '../crew/crew_repository.dart';
+import '../crew/fair_share_screen.dart';
 
 /// Full consumption & non-shaming household nutrition dashboard (Section 11).
 class ConsumptionDashboardScreen extends StatefulWidget {
@@ -146,6 +148,19 @@ class _ConsumptionDashboardScreenState extends State<ConsumptionDashboardScreen>
           ),
         ),
         actions: [
+          IconButton(
+            key: const Key('crew_rota_action'),
+            icon: const Icon(Icons.people_alt_rounded, color: Colors.amber),
+            tooltip: _isNepali ? 'सहकार्य इतिहास' : 'Cooking Crew & Fair-Share Rota',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => FairShareScreen(
+                  repository: CrewRepository(widget.repository.db),
+                  currentLanguage: widget.currentLanguage,
+                ),
+              ),
+            ),
+          ),
           IconButton(
             key: const Key('leftovers_waste_action'),
             icon: const Icon(Icons.kitchen_rounded, color: SitiColors.terracotta),

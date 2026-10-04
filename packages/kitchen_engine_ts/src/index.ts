@@ -345,3 +345,4 @@ export * from './region_pack_manager.js';
 export * from './consumption_engine.js';
 export * from './nutrition_engine.js';
 export * from './waste_engine.js';
+export * from './crew_engine.js';

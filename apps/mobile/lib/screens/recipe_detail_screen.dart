@@ -8,6 +8,8 @@ import '../data/region_pack_repository.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
 import 'active_cooking_session_screen.dart';
+import '../crew/crew_repository.dart';
+import '../crew/crew_task_screen.dart';
 
 enum CooktopType {
   lpgGas,
@@ -103,6 +105,8 @@ class RecipeDetailScreen extends StatefulWidget {
   final void Function(RegionRecipe recipe, int whistles, CooktopType cooktop)? onStartCooking;
   final void Function(RegionRecipe recipe, int servings)? onAddAllToGrocery;
   final void Function(List<IngredientPurchasePlan> purchasableItems)? onAddPurchasableToGrocery;
+  final CrewRepository? crewRepository;
+  final VoidCallback? onCookWithCrew;
 
   const RecipeDetailScreen({
     super.key,
@@ -116,6 +120,8 @@ class RecipeDetailScreen extends StatefulWidget {
     this.onStartCooking,
     this.onAddAllToGrocery,
     this.onAddPurchasableToGrocery,
+    this.crewRepository,
+    this.onCookWithCrew,
   });
 
   @override
@@ -1541,38 +1547,79 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   }
 
   Widget _buildStartCookingButton() {
-    return ElevatedButton.icon(
-      onPressed: () {
-        if (widget.onStartCooking != null) {
-          widget.onStartCooking!(widget.recipe, _effectiveWhistles, _selectedCooktop);
-        } else {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ActiveCookingSessionScreen(
-                recipe: widget.recipe,
-                targetWhistles: _effectiveWhistles,
-                cooktop: _selectedCooktop,
-                currentLanguage: widget.currentLanguage,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ElevatedButton.icon(
+          onPressed: () {
+            if (widget.onStartCooking != null) {
+              widget.onStartCooking!(widget.recipe, _effectiveWhistles, _selectedCooktop);
+            } else {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ActiveCookingSessionScreen(
+                    recipe: widget.recipe,
+                    targetWhistles: _effectiveWhistles,
+                    cooktop: _selectedCooktop,
+                    currentLanguage: widget.currentLanguage,
+                  ),
+                ),
+              );
+            }
+          },
+          icon: const Icon(Icons.play_circle_fill_rounded, size: 22),
+          label: Text(
+            _isNepali ? 'सिट्ठी काउन्टर सुरु गर्नुहोस्' : 'Start Siti Counter',
+            style: NepaliTypography.titleMedium.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: SitiColors.terracotta,
+            foregroundColor: Colors.white,
+            minimumSize: const Size.fromHeight(54),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            elevation: 2,
+          ),
+        ),
+        if (widget.crewRepository != null || widget.onCookWithCrew != null) ...[
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            key: const Key('cook_with_crew_button'),
+            onPressed: () {
+              if (widget.onCookWithCrew != null) {
+                widget.onCookWithCrew!();
+              } else if (widget.crewRepository != null) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CrewTaskScreen(
+                      recipe: widget.recipe,
+                      repository: widget.crewRepository!,
+                      currentLanguage: widget.currentLanguage,
+                      cooktop: _selectedCooktop,
+                    ),
+                  ),
+                );
+              }
+            },
+            icon: const Icon(Icons.people_alt_rounded, size: 20),
+            label: Text(
+              _isNepali ? 'सह-भोजन टोली (Co-Cooking)' : 'Cook with Crew & Split Tasks',
+              style: NepaliTypography.titleSmall.copyWith(
+                color: SitiColors.terracotta,
+                fontWeight: FontWeight.w700,
               ),
             ),
-          );
-        }
-      },
-      icon: const Icon(Icons.play_circle_fill_rounded, size: 22),
-      label: Text(
-        _isNepali ? 'सिट्ठी काउन्टर सुरु गर्नुहोस्' : 'Start Siti Counter',
-        style: NepaliTypography.titleMedium.copyWith(
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: SitiColors.terracotta,
-        foregroundColor: Colors.white,
-        minimumSize: const Size.fromHeight(54),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 2,
-      ),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: SitiColors.terracotta,
+              side: const BorderSide(color: SitiColors.terracotta),
+              minimumSize: const Size.fromHeight(48),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            ),
+          ),
+        ],
+      ],
     );
   }
 }
