@@ -349,3 +349,4 @@ export * from './crew_engine.js';
 export * from './assistant_engine.js';
 export * from './voice_engine.js';
 export * from './signal_engine.js';
+export * from './allergen_card_engine.js';

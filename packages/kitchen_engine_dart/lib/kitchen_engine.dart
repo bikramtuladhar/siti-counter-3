@@ -14,6 +14,7 @@ export 'crew_engine.dart';
 export 'assistant_engine.dart';
 export 'voice_engine.dart';
 export 'signal_engine.dart';
+export 'allergen_card_engine.dart';
 
 /// Canonical mass and volume conversion constants and helpers.
 class UnitConverter {
