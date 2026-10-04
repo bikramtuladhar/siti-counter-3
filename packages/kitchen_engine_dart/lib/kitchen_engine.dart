@@ -2,6 +2,7 @@ library;
 
 import 'nepali_calendar.dart';
 export 'allergen_engine.dart';
+export 'auto_plan.dart';
 
 /// Canonical mass and volume conversion constants and helpers.
 class UnitConverter {

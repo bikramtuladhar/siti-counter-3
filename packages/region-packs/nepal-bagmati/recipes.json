@@ -28,32 +28,32 @@
     "ingredients": [
       {
         "ingredientId": "kalo_dal",
-        "quantity": 100,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "jimbu",
-        "quantity": 100,
+        "quantity": 10,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 100,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 100,
+        "quantity": 10,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 100,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -93,7 +93,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 27,
+    "proteinGramsPerServing": 12.4
   },
   {
     "id": "musuro-dal-tadka",
@@ -124,27 +126,27 @@
     "ingredients": [
       {
         "ingredientId": "masuro_dal",
-        "quantity": 100,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "cumin",
-        "quantity": 100,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 100,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 100,
+        "quantity": 5,
         "unit": "g"
       },
       {
@@ -189,7 +191,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 19,
+    "proteinGramsPerServing": 12.6
   },
   {
     "id": "rahar-dal-sadha",
@@ -220,27 +224,27 @@
     "ingredients": [
       {
         "ingredientId": "rahar_dal",
-        "quantity": 100,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "cumin",
-        "quantity": 100,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 100,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 100,
+        "quantity": 10,
         "unit": "g"
       }
     ],
@@ -280,7 +284,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 25,
+    "proteinGramsPerServing": 11.2
   },
   {
     "id": "mung-dal-soup",
@@ -311,27 +317,27 @@
     "ingredients": [
       {
         "ingredientId": "mung_dal",
-        "quantity": 100,
+        "quantity": 180,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "cumin",
-        "quantity": 100,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 100,
+        "quantity": 10,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 100,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -371,7 +377,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 22,
+    "proteinGramsPerServing": 9.7
   },
   {
     "id": "chana-dal-tarkari",
@@ -402,12 +410,12 @@
     "ingredients": [
       {
         "ingredientId": "chana",
-        "quantity": 100,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       },
       {
@@ -417,12 +425,12 @@
       },
       {
         "ingredientId": "garlic",
-        "quantity": 100,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 100,
+        "quantity": 120,
         "unit": "g"
       }
     ],
@@ -462,7 +470,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 20,
+    "proteinGramsPerServing": 10.4
   },
   {
     "id": "pancha-dal-mix",
@@ -493,27 +503,27 @@
     "ingredients": [
       {
         "ingredientId": "kalo_dal",
-        "quantity": 100,
+        "quantity": 80,
         "unit": "g"
       },
       {
         "ingredientId": "masuro_dal",
-        "quantity": 100,
+        "quantity": 80,
         "unit": "g"
       },
       {
         "ingredientId": "rahar_dal",
-        "quantity": 100,
+        "quantity": 80,
         "unit": "g"
       },
       {
         "ingredientId": "mung_dal",
-        "quantity": 100,
+        "quantity": 80,
         "unit": "g"
       },
       {
         "ingredientId": "chana",
-        "quantity": 100,
+        "quantity": 80,
         "unit": "g"
       }
     ],
@@ -553,7 +563,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 22,
+    "proteinGramsPerServing": 22.0
   },
   {
     "id": "kwati-jhol",
@@ -584,32 +596,32 @@
     "ingredients": [
       {
         "ingredientId": "kwati_mix",
-        "quantity": 100,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "ajwain",
-        "quantity": 100,
+        "quantity": 3,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 100,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 100,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 100,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -649,7 +661,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 24,
+    "proteinGramsPerServing": 11.7
   },
   {
     "id": "bhatmas-jhol",
@@ -680,27 +694,27 @@
     "ingredients": [
       {
         "ingredientId": "bhatmas",
-        "quantity": 100,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 100,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 100,
+        "quantity": 120,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 100,
+        "quantity": 2,
         "unit": "g"
       }
     ],
@@ -740,7 +754,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 15,
+    "proteinGramsPerServing": 10.3
   },
   {
     "id": "simi-dal-jhol",
@@ -771,27 +787,27 @@
     "ingredients": [
       {
         "ingredientId": "french_beans",
-        "quantity": 100,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 100,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "jimbu",
-        "quantity": 100,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 100,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -831,7 +847,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 10,
+    "proteinGramsPerServing": 1.2
   },
   {
     "id": "masyaura-dal-jhol",
@@ -862,22 +880,22 @@
     "ingredients": [
       {
         "ingredientId": "masyaura",
-        "quantity": 100,
+        "quantity": 120,
         "unit": "g"
       },
       {
         "ingredientId": "masuro_dal",
-        "quantity": 100,
+        "quantity": 120,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 100,
+        "quantity": 15,
         "unit": "g"
       }
     ],
@@ -917,7 +935,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 17,
+    "proteinGramsPerServing": 8.8
   },
   {
     "id": "gundruk-bhatmas-jhol",
@@ -948,22 +968,22 @@
     "ingredients": [
       {
         "ingredientId": "gundruk",
-        "quantity": 100,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "bhatmas",
-        "quantity": 100,
+        "quantity": 120,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 100,
+        "quantity": 15,
         "unit": "g"
       },
       {
@@ -1008,7 +1028,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 20,
+    "proteinGramsPerServing": 10.1
   },
   {
     "id": "kalo-dal-lahsun-chhop",
@@ -1039,22 +1061,22 @@
     "ingredients": [
       {
         "ingredientId": "kalo_dal",
-        "quantity": 100,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "red_chili",
-        "quantity": 100,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -1094,7 +1116,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 16,
+    "proteinGramsPerServing": 12.2
   },
   {
     "id": "karkalo-dal",
@@ -1125,22 +1149,22 @@
     "ingredients": [
       {
         "ingredientId": "colocasia_leaves",
-        "quantity": 100,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "masuro_dal",
-        "quantity": 100,
+        "quantity": 120,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 100,
+        "quantity": 15,
         "unit": "g"
       }
     ],
@@ -1180,7 +1204,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 17,
+    "proteinGramsPerServing": 9.1
   },
   {
     "id": "chana-lauka-dal",
@@ -1211,22 +1237,22 @@
     "ingredients": [
       {
         "ingredientId": "chana",
-        "quantity": 100,
+        "quantity": 180,
         "unit": "g"
       },
       {
         "ingredientId": "bottle_gourd",
-        "quantity": 100,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 100,
+        "quantity": 10,
         "unit": "g"
       }
     ],
@@ -1266,7 +1292,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 21,
+    "proteinGramsPerServing": 10.1
   },
   {
     "id": "palungo-dal",
@@ -1297,22 +1325,22 @@
     "ingredients": [
       {
         "ingredientId": "spinach",
-        "quantity": 100,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "mung_dal",
-        "quantity": 100,
+        "quantity": 120,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "cumin",
-        "quantity": 100,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -1352,7 +1380,9 @@
       "everyday",
       "pressure-cooker",
       "comfort-food"
-    ]
+    ],
+    "costEstimateNpr": 23,
+    "proteinGramsPerServing": 7.9
   },
   {
     "id": "sada-bhat",
@@ -1383,7 +1413,7 @@
     "ingredients": [
       {
         "ingredientId": "rice",
-        "quantity": 150,
+        "quantity": 300,
         "unit": "g"
       }
     ],
@@ -1423,7 +1453,9 @@
       "staple",
       "bhat",
       "carbs"
-    ]
+    ],
+    "costEstimateNpr": 10,
+    "proteinGramsPerServing": 5.2
   },
   {
     "id": "taichin-bhat",
@@ -1454,7 +1486,7 @@
     "ingredients": [
       {
         "ingredientId": "rice",
-        "quantity": 150,
+        "quantity": 300,
         "unit": "g"
       }
     ],
@@ -1494,7 +1526,9 @@
       "staple",
       "bhat",
       "carbs"
-    ]
+    ],
+    "costEstimateNpr": 10,
+    "proteinGramsPerServing": 5.2
   },
   {
     "id": "maghe-khichadi",
@@ -1525,27 +1559,27 @@
     "ingredients": [
       {
         "ingredientId": "rice",
-        "quantity": 150,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "kalo_dal",
-        "quantity": 150,
+        "quantity": 100,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 150,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 150,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -1585,7 +1619,9 @@
       "staple",
       "bhat",
       "carbs"
-    ]
+    ],
+    "costEstimateNpr": 31,
+    "proteinGramsPerServing": 10.5
   },
   {
     "id": "jaulo-ayurvedic",
@@ -1616,27 +1652,27 @@
     "ingredients": [
       {
         "ingredientId": "rice",
-        "quantity": 150,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "mung_dal",
-        "quantity": 150,
+        "quantity": 80,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 150,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "ajwain",
-        "quantity": 150,
+        "quantity": 2,
         "unit": "g"
       }
     ],
@@ -1676,7 +1712,9 @@
       "staple",
       "bhat",
       "carbs"
-    ]
+    ],
+    "costEstimateNpr": 28,
+    "proteinGramsPerServing": 8.7
   },
   {
     "id": "nepali-pulao",
@@ -1707,27 +1745,27 @@
     "ingredients": [
       {
         "ingredientId": "rice",
-        "quantity": 150,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 60,
         "unit": "g"
       },
       {
         "ingredientId": "green_peas",
-        "quantity": 150,
+        "quantity": 100,
         "unit": "g"
       },
       {
         "ingredientId": "cardamom",
-        "quantity": 150,
+        "quantity": 4,
         "unit": "g"
       },
       {
         "ingredientId": "cinnamon",
-        "quantity": 150,
+        "quantity": 2,
         "unit": "g"
       }
     ],
@@ -1767,7 +1805,9 @@
       "staple",
       "bhat",
       "carbs"
-    ]
+    ],
+    "costEstimateNpr": 43,
+    "proteinGramsPerServing": 6.6
   },
   {
     "id": "bhuttuko-bhat",
@@ -1798,27 +1838,27 @@
     "ingredients": [
       {
         "ingredientId": "rice",
-        "quantity": 150,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 150,
+        "quantity": 100,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 150,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 150,
+        "quantity": 10,
         "unit": "g"
       }
     ],
@@ -1858,7 +1898,9 @@
       "staple",
       "bhat",
       "carbs"
-    ]
+    ],
+    "costEstimateNpr": 16,
+    "proteinGramsPerServing": 5.8
   },
   {
     "id": "kodo-ko-dhido",
@@ -1889,12 +1931,12 @@
     "ingredients": [
       {
         "ingredientId": "millet_flour",
-        "quantity": 150,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 30,
         "unit": "g"
       }
     ],
@@ -1934,7 +1976,9 @@
       "staple",
       "bhat",
       "carbs"
-    ]
+    ],
+    "costEstimateNpr": 16,
+    "proteinGramsPerServing": 5.5
   },
   {
     "id": "phapar-ko-dhido",
@@ -1965,12 +2009,12 @@
     "ingredients": [
       {
         "ingredientId": "buckwheat_flour",
-        "quantity": 150,
+        "quantity": 220,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 30,
         "unit": "g"
       }
     ],
@@ -2010,7 +2054,9 @@
       "staple",
       "bhat",
       "carbs"
-    ]
+    ],
+    "costEstimateNpr": 17,
+    "proteinGramsPerServing": 7.2
   },
   {
     "id": "makai-ko-dhido",
@@ -2040,12 +2086,12 @@
     "ingredients": [
       {
         "ingredientId": "wheat_flour",
-        "quantity": 150,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 30,
         "unit": "g"
       }
     ],
@@ -2085,7 +2131,9 @@
       "staple",
       "bhat",
       "carbs"
-    ]
+    ],
+    "costEstimateNpr": 16,
+    "proteinGramsPerServing": 5.5
   },
   {
     "id": "bhatmas-chiura",
@@ -2116,22 +2164,22 @@
     "ingredients": [
       {
         "ingredientId": "chiura",
-        "quantity": 150,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "bhatmas",
-        "quantity": 150,
+        "quantity": 100,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 150,
+        "quantity": 10,
         "unit": "g"
       }
     ],
@@ -2171,7 +2219,9 @@
       "staple",
       "bhat",
       "carbs"
-    ]
+    ],
+    "costEstimateNpr": 28,
+    "proteinGramsPerServing": 12.6
   },
   {
     "id": "khaja-chiura-tarkari",
@@ -2202,22 +2252,22 @@
     "ingredients": [
       {
         "ingredientId": "chiura",
-        "quantity": 150,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 150,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "green_peas",
-        "quantity": 150,
+        "quantity": 100,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 25,
         "unit": "g"
       }
     ],
@@ -2257,7 +2307,9 @@
       "staple",
       "bhat",
       "carbs"
-    ]
+    ],
+    "costEstimateNpr": 27,
+    "proteinGramsPerServing": 7.4
   },
   {
     "id": "dahi-chiura-kera",
@@ -2288,12 +2340,12 @@
     "ingredients": [
       {
         "ingredientId": "chiura",
-        "quantity": 150,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "yogurt",
-        "quantity": 150,
+        "quantity": 300,
         "unit": "g"
       }
     ],
@@ -2333,7 +2385,9 @@
       "staple",
       "bhat",
       "carbs"
-    ]
+    ],
+    "costEstimateNpr": 33,
+    "proteinGramsPerServing": 7.6
   },
   {
     "id": "aloo-gobi-tarkari",
@@ -2364,32 +2418,32 @@
     "ingredients": [
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "cauliflower",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       }
     ],
@@ -2433,7 +2487,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 26,
+    "proteinGramsPerServing": 3.9
   },
   {
     "id": "aloo-kerau-tarkari",
@@ -2464,27 +2520,27 @@
     "ingredients": [
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "green_peas",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "cumin",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -2528,7 +2584,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 21,
+    "proteinGramsPerServing": 4.8
   },
   {
     "id": "aloo-tama-bodi",
@@ -2559,27 +2617,27 @@
     "ingredients": [
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "bamboo_shoot",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "bodi",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       }
     ],
@@ -2623,7 +2681,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 18,
+    "proteinGramsPerServing": 2.5
   },
   {
     "id": "aloo-dum-nepali",
@@ -2654,27 +2714,27 @@
     "ingredients": [
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 500,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 120,
+        "quantity": 3,
         "unit": "g"
       },
       {
         "ingredientId": "red_chili",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -2718,7 +2778,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 17,
+    "proteinGramsPerServing": 2.2
   },
   {
     "id": "aloo-simi-tarkari",
@@ -2749,22 +2811,22 @@
     "ingredients": [
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "french_beans",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 120,
+        "quantity": 180,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       }
     ],
@@ -2808,7 +2870,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 21,
+    "proteinGramsPerServing": 3.1
   },
   {
     "id": "aloo-bhendi-bhutuwa",
@@ -2839,22 +2903,22 @@
     "ingredients": [
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "lady_finger",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "cumin",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -2898,7 +2962,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 16,
+    "proteinGramsPerServing": 2.2
   },
   {
     "id": "bhendi-bhutuwa",
@@ -2929,22 +2995,22 @@
     "ingredients": [
       {
         "ingredientId": "lady_finger",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "fenugreek_seeds",
-        "quantity": 120,
+        "quantity": 2,
         "unit": "g"
       }
     ],
@@ -2988,7 +3054,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 14,
+    "proteinGramsPerServing": 1.6
   },
   {
     "id": "chana-aloo-tarkari",
@@ -3019,27 +3087,27 @@
     "ingredients": [
       {
         "ingredientId": "chana",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 120,
+        "quantity": 180,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       }
     ],
@@ -3083,7 +3151,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 25,
+    "proteinGramsPerServing": 9.4
   },
   {
     "id": "ghiraula-chana-tarkari",
@@ -3114,22 +3184,22 @@
     "ingredients": [
       {
         "ingredientId": "sponge_gourd",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "chana",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -3173,7 +3243,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 21,
+    "proteinGramsPerServing": 8.7
   },
   {
     "id": "lauka-ko-tarkari",
@@ -3204,22 +3276,22 @@
     "ingredients": [
       {
         "ingredientId": "bottle_gourd",
-        "quantity": 120,
+        "quantity": 500,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "cumin",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 10,
         "unit": "g"
       }
     ],
@@ -3263,7 +3335,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 15,
+    "proteinGramsPerServing": 2.0
   },
   {
     "id": "tito-karela-bhutuwa",
@@ -3294,22 +3368,22 @@
     "ingredients": [
       {
         "ingredientId": "bitter_gourd",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "salt",
-        "quantity": 120,
+        "quantity": 10,
         "unit": "g"
       }
     ],
@@ -3353,7 +3427,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 15,
+    "proteinGramsPerServing": 1.8
   },
   {
     "id": "karela-aloo-fry",
@@ -3384,22 +3460,22 @@
     "ingredients": [
       {
         "ingredientId": "bitter_gourd",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 120,
+        "quantity": 100,
         "unit": "g"
       }
     ],
@@ -3443,7 +3519,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 18,
+    "proteinGramsPerServing": 2.6
   },
   {
     "id": "parwal-fry",
@@ -3474,22 +3552,22 @@
     "ingredients": [
       {
         "ingredientId": "pointed_gourd",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "coriander_powder",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -3533,7 +3611,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 14,
+    "proteinGramsPerServing": 1.7
   },
   {
     "id": "parwal-aloo-rasila",
@@ -3564,22 +3644,22 @@
     "ingredients": [
       {
         "ingredientId": "pointed_gourd",
-        "quantity": 120,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 120,
+        "quantity": 180,
         "unit": "g"
       }
     ],
@@ -3623,7 +3703,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 21,
+    "proteinGramsPerServing": 3.1
   },
   {
     "id": "chichinda-tarkari",
@@ -3654,22 +3736,22 @@
     "ingredients": [
       {
         "ingredientId": "snake_gourd",
-        "quantity": 120,
+        "quantity": 450,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "cumin",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -3713,7 +3795,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 14,
+    "proteinGramsPerServing": 1.9
   },
   {
     "id": "pharsi-ko-tarkari",
@@ -3744,22 +3828,22 @@
     "ingredients": [
       {
         "ingredientId": "pumpkin",
-        "quantity": 120,
+        "quantity": 500,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "fenugreek_seeds",
-        "quantity": 120,
+        "quantity": 2,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 10,
         "unit": "g"
       }
     ],
@@ -3803,7 +3887,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 14,
+    "proteinGramsPerServing": 2.0
   },
   {
     "id": "karkalo-gaura-tarkari",
@@ -3834,22 +3920,22 @@
     "ingredients": [
       {
         "ingredientId": "colocasia_leaves",
-        "quantity": 120,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "red_chili",
-        "quantity": 120,
+        "quantity": 4,
         "unit": "g"
       }
     ],
@@ -3893,7 +3979,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 15,
+    "proteinGramsPerServing": 2.8
   },
   {
     "id": "pindalu-aloo-tarkari",
@@ -3924,22 +4012,22 @@
     "ingredients": [
       {
         "ingredientId": "colocasia",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "ajwain",
-        "quantity": 120,
+        "quantity": 3,
         "unit": "g"
       }
     ],
@@ -3983,7 +4071,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 19,
+    "proteinGramsPerServing": 2.7
   },
   {
     "id": "ubaleko-tarul-sandheko",
@@ -4014,22 +4104,22 @@
     "ingredients": [
       {
         "ingredientId": "yam",
-        "quantity": 120,
+        "quantity": 500,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 120,
+        "quantity": 2,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 120,
+        "quantity": 10,
         "unit": "g"
       }
     ],
@@ -4073,7 +4163,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 14,
+    "proteinGramsPerServing": 2.0
   },
   {
     "id": "ubaleko-sakarkhanda",
@@ -4104,7 +4196,7 @@
     "ingredients": [
       {
         "ingredientId": "sweet_potato",
-        "quantity": 120,
+        "quantity": 600,
         "unit": "g"
       }
     ],
@@ -4148,7 +4240,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 12,
+    "proteinGramsPerServing": 2.2
   },
   {
     "id": "kurilo-tarkari",
@@ -4179,22 +4273,22 @@
     "ingredients": [
       {
         "ingredientId": "asparagus",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 120,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -4238,7 +4332,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 19,
+    "proteinGramsPerServing": 1.3
   },
   {
     "id": "chyau-tarkari",
@@ -4269,7 +4365,7 @@
     "ingredients": [
       {
         "ingredientId": "mushroom",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
@@ -4279,17 +4375,17 @@
       },
       {
         "ingredientId": "tomato",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       }
     ],
@@ -4333,7 +4429,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 64,
+    "proteinGramsPerServing": 3.5
   },
   {
     "id": "chyau-aloo-jhol",
@@ -4364,22 +4462,22 @@
     "ingredients": [
       {
         "ingredientId": "mushroom",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       }
     ],
@@ -4423,7 +4521,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 55,
+    "proteinGramsPerServing": 3.1
   },
   {
     "id": "bakulla-ko-tarkari",
@@ -4454,22 +4554,22 @@
     "ingredients": [
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       }
     ],
@@ -4513,7 +4613,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 16,
+    "proteinGramsPerServing": 2.1
   },
   {
     "id": "bodi-aloo-jhol",
@@ -4544,22 +4646,22 @@
     "ingredients": [
       {
         "ingredientId": "bodi",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       }
     ],
@@ -4603,7 +4705,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 19,
+    "proteinGramsPerServing": 2.8
   },
   {
     "id": "baigun-bharta",
@@ -4634,22 +4738,22 @@
     "ingredients": [
       {
         "ingredientId": "eggplant",
-        "quantity": 120,
+        "quantity": 500,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       }
     ],
@@ -4693,7 +4797,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 15,
+    "proteinGramsPerServing": 2.1
   },
   {
     "id": "bhanta-aloo-tarkari",
@@ -4724,22 +4830,22 @@
     "ingredients": [
       {
         "ingredientId": "eggplant",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "fenugreek_seeds",
-        "quantity": 120,
+        "quantity": 2,
         "unit": "g"
       }
     ],
@@ -4783,7 +4889,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 19,
+    "proteinGramsPerServing": 2.7
   },
   {
     "id": "banda-gobi-kerau",
@@ -4814,22 +4922,22 @@
     "ingredients": [
       {
         "ingredientId": "cabbage",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "green_peas",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -4873,7 +4981,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 16,
+    "proteinGramsPerServing": 3.5
   },
   {
     "id": "banda-aloo-tarkari",
@@ -4904,22 +5014,22 @@
     "ingredients": [
       {
         "ingredientId": "cabbage",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 10,
         "unit": "g"
       }
     ],
@@ -4963,7 +5073,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 20,
+    "proteinGramsPerServing": 2.9
   },
   {
     "id": "masyaura-aloo-tarkari",
@@ -4994,27 +5106,27 @@
     "ingredients": [
       {
         "ingredientId": "masyaura",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 120,
+        "quantity": 180,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       }
     ],
@@ -5058,7 +5170,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 24,
+    "proteinGramsPerServing": 3.9
   },
   {
     "id": "masyaura-cauliflower",
@@ -5089,22 +5203,22 @@
     "ingredients": [
       {
         "ingredientId": "masyaura",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "cauliflower",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 10,
         "unit": "g"
       }
     ],
@@ -5148,7 +5262,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 21,
+    "proteinGramsPerServing": 3.4
   },
   {
     "id": "paneer-mutter-nepali",
@@ -5179,22 +5295,22 @@
     "ingredients": [
       {
         "ingredientId": "paneer",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "green_peas",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 120,
+        "quantity": 40,
         "unit": "g"
       },
       {
@@ -5243,7 +5359,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 97,
+    "proteinGramsPerServing": 16.6
   },
   {
     "id": "paneer-palungo-jhol",
@@ -5274,27 +5392,27 @@
     "ingredients": [
       {
         "ingredientId": "paneer",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "spinach",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       }
     ],
@@ -5338,7 +5456,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 95,
+    "proteinGramsPerServing": 15.9
   },
   {
     "id": "gundruk-aloo-jhol",
@@ -5369,27 +5489,27 @@
     "ingredients": [
       {
         "ingredientId": "gundruk",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       }
     ],
@@ -5433,7 +5553,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 26,
+    "proteinGramsPerServing": 4.5
   },
   {
     "id": "sinki-aloo-jhol",
@@ -5464,22 +5586,22 @@
     "ingredients": [
       {
         "ingredientId": "sinki",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -5523,7 +5645,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 23,
+    "proteinGramsPerServing": 3.9
   },
   {
     "id": "mula-ko-tarkari",
@@ -5554,22 +5678,22 @@
     "ingredients": [
       {
         "ingredientId": "radish",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "fenugreek_seeds",
-        "quantity": 120,
+        "quantity": 2,
         "unit": "g"
       }
     ],
@@ -5613,7 +5737,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 13,
+    "proteinGramsPerServing": 1.6
   },
   {
     "id": "mula-bodi-tarkari",
@@ -5644,22 +5770,22 @@
     "ingredients": [
       {
         "ingredientId": "radish",
-        "quantity": 120,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "bodi",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 10,
         "unit": "g"
       }
     ],
@@ -5703,7 +5829,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 15,
+    "proteinGramsPerServing": 1.9
   },
   {
     "id": "karkalo-sinki-jhol",
@@ -5734,22 +5862,22 @@
     "ingredients": [
       {
         "ingredientId": "colocasia_leaves",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "sinki",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -5793,7 +5921,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 21,
+    "proteinGramsPerServing": 4.2
   },
   {
     "id": "chyau-paneer-tarkari",
@@ -5824,22 +5954,22 @@
     "ingredients": [
       {
         "ingredientId": "mushroom",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "paneer",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       }
     ],
@@ -5883,7 +6013,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 121,
+    "proteinGramsPerServing": 13.9
   },
   {
     "id": "mixed-sabji-thali",
@@ -5914,27 +6046,27 @@
     "ingredients": [
       {
         "ingredientId": "cauliflower",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "green_peas",
-        "quantity": 120,
+        "quantity": 100,
         "unit": "g"
       },
       {
         "ingredientId": "french_beans",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "radish",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       }
     ],
@@ -5978,7 +6110,9 @@
       "everyday",
       "vegetables",
       "dal-bhat-side"
-    ]
+    ],
+    "costEstimateNpr": 19,
+    "proteinGramsPerServing": 4.4
   },
   {
     "id": "rayo-saag-tori",
@@ -6009,22 +6143,22 @@
     "ingredients": [
       {
         "ingredientId": "rayo_saag",
-        "quantity": 250,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 250,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 250,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "red_chili",
-        "quantity": 250,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -6062,7 +6196,9 @@
       "quick-cooking",
       "healthy",
       "iron-karahi"
-    ]
+    ],
+    "costEstimateNpr": 17,
+    "proteinGramsPerServing": 3.2
   },
   {
     "id": "palungo-saag-sadha",
@@ -6093,17 +6229,17 @@
     "ingredients": [
       {
         "ingredientId": "spinach",
-        "quantity": 250,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 250,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 250,
+        "quantity": 25,
         "unit": "g"
       }
     ],
@@ -6141,7 +6277,9 @@
       "quick-cooking",
       "healthy",
       "iron-karahi"
-    ]
+    ],
+    "costEstimateNpr": 16,
+    "proteinGramsPerServing": 3.1
   },
   {
     "id": "chamsur-methi-saag",
@@ -6172,22 +6310,22 @@
     "ingredients": [
       {
         "ingredientId": "chamsur_saag",
-        "quantity": 250,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "methi_saag",
-        "quantity": 250,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 250,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 250,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -6225,7 +6363,9 @@
       "quick-cooking",
       "healthy",
       "iron-karahi"
-    ]
+    ],
+    "costEstimateNpr": 17,
+    "proteinGramsPerServing": 3.5
   },
   {
     "id": "tori-ko-saag-fry",
@@ -6256,17 +6396,17 @@
     "ingredients": [
       {
         "ingredientId": "rayo_saag",
-        "quantity": 250,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 250,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "red_chili",
-        "quantity": 250,
+        "quantity": 4,
         "unit": "g"
       }
     ],
@@ -6304,7 +6444,9 @@
       "quick-cooking",
       "healthy",
       "iron-karahi"
-    ]
+    ],
+    "costEstimateNpr": 16,
+    "proteinGramsPerServing": 3.1
   },
   {
     "id": "pharsi-munta-saag",
@@ -6335,22 +6477,22 @@
     "ingredients": [
       {
         "ingredientId": "pumpkin_shoots",
-        "quantity": 250,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 250,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 250,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "red_chili",
-        "quantity": 250,
+        "quantity": 4,
         "unit": "g"
       }
     ],
@@ -6388,7 +6530,9 @@
       "quick-cooking",
       "healthy",
       "iron-karahi"
-    ]
+    ],
+    "costEstimateNpr": 15,
+    "proteinGramsPerServing": 2.8
   },
   {
     "id": "karkalo-gaura-saag",
@@ -6419,17 +6563,17 @@
     "ingredients": [
       {
         "ingredientId": "colocasia_leaves",
-        "quantity": 250,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 250,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 250,
+        "quantity": 25,
         "unit": "g"
       }
     ],
@@ -6467,7 +6611,9 @@
       "quick-cooking",
       "healthy",
       "iron-karahi"
-    ]
+    ],
+    "costEstimateNpr": 16,
+    "proteinGramsPerServing": 3.1
   },
   {
     "id": "mula-ko-saag",
@@ -6498,17 +6644,17 @@
     "ingredients": [
       {
         "ingredientId": "radish",
-        "quantity": 250,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 250,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "fenugreek_seeds",
-        "quantity": 250,
+        "quantity": 2,
         "unit": "g"
       }
     ],
@@ -6546,7 +6692,9 @@
       "quick-cooking",
       "healthy",
       "iron-karahi"
-    ]
+    ],
+    "costEstimateNpr": 12,
+    "proteinGramsPerServing": 1.5
   },
   {
     "id": "methi-saag-aloo",
@@ -6577,17 +6725,17 @@
     "ingredients": [
       {
         "ingredientId": "methi_saag",
-        "quantity": 250,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 250,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 250,
+        "quantity": 35,
         "unit": "g"
       }
     ],
@@ -6625,7 +6773,9 @@
       "quick-cooking",
       "healthy",
       "iron-karahi"
-    ]
+    ],
+    "costEstimateNpr": 18,
+    "proteinGramsPerServing": 3.4
   },
   {
     "id": "spinach-garlic-timmur",
@@ -6656,22 +6806,22 @@
     "ingredients": [
       {
         "ingredientId": "spinach",
-        "quantity": 250,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 250,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 250,
+        "quantity": 2,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 250,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -6709,7 +6859,9 @@
       "quick-cooking",
       "healthy",
       "iron-karahi"
-    ]
+    ],
+    "costEstimateNpr": 16,
+    "proteinGramsPerServing": 3.1
   },
   {
     "id": "gundruk-saag-bhutuwa",
@@ -6745,17 +6897,17 @@
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 250,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 250,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 250,
+        "quantity": 15,
         "unit": "g"
       }
     ],
@@ -6793,7 +6945,9 @@
       "quick-cooking",
       "healthy",
       "iron-karahi"
-    ]
+    ],
+    "costEstimateNpr": 18,
+    "proteinGramsPerServing": 3.3
   },
   {
     "id": "khasiko-masu-jhol",
@@ -6824,12 +6978,12 @@
     "ingredients": [
       {
         "ingredientId": "goat_meat",
-        "quantity": 150,
+        "quantity": 600,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 50,
         "unit": "g"
       },
       {
@@ -6839,17 +6993,17 @@
       },
       {
         "ingredientId": "ginger",
-        "quantity": 150,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 150,
+        "quantity": 250,
         "unit": "g"
       }
     ],
@@ -6894,7 +7048,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 226,
+    "proteinGramsPerServing": 33.2
   },
   {
     "id": "khasiko-pakku",
@@ -6925,27 +7081,27 @@
     "ingredients": [
       {
         "ingredientId": "goat_meat",
-        "quantity": 150,
+        "quantity": 800,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 60,
         "unit": "g"
       },
       {
         "ingredientId": "cardamom",
-        "quantity": 150,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "cinnamon",
-        "quantity": 150,
+        "quantity": 3,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 30,
         "unit": "g"
       }
     ],
@@ -6990,7 +7146,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 298,
+    "proteinGramsPerServing": 42.3
   },
   {
     "id": "khasiko-bhutuwa",
@@ -7021,12 +7179,12 @@
     "ingredients": [
       {
         "ingredientId": "goat_meat",
-        "quantity": 150,
+        "quantity": 600,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 45,
         "unit": "g"
       },
       {
@@ -7036,12 +7194,12 @@
       },
       {
         "ingredientId": "ginger",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -7086,7 +7244,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 220,
+    "proteinGramsPerServing": 32.3
   },
   {
     "id": "khasiko-ledobedo",
@@ -7117,27 +7277,27 @@
     "ingredients": [
       {
         "ingredientId": "goat_meat",
-        "quantity": 150,
+        "quantity": 600,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 150,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 150,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 45,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 25,
         "unit": "g"
       }
     ],
@@ -7182,7 +7342,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 225,
+    "proteinGramsPerServing": 33.3
   },
   {
     "id": "khasiko-sekuwa",
@@ -7213,27 +7375,27 @@
     "ingredients": [
       {
         "ingredientId": "goat_meat",
-        "quantity": 150,
+        "quantity": 700,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 150,
+        "quantity": 3,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -7278,7 +7440,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 251,
+    "proteinGramsPerServing": 37.0
   },
   {
     "id": "khasiko-sukuti-fry",
@@ -7309,27 +7473,27 @@
     "ingredients": [
       {
         "ingredientId": "goat_meat",
-        "quantity": 150,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 150,
+        "quantity": 120,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 150,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 15,
         "unit": "g"
       }
     ],
@@ -7374,7 +7538,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 148,
+    "proteinGramsPerServing": 21.6
   },
   {
     "id": "khasiko-sukuti-jhol",
@@ -7405,27 +7571,27 @@
     "ingredients": [
       {
         "ingredientId": "goat_meat",
-        "quantity": 150,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 150,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 150,
+        "quantity": 2,
         "unit": "g"
       }
     ],
@@ -7470,7 +7636,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 150,
+    "proteinGramsPerServing": 21.9
   },
   {
     "id": "kukhura-ko-masu-jhol",
@@ -7501,12 +7669,12 @@
     "ingredients": [
       {
         "ingredientId": "chicken",
-        "quantity": 150,
+        "quantity": 700,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 50,
         "unit": "g"
       },
       {
@@ -7516,17 +7684,17 @@
       },
       {
         "ingredientId": "tomato",
-        "quantity": 150,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 150,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 25,
         "unit": "g"
       }
     ],
@@ -7571,7 +7739,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 152,
+    "proteinGramsPerServing": 35.0
   },
   {
     "id": "kukhura-bhutuwa",
@@ -7602,12 +7772,12 @@
     "ingredients": [
       {
         "ingredientId": "chicken",
-        "quantity": 150,
+        "quantity": 650,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 45,
         "unit": "g"
       },
       {
@@ -7617,12 +7787,12 @@
       },
       {
         "ingredientId": "ginger",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -7667,7 +7837,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 137,
+    "proteinGramsPerServing": 31.6
   },
   {
     "id": "kukhura-ledobedo",
@@ -7698,27 +7870,27 @@
     "ingredients": [
       {
         "ingredientId": "chicken",
-        "quantity": 150,
+        "quantity": 650,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 150,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 150,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 45,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 25,
         "unit": "g"
       }
     ],
@@ -7763,7 +7935,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 142,
+    "proteinGramsPerServing": 32.7
   },
   {
     "id": "kukhura-chhoyela",
@@ -7794,32 +7968,32 @@
     "ingredients": [
       {
         "ingredientId": "chicken",
-        "quantity": 150,
+        "quantity": 600,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 150,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 150,
+        "quantity": 3,
         "unit": "g"
       },
       {
         "ingredientId": "fenugreek_seeds",
-        "quantity": 150,
+        "quantity": 3,
         "unit": "g"
       }
     ],
@@ -7864,7 +8038,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 125,
+    "proteinGramsPerServing": 28.9
   },
   {
     "id": "ranga-ko-chhoyela",
@@ -7895,32 +8071,32 @@
     "ingredients": [
       {
         "ingredientId": "buff_meat",
-        "quantity": 150,
+        "quantity": 600,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 150,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 150,
+        "quantity": 3,
         "unit": "g"
       },
       {
         "ingredientId": "fenugreek_seeds",
-        "quantity": 150,
+        "quantity": 3,
         "unit": "g"
       }
     ],
@@ -7965,7 +8141,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 151,
+    "proteinGramsPerServing": 30.4
   },
   {
     "id": "ranga-ko-kachila",
@@ -7996,22 +8174,22 @@
     "ingredients": [
       {
         "ingredientId": "buff_meat",
-        "quantity": 150,
+        "quantity": 500,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "fenugreek_seeds",
-        "quantity": 150,
+        "quantity": 4,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -8056,7 +8234,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 124,
+    "proteinGramsPerServing": 25.2
   },
   {
     "id": "ranga-ko-bhutuwa",
@@ -8087,12 +8267,12 @@
     "ingredients": [
       {
         "ingredientId": "buff_meat",
-        "quantity": 150,
+        "quantity": 600,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 45,
         "unit": "g"
       },
       {
@@ -8102,12 +8282,12 @@
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -8152,7 +8332,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 153,
+    "proteinGramsPerServing": 30.8
   },
   {
     "id": "ranga-ko-jhol",
@@ -8183,27 +8365,27 @@
     "ingredients": [
       {
         "ingredientId": "buff_meat",
-        "quantity": 150,
+        "quantity": 650,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 50,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 150,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 150,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 25,
         "unit": "g"
       }
     ],
@@ -8248,7 +8430,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 170,
+    "proteinGramsPerServing": 34.3
   },
   {
     "id": "machha-ko-jhol",
@@ -8279,27 +8463,27 @@
     "ingredients": [
       {
         "ingredientId": "fish",
-        "quantity": 150,
+        "quantity": 600,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 45,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 150,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -8344,7 +8528,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 117,
+    "proteinGramsPerServing": 28.2
   },
   {
     "id": "machha-tareko",
@@ -8375,27 +8561,27 @@
     "ingredients": [
       {
         "ingredientId": "fish",
-        "quantity": 150,
+        "quantity": 600,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 50,
         "unit": "g"
       },
       {
         "ingredientId": "ajwain",
-        "quantity": 150,
+        "quantity": 3,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 150,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -8440,7 +8626,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 113,
+    "proteinGramsPerServing": 27.3
   },
   {
     "id": "sukuti-sandheko",
@@ -8471,12 +8659,12 @@
     "ingredients": [
       {
         "ingredientId": "goat_meat",
-        "quantity": 150,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 30,
         "unit": "g"
       },
       {
@@ -8486,17 +8674,17 @@
       },
       {
         "ingredientId": "tomato",
-        "quantity": 150,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 150,
+        "quantity": 3,
         "unit": "g"
       }
     ],
@@ -8541,7 +8729,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 152,
+    "proteinGramsPerServing": 22.5
   },
   {
     "id": "mutton-korma-nepali",
@@ -8572,27 +8762,27 @@
     "ingredients": [
       {
         "ingredientId": "goat_meat",
-        "quantity": 150,
+        "quantity": 700,
         "unit": "g"
       },
       {
         "ingredientId": "yogurt",
-        "quantity": 150,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 60,
         "unit": "g"
       },
       {
         "ingredientId": "cardamom",
-        "quantity": 150,
+        "quantity": 5,
         "unit": "g"
       },
       {
         "ingredientId": "cinnamon",
-        "quantity": 150,
+        "quantity": 3,
         "unit": "g"
       }
     ],
@@ -8637,7 +8827,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 292,
+    "proteinGramsPerServing": 39.1
   },
   {
     "id": "kukhura-timur-roast",
@@ -8668,27 +8860,27 @@
     "ingredients": [
       {
         "ingredientId": "chicken",
-        "quantity": 150,
+        "quantity": 700,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 150,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 150,
+        "quantity": 3,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 150,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 150,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -8733,7 +8925,9 @@
       "festive",
       "pressure-cooker",
       "dashain"
-    ]
+    ],
+    "costEstimateNpr": 143,
+    "proteinGramsPerServing": 33.5
   },
   {
     "id": "golbheda-timur-achar",
@@ -8764,27 +8958,27 @@
     "ingredients": [
       {
         "ingredientId": "tomato",
-        "quantity": 100,
+        "quantity": 600,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 100,
+        "quantity": 4,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 100,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "coriander_fresh",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       }
     ],
@@ -8824,7 +9018,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 16,
+    "proteinGramsPerServing": 2.9
   },
   {
     "id": "golbheda-til-achar",
@@ -8855,22 +9051,22 @@
     "ingredients": [
       {
         "ingredientId": "tomato",
-        "quantity": 100,
+        "quantity": 600,
         "unit": "g"
       },
       {
         "ingredientId": "sesame",
-        "quantity": 100,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       }
     ],
@@ -8910,7 +9106,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 21,
+    "proteinGramsPerServing": 4.2
   },
   {
     "id": "gundruk-sandheko",
@@ -8941,32 +9139,32 @@
     "ingredients": [
       {
         "ingredientId": "gundruk",
-        "quantity": 100,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 100,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 100,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       }
     ],
@@ -9006,7 +9204,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 29,
+    "proteinGramsPerServing": 5.3
   },
   {
     "id": "sinki-sandheko",
@@ -9037,27 +9237,27 @@
     "ingredients": [
       {
         "ingredientId": "sinki",
-        "quantity": 100,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 100,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 100,
+        "quantity": 3,
         "unit": "g"
       }
     ],
@@ -9097,7 +9297,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 25,
+    "proteinGramsPerServing": 4.5
   },
   {
     "id": "mula-ko-achar-traditional",
@@ -9128,22 +9330,22 @@
     "ingredients": [
       {
         "ingredientId": "radish",
-        "quantity": 100,
+        "quantity": 700,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 100,
+        "quantity": 8,
         "unit": "g"
       },
       {
         "ingredientId": "red_chili",
-        "quantity": 100,
+        "quantity": 10,
         "unit": "g"
       }
     ],
@@ -9183,7 +9385,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 22,
+    "proteinGramsPerServing": 3.0
   },
   {
     "id": "mula-kanche-achar",
@@ -9214,27 +9418,27 @@
     "ingredients": [
       {
         "ingredientId": "radish",
-        "quantity": 100,
+        "quantity": 500,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "fenugreek_seeds",
-        "quantity": 100,
+        "quantity": 3,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 100,
+        "quantity": 6,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       }
     ],
@@ -9274,7 +9478,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 17,
+    "proteinGramsPerServing": 2.2
   },
   {
     "id": "kakro-ko-achar",
@@ -9305,27 +9511,27 @@
     "ingredients": [
       {
         "ingredientId": "cucumber",
-        "quantity": 100,
+        "quantity": 500,
         "unit": "g"
       },
       {
         "ingredientId": "sesame",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "fenugreek_seeds",
-        "quantity": 100,
+        "quantity": 2,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       }
     ],
@@ -9365,7 +9571,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 18,
+    "proteinGramsPerServing": 3.4
   },
   {
     "id": "aloo-ko-achar-nepali",
@@ -9396,32 +9604,32 @@
     "ingredients": [
       {
         "ingredientId": "potato",
-        "quantity": 100,
+        "quantity": 600,
         "unit": "g"
       },
       {
         "ingredientId": "sesame",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "cucumber",
-        "quantity": 100,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 45,
         "unit": "g"
       },
       {
         "ingredientId": "fenugreek_seeds",
-        "quantity": 100,
+        "quantity": 3,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       }
     ],
@@ -9461,7 +9669,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 25,
+    "proteinGramsPerServing": 4.5
   },
   {
     "id": "timmur-ko-chhop",
@@ -9492,12 +9702,12 @@
     "ingredients": [
       {
         "ingredientId": "timur",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "red_chili",
-        "quantity": 100,
+        "quantity": 60,
         "unit": "g"
       }
     ],
@@ -9537,7 +9747,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 19,
+    "proteinGramsPerServing": 1.8
   },
   {
     "id": "til-ko-chhop",
@@ -9568,17 +9780,17 @@
     "ingredients": [
       {
         "ingredientId": "sesame",
-        "quantity": 100,
+        "quantity": 80,
         "unit": "g"
       },
       {
         "ingredientId": "red_chili",
-        "quantity": 100,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 100,
+        "quantity": 10,
         "unit": "g"
       }
     ],
@@ -9618,7 +9830,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 17,
+    "proteinGramsPerServing": 4.6
   },
   {
     "id": "lasun-khursani-chhop",
@@ -9649,17 +9863,17 @@
     "ingredients": [
       {
         "ingredientId": "garlic",
-        "quantity": 100,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "red_chili",
-        "quantity": 100,
+        "quantity": 80,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 40,
         "unit": "g"
       }
     ],
@@ -9699,7 +9913,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 31,
+    "proteinGramsPerServing": 2.6
   },
   {
     "id": "lapsi-khatto-mittho-achar",
@@ -9730,22 +9946,22 @@
     "ingredients": [
       {
         "ingredientId": "lapsi",
-        "quantity": 100,
+        "quantity": 500,
         "unit": "g"
       },
       {
         "ingredientId": "chaku",
-        "quantity": 100,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "red_chili",
-        "quantity": 100,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 40,
         "unit": "g"
       }
     ],
@@ -9785,7 +10001,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 73,
+    "proteinGramsPerServing": 2.0
   },
   {
     "id": "dallay-khursani-achar",
@@ -9816,17 +10034,17 @@
     "ingredients": [
       {
         "ingredientId": "green_chili",
-        "quantity": 100,
+        "quantity": 500,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 50,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 100,
+        "quantity": 60,
         "unit": "g"
       }
     ],
@@ -9866,7 +10084,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 28,
+    "proteinGramsPerServing": 2.8
   },
   {
     "id": "karela-ko-achar",
@@ -9897,22 +10117,22 @@
     "ingredients": [
       {
         "ingredientId": "bitter_gourd",
-        "quantity": 100,
+        "quantity": 500,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 45,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 100,
+        "quantity": 8,
         "unit": "g"
       },
       {
         "ingredientId": "red_chili",
-        "quantity": 100,
+        "quantity": 12,
         "unit": "g"
       }
     ],
@@ -9952,7 +10172,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 19,
+    "proteinGramsPerServing": 2.3
   },
   {
     "id": "aam-ko-khatto-achar",
@@ -9983,22 +10205,22 @@
     "ingredients": [
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 45,
         "unit": "g"
       },
       {
         "ingredientId": "fenugreek_seeds",
-        "quantity": 100,
+        "quantity": 3,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 100,
+        "quantity": 8,
         "unit": "g"
       },
       {
         "ingredientId": "red_chili",
-        "quantity": 100,
+        "quantity": 15,
         "unit": "g"
       }
     ],
@@ -10038,7 +10260,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 10,
+    "proteinGramsPerServing": 0.5
   },
   {
     "id": "nimbu-ko-achar",
@@ -10069,22 +10293,22 @@
     "ingredients": [
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 45,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 100,
+        "quantity": 8,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "fenugreek_seeds",
-        "quantity": 100,
+        "quantity": 3,
         "unit": "g"
       }
     ],
@@ -10124,7 +10348,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 8,
+    "proteinGramsPerServing": 0.4
   },
   {
     "id": "bhatmas-sandheko",
@@ -10155,27 +10381,27 @@
     "ingredients": [
       {
         "ingredientId": "bhatmas",
-        "quantity": 100,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 100,
+        "quantity": 120,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 100,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 30,
         "unit": "g"
       }
     ],
@@ -10215,7 +10441,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 26,
+    "proteinGramsPerServing": 20.6
   },
   {
     "id": "alu-bodi-ko-achar",
@@ -10246,27 +10474,27 @@
     "ingredients": [
       {
         "ingredientId": "potato",
-        "quantity": 100,
+        "quantity": 500,
         "unit": "g"
       },
       {
         "ingredientId": "bodi",
-        "quantity": 100,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "sesame",
-        "quantity": 100,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 100,
+        "quantity": 45,
         "unit": "g"
       },
       {
         "ingredientId": "fenugreek_seeds",
-        "quantity": 100,
+        "quantity": 3,
         "unit": "g"
       }
     ],
@@ -10306,7 +10534,9 @@
       "spicy",
       "timur",
       "side-dish"
-    ]
+    ],
+    "costEstimateNpr": 22,
+    "proteinGramsPerServing": 3.8
   },
   {
     "id": "veg-momo-traditional",
@@ -10336,32 +10566,32 @@
     "ingredients": [
       {
         "ingredientId": "cabbage",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "paneer",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 120,
+        "quantity": 100,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "wheat_flour",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       }
     ],
@@ -10401,7 +10631,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 50,
+    "proteinGramsPerServing": 15.3
   },
   {
     "id": "chicken-momo-steamed",
@@ -10431,32 +10663,32 @@
     "ingredients": [
       {
         "ingredientId": "chicken",
-        "quantity": 120,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 120,
+        "quantity": 100,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "wheat_flour",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "coriander_fresh",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -10496,7 +10728,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 78,
+    "proteinGramsPerServing": 24.2
   },
   {
     "id": "buff-momo-kathmandu",
@@ -10526,7 +10760,7 @@
     "ingredients": [
       {
         "ingredientId": "buff_meat",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
@@ -10536,17 +10770,17 @@
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 15,
         "unit": "g"
       },
       {
         "ingredientId": "wheat_flour",
-        "quantity": 120,
+        "quantity": 280,
         "unit": "g"
       }
     ],
@@ -10586,7 +10820,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 105,
+    "proteinGramsPerServing": 28.3
   },
   {
     "id": "jhol-momo-achar",
@@ -10616,27 +10852,27 @@
     "ingredients": [
       {
         "ingredientId": "chicken",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "sesame",
-        "quantity": 120,
+        "quantity": 30,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 120,
+        "quantity": 3,
         "unit": "g"
       },
       {
         "ingredientId": "wheat_flour",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       }
     ],
@@ -10676,7 +10912,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 75,
+    "proteinGramsPerServing": 24.0
   },
   {
     "id": "veg-chowmein-street",
@@ -10706,27 +10944,27 @@
     "ingredients": [
       {
         "ingredientId": "wheat_flour",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "cabbage",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 40,
         "unit": "g"
       }
     ],
@@ -10766,7 +11004,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 20,
+    "proteinGramsPerServing": 9.8
   },
   {
     "id": "chicken-chowmein",
@@ -10796,27 +11036,27 @@
     "ingredients": [
       {
         "ingredientId": "chicken",
-        "quantity": 120,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "wheat_flour",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "cabbage",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 40,
         "unit": "g"
       }
     ],
@@ -10856,7 +11096,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 88,
+    "proteinGramsPerServing": 26.4
   },
   {
     "id": "veg-thukpa-soup",
@@ -10886,32 +11128,32 @@
     "ingredients": [
       {
         "ingredientId": "wheat_flour",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "cabbage",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "radish",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "tomato",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -10951,7 +11193,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 21,
+    "proteinGramsPerServing": 9.7
   },
   {
     "id": "buff-thukpa-sherpa",
@@ -10981,27 +11225,27 @@
     "ingredients": [
       {
         "ingredientId": "buff_meat",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "wheat_flour",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "cabbage",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "timur",
-        "quantity": 120,
+        "quantity": 3,
         "unit": "g"
       }
     ],
@@ -11041,7 +11285,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 107,
+    "proteinGramsPerServing": 28.0
   },
   {
     "id": "bara-wo-plain",
@@ -11071,22 +11317,22 @@
     "ingredients": [
       {
         "ingredientId": "kalo_dal",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -11126,7 +11372,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 20,
+    "proteinGramsPerServing": 15.2
   },
   {
     "id": "bara-wo-egg",
@@ -11156,17 +11404,17 @@
     "ingredients": [
       {
         "ingredientId": "kalo_dal",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -11206,7 +11454,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 19,
+    "proteinGramsPerServing": 15.1
   },
   {
     "id": "chataamari-plain",
@@ -11236,12 +11486,12 @@
     "ingredients": [
       {
         "ingredientId": "rice_flour",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 120,
+        "quantity": 40,
         "unit": "g"
       }
     ],
@@ -11281,7 +11531,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 22,
+    "proteinGramsPerServing": 3.8
   },
   {
     "id": "chataamari-keema",
@@ -11311,22 +11563,22 @@
     "ingredients": [
       {
         "ingredientId": "rice_flour",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "buff_meat",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       }
     ],
@@ -11366,7 +11618,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 81,
+    "proteinGramsPerServing": 19.4
   },
   {
     "id": "aloo-chop-nepali",
@@ -11396,27 +11650,27 @@
     "ingredients": [
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 500,
         "unit": "g"
       },
       {
         "ingredientId": "onion",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 20,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "wheat_flour",
-        "quantity": 120,
+        "quantity": 100,
         "unit": "g"
       }
     ],
@@ -11456,7 +11710,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 21,
+    "proteinGramsPerServing": 5.3
   },
   {
     "id": "pyaaz-pakoda",
@@ -11486,17 +11742,17 @@
     "ingredients": [
       {
         "ingredientId": "onion",
-        "quantity": 120,
+        "quantity": 500,
         "unit": "g"
       },
       {
         "ingredientId": "green_chili",
-        "quantity": 120,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 60,
         "unit": "g"
       }
     ],
@@ -11536,7 +11792,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 18,
+    "proteinGramsPerServing": 2.0
   },
   {
     "id": "cauliflower-pakoda",
@@ -11566,22 +11824,22 @@
     "ingredients": [
       {
         "ingredientId": "cauliflower",
-        "quantity": 120,
+        "quantity": 450,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 60,
         "unit": "g"
       },
       {
         "ingredientId": "turmeric",
-        "quantity": 120,
+        "quantity": 6,
         "unit": "g"
       },
       {
         "ingredientId": "ajwain",
-        "quantity": 120,
+        "quantity": 3,
         "unit": "g"
       }
     ],
@@ -11621,7 +11879,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 18,
+    "proteinGramsPerServing": 1.9
   },
   {
     "id": "nepali-samosa",
@@ -11651,27 +11911,27 @@
     "ingredients": [
       {
         "ingredientId": "wheat_flour",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "potato",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "green_peas",
-        "quantity": 120,
+        "quantity": 150,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 120,
+        "quantity": 50,
         "unit": "g"
       },
       {
         "ingredientId": "cumin",
-        "quantity": 120,
+        "quantity": 5,
         "unit": "g"
       }
     ],
@@ -11711,7 +11971,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 39,
+    "proteinGramsPerServing": 11.7
   },
   {
     "id": "yomari-chaku",
@@ -11741,22 +12003,22 @@
     "ingredients": [
       {
         "ingredientId": "rice_flour",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "chaku",
-        "quantity": 120,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "sesame",
-        "quantity": 120,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 120,
+        "quantity": 50,
         "unit": "g"
       }
     ],
@@ -11796,7 +12058,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 49,
+    "proteinGramsPerServing": 6.9
   },
   {
     "id": "yomari-khuwa",
@@ -11826,17 +12090,17 @@
     "ingredients": [
       {
         "ingredientId": "rice_flour",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "milk",
-        "quantity": 120,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "cardamom",
-        "quantity": 120,
+        "quantity": 4,
         "unit": "g"
       }
     ],
@@ -11876,7 +12140,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 24,
+    "proteinGramsPerServing": 7.8
   },
   {
     "id": "gwaramari-newari",
@@ -11906,17 +12172,17 @@
     "ingredients": [
       {
         "ingredientId": "wheat_flour",
-        "quantity": 120,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "ajwain",
-        "quantity": 120,
+        "quantity": 4,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 30,
         "unit": "g"
       }
     ],
@@ -11956,7 +12222,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 11,
+    "proteinGramsPerServing": 8.3
   },
   {
     "id": "samay-baji-set",
@@ -11986,27 +12254,27 @@
     "ingredients": [
       {
         "ingredientId": "chiura",
-        "quantity": 120,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "kalo_dal",
-        "quantity": 120,
+        "quantity": 200,
         "unit": "g"
       },
       {
         "ingredientId": "ginger",
-        "quantity": 120,
+        "quantity": 25,
         "unit": "g"
       },
       {
         "ingredientId": "mustard_oil",
-        "quantity": 120,
+        "quantity": 35,
         "unit": "g"
       },
       {
         "ingredientId": "garlic",
-        "quantity": 120,
+        "quantity": 25,
         "unit": "g"
       }
     ],
@@ -12046,7 +12314,9 @@
       "snack",
       "street-food",
       "tea-time"
-    ]
+    ],
+    "costEstimateNpr": 40,
+    "proteinGramsPerServing": 19.2
   },
   {
     "id": "sel-roti-traditional",
@@ -12076,22 +12346,22 @@
     "ingredients": [
       {
         "ingredientId": "rice_flour",
-        "quantity": 150,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 80,
         "unit": "g"
       },
       {
         "ingredientId": "milk",
-        "quantity": 150,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "cardamom",
-        "quantity": 150,
+        "quantity": 4,
         "unit": "g"
       }
     ],
@@ -12130,7 +12400,9 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 55,
+    "proteinGramsPerServing": 8.5
   },
   {
     "id": "malpuwa-sweet",
@@ -12160,27 +12432,27 @@
     "ingredients": [
       {
         "ingredientId": "wheat_flour",
-        "quantity": 150,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "milk",
-        "quantity": 150,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 70,
         "unit": "g"
       },
       {
         "ingredientId": "cardamom",
-        "quantity": 150,
+        "quantity": 2,
         "unit": "g"
       },
       {
         "ingredientId": "cardamom",
-        "quantity": 150,
+        "quantity": 1,
         "unit": "g"
       }
     ],
@@ -12219,7 +12491,9 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 50,
+    "proteinGramsPerServing": 12.5
   },
   {
     "id": "kheer-nepali",
@@ -12249,22 +12523,22 @@
     "ingredients": [
       {
         "ingredientId": "rice",
-        "quantity": 150,
+        "quantity": 120,
         "unit": "g"
       },
       {
         "ingredientId": "milk",
-        "quantity": 150,
+        "quantity": 800,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 40,
         "unit": "g"
       },
       {
         "ingredientId": "cardamom",
-        "quantity": 150,
+        "quantity": 4,
         "unit": "g"
       }
     ],
@@ -12303,7 +12577,9 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 48,
+    "proteinGramsPerServing": 8.6
   },
   {
     "id": "dar-kheer",
@@ -12338,17 +12614,17 @@
       },
       {
         "ingredientId": "milk",
-        "quantity": 150,
+        "quantity": 900,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 50,
         "unit": "g"
       },
       {
         "ingredientId": "cardamom",
-        "quantity": 150,
+        "quantity": 4,
         "unit": "g"
       }
     ],
@@ -12387,7 +12663,9 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 56,
+    "proteinGramsPerServing": 9.9
   },
   {
     "id": "puri-festive",
@@ -12417,12 +12695,12 @@
     "ingredients": [
       {
         "ingredientId": "wheat_flour",
-        "quantity": 150,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 60,
         "unit": "g"
       }
     ],
@@ -12461,7 +12739,9 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 33,
+    "proteinGramsPerServing": 11.0
   },
   {
     "id": "phulka-roti",
@@ -12491,7 +12771,7 @@
     "ingredients": [
       {
         "ingredientId": "wheat_flour",
-        "quantity": 150,
+        "quantity": 400,
         "unit": "g"
       }
     ],
@@ -12530,7 +12810,9 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 9,
+    "proteinGramsPerServing": 11.0
   },
   {
     "id": "kodo-ko-roti",
@@ -12560,12 +12842,12 @@
     "ingredients": [
       {
         "ingredientId": "millet_flour",
-        "quantity": 150,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 30,
         "unit": "g"
       }
     ],
@@ -12604,7 +12886,9 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 21,
+    "proteinGramsPerServing": 11.0
   },
   {
     "id": "phapar-ko-roti",
@@ -12634,12 +12918,12 @@
     "ingredients": [
       {
         "ingredientId": "buckwheat_flour",
-        "quantity": 150,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 30,
         "unit": "g"
       }
     ],
@@ -12678,7 +12962,9 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 21,
+    "proteinGramsPerServing": 13.0
   },
   {
     "id": "makai-ko-roti",
@@ -12708,12 +12994,12 @@
     "ingredients": [
       {
         "ingredientId": "wheat_flour",
-        "quantity": 150,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 30,
         "unit": "g"
       }
     ],
@@ -12752,7 +13038,9 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 21,
+    "proteinGramsPerServing": 11.0
   },
   {
     "id": "suji-ko-haluwa",
@@ -12782,22 +13070,22 @@
     "ingredients": [
       {
         "ingredientId": "semolina",
-        "quantity": 150,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 60,
         "unit": "g"
       },
       {
         "ingredientId": "milk",
-        "quantity": 150,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "cardamom",
-        "quantity": 150,
+        "quantity": 3,
         "unit": "g"
       }
     ],
@@ -12836,7 +13124,9 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 44,
+    "proteinGramsPerServing": 10.7
   },
   {
     "id": "til-ko-laddu",
@@ -12866,12 +13156,12 @@
     "ingredients": [
       {
         "ingredientId": "sesame",
-        "quantity": 150,
+        "quantity": 300,
         "unit": "g"
       },
       {
         "ingredientId": "chaku",
-        "quantity": 150,
+        "quantity": 250,
         "unit": "g"
       }
     ],
@@ -12910,7 +13200,9 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 43,
+    "proteinGramsPerServing": 14.1
   },
   {
     "id": "chaku-ghyu",
@@ -12940,12 +13232,12 @@
     "ingredients": [
       {
         "ingredientId": "chaku",
-        "quantity": 150,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 50,
         "unit": "g"
       }
     ],
@@ -12984,7 +13276,9 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 50,
+    "proteinGramsPerServing": 1.0
   },
   {
     "id": "thekuwa-chhath",
@@ -13014,22 +13308,22 @@
     "ingredients": [
       {
         "ingredientId": "wheat_flour",
-        "quantity": 150,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 60,
         "unit": "g"
       },
       {
         "ingredientId": "chaku",
-        "quantity": 150,
+        "quantity": 250,
         "unit": "g"
       },
       {
         "ingredientId": "cardamom",
-        "quantity": 150,
+        "quantity": 3,
         "unit": "g"
       }
     ],
@@ -13068,7 +13362,9 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 55,
+    "proteinGramsPerServing": 10.3
   },
   {
     "id": "anarsa-tihar",
@@ -13098,17 +13394,17 @@
     "ingredients": [
       {
         "ingredientId": "rice_flour",
-        "quantity": 150,
+        "quantity": 350,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 70,
         "unit": "g"
       },
       {
         "ingredientId": "sesame",
-        "quantity": 150,
+        "quantity": 50,
         "unit": "g"
       }
     ],
@@ -13147,7 +13443,9 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 40,
+    "proteinGramsPerServing": 7.5
   },
   {
     "id": "fini-roti-layered",
@@ -13177,12 +13475,12 @@
     "ingredients": [
       {
         "ingredientId": "wheat_flour",
-        "quantity": 150,
+        "quantity": 400,
         "unit": "g"
       },
       {
         "ingredientId": "ghee",
-        "quantity": 150,
+        "quantity": 100,
         "unit": "g"
       },
       {
@@ -13226,6 +13524,8 @@
       "tihar",
       "dashain",
       "traditional"
-    ]
+    ],
+    "costEstimateNpr": 52,
+    "proteinGramsPerServing": 13.2
   }
 ]

@@ -85,6 +85,10 @@ export interface Recipe {
   seasonality: string[];
   pairingIds?: string[];
   tags: string[];
+  /** Estimated market cost of one serving, in the pack manifest's currency. */
+  costEstimateNpr: number;
+  /** Grams of protein in one serving. */
+  proteinGramsPerServing: number;
 }
 
 export interface Festival {

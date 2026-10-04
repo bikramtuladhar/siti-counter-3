@@ -212,7 +212,12 @@ class RegionRecipe {
   final List<String> tags;
   final double rating;
   final int caloriesPerServing;
+
+  /// Estimated market cost of one serving, in the pack manifest's currency.
   final int costEstimateNpr;
+
+  /// Grams of protein in one serving.
+  final double proteinGramsPerServing;
 
   const RegionRecipe({
     required this.id,
@@ -234,6 +239,7 @@ class RegionRecipe {
     this.rating = 4.8,
     this.caloriesPerServing = 220,
     this.costEstimateNpr = 65,
+    this.proteinGramsPerServing = 0,
   });
 
   factory RegionRecipe.fromJson(Map<String, dynamic> json) {
@@ -266,6 +272,8 @@ class RegionRecipe {
       rating: (json['rating'] as num?)?.toDouble() ?? 4.8,
       caloriesPerServing: json['caloriesPerServing'] as int? ?? 220,
       costEstimateNpr: json['costEstimateNpr'] as int? ?? 65,
+      proteinGramsPerServing:
+          (json['proteinGramsPerServing'] as num?)?.toDouble() ?? 0,
     );
   }
 }

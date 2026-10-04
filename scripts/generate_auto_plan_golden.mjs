@@ -1,0 +1,133 @@
+#!/usr/bin/env node
+/**
+ * Regenerates fixtures/auto_plan_golden.json from the TypeScript engine.
+ *
+ * Both engines ship the same planner semantics, so their tests assert against this one file:
+ * if a change to either engine moves a plan, exactly one of the two suites fails. Run after any
+ * deliberate change to the planner and review the diff before committing it.
+ *
+ *     node scripts/generate_auto_plan_golden.mjs
+ */
+import { readFileSync, writeFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { generateAutoPlan } from '../packages/kitchen_engine_ts/dist/auto_plan.js'
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
+const PACK = join(ROOT, 'packages', 'region-packs', 'nepal-bagmati')
+
+const rawRecipes = JSON.parse(readFileSync(join(PACK, 'recipes.json'), 'utf8'))
+const rawIngredients = JSON.parse(readFileSync(join(PACK, 'ingredients.json'), 'utf8'))
+
+const recipes = rawRecipes.map((r) => ({
+  id: r.id,
+  titleEn: r.titleEn,
+  titleNe: r.titleNe,
+  category: r.category,
+  dietary: r.dietary,
+  prepTimeMinutes: r.prepTimeMinutes,
+  cookTimeMinutes: r.cookTimeMinutes,
+  servings: r.servings,
+  costEstimateNpr: r.costEstimateNpr,
+  proteinGramsPerServing: r.proteinGramsPerServing,
+  ingredients: r.ingredients.map((i) => ({ ingredientId: i.ingredientId, quantityGrams: i.quantity })),
+  tags: r.tags,
+}))
+const ingredients = rawIngredients
+
+// Slot ids deliberately sort differently from their sortOrder, so the fixtures also pin that a
+// day renders in rhythm order rather than alphabetically.
+const rhythmSlots = [
+  { id: 'morning_dal_bhat', nameEn: 'Morning Dal Bhat', nameNe: 'बिहानीको दाल भात', sortOrder: 1 },
+  { id: 'afternoon_khaja', nameEn: 'Afternoon Khaja', nameNe: 'दिउँसोको खाजा', sortOrder: 2 },
+  { id: 'evening_dal_bhat', nameEn: 'Evening Dal Bhat', nameNe: 'साँझको दाल भात', sortOrder: 3 },
+]
+
+const MUSTARD_SEVERE = [
+  { allergen: 'mustard', severity: 'severe', memberName: 'Bikram' },
+]
+const DAIRY_SEVERE = [{ allergen: 'dairy', severity: 'severe', memberName: 'Sita' }]
+
+const scenarios = [
+  { name: 'seasonal-default', overrides: { goal: 'seasonal' } },
+  { name: 'budget-default', overrides: { goal: 'budget' } },
+  { name: 'quick-default', overrides: { goal: 'quick' } },
+  { name: 'high-protein-default', overrides: { goal: 'highProtein' } },
+  { name: 'vegetarian-default', overrides: { goal: 'vegetarian' } },
+  { name: 'seasonal-sharad-override', overrides: { goal: 'seasonal', rituId: 'sharad' } },
+  { name: 'seasonal-mustard-allergy', overrides: { goal: 'seasonal', allergyProfiles: MUSTARD_SEVERE } },
+  { name: 'budget-dairy-allergy-vegetarian', overrides: { goal: 'budget', dietaryRules: ['vegetarian'], allergyProfiles: DAIRY_SEVERE } },
+  { name: 'quick-hindu-fasting', overrides: { goal: 'quick', dietaryRules: ['hinduFasting'] } },
+  { name: 'seasonal-pantry-potato', overrides: { goal: 'seasonal', pantryItems: [{ ingredientId: 'potato', quantityGrams: 100000 }] } },
+  { name: 'seasonal-eight-servings', overrides: { goal: 'seasonal', householdServings: 8 } },
+  { name: 'quick-single-slot-single-day', overrides: { goal: 'quick', days: 1, rhythmSlots: [rhythmSlots[0]] } },
+  { name: 'budget-small-pool-refill', overrides: { goal: 'budget', recipes: recipes.slice(0, 4) } },
+  { name: 'seasonal-three-days', overrides: { goal: 'seasonal', days: 3 } },
+]
+
+/** Everything a consumer of the plan actually depends on, with floats rounded for stability. */
+function project(result) {
+  return {
+    goal: result.goal,
+    startDateIso: result.startDateIso,
+    endDateIso: result.endDateIso,
+    days: result.days,
+    servings: result.servings,
+    rituId: result.rituId,
+    meals: result.meals.map((m) => ({
+      dateIso: m.dateIso,
+      dayIndex: m.dayIndex,
+      slotId: m.slotId,
+      recipeId: m.recipeId,
+      category: m.category,
+      isSeasonal: m.isSeasonal,
+      peakIngredientIds: m.peakIngredientIds,
+      dietaryBadges: m.dietaryBadges,
+      goalScore: m.goalScore,
+      wasteScore: m.wasteScore,
+      repeatedWithinGap: m.repeatedWithinGap,
+    })),
+    grocery: result.grocery.map((line) => ({
+      ingredientId: line.ingredientId,
+      totalRequiredGrams: line.totalRequiredGrams,
+      pantryAvailableGrams: line.pantryAvailableGrams,
+      netNeededGrams: line.netNeededGrams,
+      marketPackageGrams: line.marketPackageGrams,
+      packagesToBuy: line.packagesToBuy,
+      totalPurchasedGrams: line.totalPurchasedGrams,
+      surplusGrams: line.surplusGrams,
+      availability: line.availability,
+      usedByRecipeIds: line.usedByRecipeIds,
+    })),
+    totals: result.totals,
+    exclusions: result.exclusions.map((e) => ({
+      recipeId: e.recipeId,
+      blockedAllergen: e.blockedAllergen ?? null,
+      blockedDietaryRule: e.blockedDietaryRule ?? null,
+    })),
+    unfilledSlots: result.unfilledSlots,
+  }
+}
+
+const fixture = {
+  note: 'Generated by scripts/generate_auto_plan_golden.mjs. Asserted by both kitchen_engine_ts and kitchen_engine_dart.',
+  startDateIso: '2026-10-05',
+  scenarios: {},
+}
+
+for (const scenario of scenarios) {
+  const { name, overrides } = scenario
+  const result = generateAutoPlan({
+    startDateIso: fixture.startDateIso,
+    recipes,
+    ingredients,
+    rhythmSlots,
+    allergyProfiles: [],
+    ...overrides,
+  })
+  fixture.scenarios[name] = project(result)
+  console.log(`${name}: ${result.meals.length} meals, ${result.grocery.length} grocery lines`)
+}
+
+writeFileSync(join(ROOT, 'fixtures', 'auto_plan_golden.json'), `${JSON.stringify(fixture, null, 2)}\n`)
+console.log('wrote fixtures/auto_plan_golden.json')

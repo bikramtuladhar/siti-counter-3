@@ -429,6 +429,7 @@ class AllergenEngine {
     'chicken',
     'kukhura_ko_masu',
     'buff',
+    'buff_meat',
     'ranga_ko_masu',
     'pork',
     'sungur_ko_masu',

@@ -333,6 +333,7 @@ const MEAT_FISH_INGREDIENTS = new Set([
   'chicken',
   'kukhura_ko_masu',
   'buff',
+  'buff_meat',
   'ranga_ko_masu',
   'pork',
   'sungur_ko_masu',
