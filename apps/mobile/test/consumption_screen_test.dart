@@ -8,6 +8,8 @@ import 'package:siti_counter/consumption/vessel_portion_adjuster_dialog.dart';
 import 'package:siti_counter/consumption/household_vessel_calibration_dialog.dart';
 import 'package:siti_counter/consumption/quick_add_outside_food_dialog.dart';
 import 'package:siti_counter/consumption/consumption_dashboard_screen.dart';
+import 'package:siti_counter/consumption/family_nutrition_screen.dart';
+import 'package:kitchen_engine/nutrition_engine.dart';
 
 /// sqflite FFI performs real async I/O, which never completes inside the
 /// fake-async zone of testWidgets. Let real I/O finish, then pump the frame.
@@ -421,6 +423,60 @@ void main() {
       expect(find.byKey(const Key('calibrate_vessels_action')), findsOneWidget);
       expect(find.byKey(const Key('quick_add_snack_action')), findsOneWidget);
       expect(find.byKey(const Key('trigger_post_meal_button')), findsOneWidget);
+    });
+  });
+
+  group('FamilyNutritionScreen Widget Tests', () {
+    testWidgets('adults get gentle bars; children get food groups only', (tester) async {
+      bigScreen(tester);
+      final repo = await makeRepo(tester);
+      final logs = [
+        for (var i = 0; i < 3; i++)
+          ConsumptionEngine.logUsualMeal(
+            recipeId: 'dal-bhat',
+            recipeTitle: 'Dal Bhat',
+            mealSlot: 'evening-dal-bhat',
+            members: testMembers,
+          ),
+      ];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: FamilyNutritionScreen(
+            currentLanguage: 'en',
+            repository: repo,
+            initialMembers: testMembers,
+            initialLogs: logs,
+          ),
+        ),
+      );
+      await settle(tester);
+
+      expect(find.text('Family Nutrition'), findsOneWidget);
+      expect(find.byKey(const Key('bar_m1_protein')), findsOneWidget);
+      expect(find.byKey(const Key('bar_m1_fiber')), findsOneWidget);
+      expect(find.byKey(const Key('bar_m1_seasonal')), findsOneWidget);
+
+      // Child: no bars, no calorie text, only food groups.
+      expect(find.byKey(const Key('bar_m3_protein')), findsNothing);
+      expect(find.byKey(const Key('food_groups_m3')), findsOneWidget);
+      expect(find.textContaining('kcal'), findsNothing);
+    });
+
+    test('intakesFromLogs skips skipped members', () {
+      final log = ConsumptionEngine.logAdjustedMeal(
+        recipeId: 'dal-bhat',
+        recipeTitle: 'Dal Bhat',
+        mealSlot: 'evening-dal-bhat',
+        members: testMembers,
+        adjustments: {
+          'm2': (vesselId: 'katori', vesselCount: 1.0, skipped: true, notes: null),
+        },
+      );
+      expect(intakesFromLogs([log], 'm2'), isEmpty);
+      expect(intakesFromLogs([log], 'm1'), hasLength(1));
+      expect(referenceDalBhatBatch.totals.grams, greaterThan(0));
+      expect(NutritionEngine.yieldFor('rice'), 3.0);
     });
   });
 }

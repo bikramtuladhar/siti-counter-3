@@ -3,6 +3,7 @@ import 'package:kitchen_engine/consumption_engine.dart';
 import '../theme/tokens.dart';
 import '../theme/nepali_typography.dart';
 import 'consumption_repository.dart';
+import 'family_nutrition_screen.dart';
 import 'household_vessel_calibration_dialog.dart';
 import 'quick_add_outside_food_dialog.dart';
 import 'post_meal_usual_dialog.dart';
@@ -137,6 +138,19 @@ class _ConsumptionDashboardScreenState extends State<ConsumptionDashboardScreen>
           ),
         ),
         actions: [
+          IconButton(
+            key: const Key('family_nutrition_action'),
+            icon: const Icon(Icons.eco_rounded, color: SitiColors.freshGreen),
+            tooltip: _isNepali ? 'परिवारको पोषण' : 'Family Nutrition',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => FamilyNutritionScreen(
+                  currentLanguage: widget.currentLanguage,
+                  repository: widget.repository,
+                ),
+              ),
+            ),
+          ),
           IconButton(
             key: const Key('calibrate_vessels_action'),
             icon: const Icon(Icons.straighten_rounded, color: SitiColors.terracotta),
