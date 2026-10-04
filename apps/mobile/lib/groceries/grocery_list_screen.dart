@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kitchen_engine/kitchen_engine.dart';
 import 'package:kitchen_engine/nepali_calendar.dart';
 import 'package:kitchen_engine/region_pack.dart';
+import '../commerce/market_price_service.dart';
 import '../data/region_pack_repository.dart';
 import '../planner/planner_repository.dart';
 import 'market_mode_screen.dart';
@@ -15,6 +16,7 @@ class GroceryListScreen extends StatefulWidget {
   final DateTime weekStart;
   final WeeklyPlannerRepository repository;
   final RegionPackRepository? regionPackRepository;
+  final MarketPriceService? marketPriceService;
   final String currentLanguage;
   final void Function(GroceryListResult result)? onOpenMarketMode;
 
@@ -23,6 +25,7 @@ class GroceryListScreen extends StatefulWidget {
     required this.weekStart,
     required this.repository,
     this.regionPackRepository,
+    this.marketPriceService,
     this.currentLanguage = 'ne',
     this.onOpenMarketMode,
   });
@@ -74,11 +77,13 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
         );
       }).toList();
 
+      final marketPrices = widget.marketPriceService?.toEnginePricesMap();
       final result = generateGroceryListFromRegion(
         meals: mealInputs,
         recipes: _recipes,
         ingredients: _ingredients,
         pantryAvailableGrams: _pantry,
+        marketPrices: marketPrices,
       );
 
       if (mounted) {
@@ -116,11 +121,13 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
       );
     }).toList();
 
+    final marketPrices = widget.marketPriceService?.toEnginePricesMap();
     final updatedResult = generateGroceryListFromRegion(
       meals: mealInputs,
       recipes: _recipes,
       ingredients: _ingredients,
       pantryAvailableGrams: _pantry,
+      marketPrices: marketPrices,
     );
 
     if (mounted) {
@@ -566,6 +573,85 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
                     color: Colors.grey.shade600,
                   ),
                 ),
+
+                // Market price and budget hero indicator
+                if (item.pricePerUnitNpr != null) ...[
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: item.isBudgetHero
+                              ? Colors.green.shade50
+                              : (item.priceTrend == 'rising'
+                                  ? Colors.red.shade50
+                                  : Colors.amber.shade50),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: item.isBudgetHero
+                                ? Colors.green.shade300
+                                : (item.priceTrend == 'rising'
+                                    ? Colors.red.shade200
+                                    : Colors.amber.shade300),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              item.priceTrend == 'falling'
+                                  ? Icons.arrow_downward_rounded
+                                  : (item.priceTrend == 'rising'
+                                      ? Icons.arrow_upward_rounded
+                                      : Icons.remove_rounded),
+                              size: 11,
+                              color: item.isBudgetHero
+                                  ? SitiColors.freshGreen
+                                  : (item.priceTrend == 'rising'
+                                      ? SitiColors.alert
+                                      : SitiColors.warning),
+                            ),
+                            const SizedBox(width: 3),
+                            Text(
+                              _isNepali
+                                  ? (item.isBudgetHero
+                                      ? 'बजेट हिरो ⭐ (रु ${NepaliCalendar.toDevanagariDigits(item.pricePerUnitNpr!)}/केजी)'
+                                      : (item.priceTrend == 'rising'
+                                          ? 'बढ्दो दर (रु ${NepaliCalendar.toDevanagariDigits(item.pricePerUnitNpr!)}/केजी)'
+                                          : 'स्थिर दर (रु ${NepaliCalendar.toDevanagariDigits(item.pricePerUnitNpr!)}/केजी)'))
+                                  : (item.isBudgetHero
+                                      ? 'Budget Hero ⭐ (NPR ${item.pricePerUnitNpr}/kg)'
+                                      : '${item.priceTrend ?? "stable"} (NPR ${item.pricePerUnitNpr}/kg)'),
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: item.isBudgetHero
+                                    ? Colors.green.shade900
+                                    : (item.priceTrend == 'rising'
+                                        ? Colors.red.shade900
+                                        : Colors.brown.shade800),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (item.estimatedPriceNpr != null) ...[
+                        const SizedBox(width: 6),
+                        Text(
+                          _isNepali
+                              ? 'अनुमानित: रु ${NepaliCalendar.toDevanagariDigits(item.estimatedPriceNpr!)}'
+                              : 'Est: NPR ${item.estimatedPriceNpr}',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.grey.shade700,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ],
 
                 // Surplus advice if applicable
                 if (item.surplusGrams >= 100 && !isInPantry) ...[

@@ -7,6 +7,8 @@ import { coCookingRouter } from './routes/co_cooking.js'
 import { aiRouter } from './routes/ai.js'
 import { alexaRouter } from './routes/alexa.js'
 import { checkoutRouter } from './routes/checkout.js'
+import { marketRouter } from './routes/market.js'
+import { KalimatiService } from './market/kalimati_service.js'
 
 export const app = new Hono()
 
@@ -41,6 +43,8 @@ app.route('/', alexaRouter)
 // Web Checkout & Entitlements endpoints (/v1/checkout/*, /v1/subscriptions/*, /v1/entitlements/*)
 app.route('/', checkoutRouter)
 
+// Regional Market Price Board endpoints (/v1/market/*)
+app.route('/', marketRouter)
 
 // 404 fallback
 app.notFound((c) => {
@@ -51,4 +55,15 @@ app.notFound((c) => {
 export { CookingSessionDurableObject } from './co_cooking/session_durable_object.js'
 export * from './co_cooking/types.js'
 
-export default app
+// Export Cloudflare Worker handlers (HTTP Fetch & Scheduled Cron for Kalimati Daily Ingestion)
+export default {
+  fetch: app.fetch,
+  async scheduled(event: any, env: any, ctx: any) {
+    if (ctx && typeof ctx.waitUntil === 'function') {
+      ctx.waitUntil(KalimatiService.ingestDailyPrices())
+    } else {
+      await KalimatiService.ingestDailyPrices()
+    }
+  }
+}
+

@@ -100,3 +100,34 @@ export const giftCodes = sqliteTable('gift_codes', {
   expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
 })
 
+export const marketCommodityPrices = sqliteTable('market_commodity_prices', {
+  id: text('id').primaryKey(),
+  marketCode: text('market_code').notNull().default('kalimati'),
+  marketName: text('market_name').notNull().default('Kalimati Wholesale Market'),
+  commodityId: text('commodity_id').notNull(),
+  commodityNameEn: text('commodity_name_en').notNull(),
+  commodityNameNe: text('commodity_name_ne').notNull(),
+  category: text('category').notNull().default('vegetables'),
+  unit: text('unit').notNull().default('kg'),
+  minPrice: integer('min_price').notNull(),
+  maxPrice: integer('max_price').notNull(),
+  avgPrice: integer('avg_price').notNull(),
+  priceTrend: text('price_trend', { enum: ['rising', 'stable', 'falling'] }).notNull().default('stable'),
+  date: text('date').notNull(),
+  nepaliDate: text('nepali_date'),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull()
+})
+
+export const priceObservations = sqliteTable('price_observations', {
+  id: text('id').primaryKey(),
+  marketName: text('market_name').notNull(),
+  marketType: text('market_type', { enum: ['haat_bazaar', 'supermarket', 'local_kirana', 'wholesale'] }).notNull(),
+  commodityId: text('commodity_id').notNull(),
+  observedPrice: integer('observed_price').notNull(),
+  unit: text('unit').notNull().default('kg'),
+  reporterHouseholdId: text('reporter_household_id'),
+  verified: integer('verified', { mode: 'boolean' }).notNull().default(false),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull()
+})
+
+

@@ -190,6 +190,10 @@ export interface GroceryItem {
   usedByRecipeTitlesEn: string[]
   usedByRecipeTitlesNe: string[]
   isSufficientInPantry: boolean
+  estimatedPriceNpr?: number
+  pricePerKgNpr?: number
+  priceTrend?: 'rising' | 'stable' | 'falling'
+  isBudgetHero?: boolean
 }
 
 export interface GroceryStallGroup {
@@ -209,6 +213,8 @@ export interface GroceryListResult {
   totalPantryCoveredItems: number
   totalPurchasedGrams: number
   totalSurplusGrams: number
+  totalEstimatedCostNpr?: number
+  budgetHeroCount?: number
 }
 
 export interface GroceryPlanMealInput {
@@ -220,6 +226,52 @@ export interface GroceryPlanMealInput {
   slotId?: string
 }
 
+export interface CommodityMarketPriceInfo {
+  avgPrice: number
+  priceTrend?: 'rising' | 'stable' | 'falling'
+}
+
+export function enrichGroceryListWithPrices(
+  list: GroceryListResult,
+  prices: Record<string, CommodityMarketPriceInfo>
+): GroceryListResult {
+  let totalCost = 0
+  let budgetHeroes = 0
+
+  const enrichedItems = list.items.map((item) => {
+    const priceInfo = prices[item.ingredientId]
+    if (!priceInfo || item.isSufficientInPantry) {
+      return item
+    }
+    const cost = Math.round((item.totalPurchasedGrams / 1000.0) * priceInfo.avgPrice)
+    totalCost += cost
+    const isHero = priceInfo.priceTrend === 'falling' || priceInfo.avgPrice < 50
+    if (isHero) budgetHeroes++
+
+    return {
+      ...item,
+      estimatedPriceNpr: cost,
+      pricePerKgNpr: priceInfo.avgPrice,
+      priceTrend: priceInfo.priceTrend ?? 'stable',
+      isBudgetHero: isHero,
+    }
+  })
+
+  // Update stalls with enriched items
+  const enrichedStalls = list.stalls.map((stall) => ({
+    ...stall,
+    items: stall.items.map((it) => enrichedItems.find((e) => e.ingredientId === it.ingredientId) || it),
+  }))
+
+  return {
+    ...list,
+    items: enrichedItems,
+    stalls: enrichedStalls,
+    totalEstimatedCostNpr: totalCost,
+    budgetHeroCount: budgetHeroes,
+  }
+}
+
 export function generateGroceryList(params: {
   meals: GroceryPlanMealInput[]
   recipes: PlanRecipe[]
@@ -228,6 +280,7 @@ export function generateGroceryList(params: {
   rituId?: string
   ingredientCategories?: Record<string, string>
   ingredientStandardUnits?: Record<string, string>
+  marketPrices?: Record<string, CommodityMarketPriceInfo>
 }): GroceryListResult {
   const {
     meals,
@@ -237,6 +290,7 @@ export function generateGroceryList(params: {
     rituId = 'sharad',
     ingredientCategories = {},
     ingredientStandardUnits = {},
+    marketPrices,
   } = params
 
   const recipeById = new Map<string, PlanRecipe>()
@@ -376,7 +430,7 @@ export function generateGroceryList(params: {
   const totalPurchasedSum = items.reduce((sum, i) => sum + i.totalPurchasedGrams, 0)
   const totalSurplusSum = items.reduce((sum, i) => sum + i.surplusGrams, 0)
 
-  return {
+  const baseResult: GroceryListResult = {
     items,
     stalls: stallGroups,
     totalItems: items.length,
@@ -385,6 +439,12 @@ export function generateGroceryList(params: {
     totalPurchasedGrams: Math.round(totalPurchasedSum * 10) / 10,
     totalSurplusGrams: Math.round(totalSurplusSum * 10) / 10,
   }
+
+  if (marketPrices) {
+    return enrichGroceryListWithPrices(baseResult, marketPrices)
+  }
+
+  return baseResult
 }
 
 export function exportGroceryListText(

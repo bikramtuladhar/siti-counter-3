@@ -240,6 +240,10 @@ class GroceryItem {
   final List<String> usedByRecipeTitlesEn;
   final List<String> usedByRecipeTitlesNe;
   final bool isSufficientInPantry;
+  final int? estimatedPriceNpr;
+  final int? pricePerUnitNpr;
+  final String? priceTrend;
+  final bool isBudgetHero;
 
   const GroceryItem({
     required this.ingredientId,
@@ -265,7 +269,48 @@ class GroceryItem {
     this.usedByRecipeTitlesEn = const [],
     this.usedByRecipeTitlesNe = const [],
     required this.isSufficientInPantry,
+    this.estimatedPriceNpr,
+    this.pricePerUnitNpr,
+    this.priceTrend,
+    this.isBudgetHero = false,
   });
+
+  GroceryItem copyWith({
+    int? estimatedPriceNpr,
+    int? pricePerUnitNpr,
+    String? priceTrend,
+    bool? isBudgetHero,
+  }) {
+    return GroceryItem(
+      ingredientId: ingredientId,
+      nameEn: nameEn,
+      nameNe: nameNe,
+      category: category,
+      stall: stall,
+      standardUnit: standardUnit,
+      totalRequiredGrams: totalRequiredGrams,
+      pantryAvailableGrams: pantryAvailableGrams,
+      netNeededGrams: netNeededGrams,
+      marketPackageGrams: marketPackageGrams,
+      packagesToBuy: packagesToBuy,
+      totalPurchasedGrams: totalPurchasedGrams,
+      surplusGrams: surplusGrams,
+      vendorUnitLabelEn: vendorUnitLabelEn,
+      vendorUnitLabelNe: vendorUnitLabelNe,
+      surplusSuggestionEn: surplusSuggestionEn,
+      surplusSuggestionNe: surplusSuggestionNe,
+      availability: availability,
+      storageDays: storageDays,
+      usedByRecipeIds: usedByRecipeIds,
+      usedByRecipeTitlesEn: usedByRecipeTitlesEn,
+      usedByRecipeTitlesNe: usedByRecipeTitlesNe,
+      isSufficientInPantry: isSufficientInPantry,
+      estimatedPriceNpr: estimatedPriceNpr ?? this.estimatedPriceNpr,
+      pricePerUnitNpr: pricePerUnitNpr ?? this.pricePerUnitNpr,
+      priceTrend: priceTrend ?? this.priceTrend,
+      isBudgetHero: isBudgetHero ?? this.isBudgetHero,
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     'ingredientId': ingredientId,
@@ -291,6 +336,10 @@ class GroceryItem {
     'usedByRecipeTitlesEn': usedByRecipeTitlesEn,
     'usedByRecipeTitlesNe': usedByRecipeTitlesNe,
     'isSufficientInPantry': isSufficientInPantry,
+    'estimatedPriceNpr': estimatedPriceNpr,
+    'pricePerUnitNpr': pricePerUnitNpr,
+    'priceTrend': priceTrend,
+    'isBudgetHero': isBudgetHero,
   };
 }
 
@@ -334,6 +383,8 @@ class GroceryListResult {
   final int totalPantryCoveredItems;
   final double totalPurchasedGrams;
   final double totalSurplusGrams;
+  final int? totalEstimatedCostNpr;
+  final int budgetHeroCount;
 
   const GroceryListResult({
     required this.items,
@@ -343,6 +394,8 @@ class GroceryListResult {
     required this.totalPantryCoveredItems,
     required this.totalPurchasedGrams,
     required this.totalSurplusGrams,
+    this.totalEstimatedCostNpr,
+    this.budgetHeroCount = 0,
   });
 
   Map<String, dynamic> toJson() => {
@@ -351,9 +404,74 @@ class GroceryListResult {
     'totalPantryCoveredItems': totalPantryCoveredItems,
     'totalPurchasedGrams': totalPurchasedGrams,
     'totalSurplusGrams': totalSurplusGrams,
+    'totalEstimatedCostNpr': totalEstimatedCostNpr,
+    'budgetHeroCount': budgetHeroCount,
     'items': items.map((i) => i.toJson()).toList(),
     'stalls': stalls.map((s) => s.toJson()).toList(),
   };
+}
+
+/// Wholesale or retail price information for an ingredient/commodity.
+class CommodityMarketPriceInfo {
+  final int avgPrice;
+  final String priceTrend; // 'rising', 'stable', 'falling'
+
+  const CommodityMarketPriceInfo({
+    required this.avgPrice,
+    this.priceTrend = 'stable',
+  });
+}
+
+/// Enriches a grocery list with live market prices, total cost estimates, and budget heroes.
+GroceryListResult enrichGroceryListWithPrices(
+  GroceryListResult list,
+  Map<String, CommodityMarketPriceInfo> prices,
+) {
+  int totalCost = 0;
+  int budgetHeroes = 0;
+
+  final enrichedItems = list.items.map((item) {
+    final priceInfo = prices[item.ingredientId];
+    if (priceInfo == null || item.isSufficientInPantry) {
+      return item;
+    }
+    final cost = ((item.totalPurchasedGrams / 1000.0) * priceInfo.avgPrice).round();
+    totalCost += cost;
+    final isHero = priceInfo.priceTrend == 'falling' || priceInfo.avgPrice < 50;
+    if (isHero) budgetHeroes++;
+
+    return item.copyWith(
+      estimatedPriceNpr: cost,
+      pricePerUnitNpr: priceInfo.avgPrice,
+      priceTrend: priceInfo.priceTrend,
+      isBudgetHero: isHero,
+    );
+  }).toList();
+
+  final enrichedStalls = list.stalls.map((stall) {
+    return GroceryStallGroup(
+      stall: stall.stall,
+      nameEn: stall.nameEn,
+      nameNe: stall.nameNe,
+      shortNameNe: stall.shortNameNe,
+      icon: stall.icon,
+      items: stall.items.map((it) {
+        return enrichedItems.firstWhere((e) => e.ingredientId == it.ingredientId, orElse: () => it);
+      }).toList(),
+    );
+  }).toList();
+
+  return GroceryListResult(
+    items: enrichedItems,
+    stalls: enrichedStalls,
+    totalItems: list.totalItems,
+    totalItemsToBuy: list.totalItemsToBuy,
+    totalPantryCoveredItems: list.totalPantryCoveredItems,
+    totalPurchasedGrams: list.totalPurchasedGrams,
+    totalSurplusGrams: list.totalSurplusGrams,
+    totalEstimatedCostNpr: totalCost,
+    budgetHeroCount: budgetHeroes,
+  );
 }
 
 /// Input model representing a planned meal for grocery list aggregation.
@@ -385,7 +503,9 @@ GroceryListResult generateGroceryList({
   RituName? rituId,
   Map<String, String> ingredientCategories = const {},
   Map<String, String> ingredientStandardUnits = const {},
+  Map<String, CommodityMarketPriceInfo>? marketPrices,
 }) {
+
   final recipeById = <String, PlanRecipe>{
     for (final r in recipes) r.id: r,
   };
@@ -528,7 +648,7 @@ GroceryListResult generateGroceryList({
   final totalPurchasedSum = items.fold<double>(0.0, (sum, i) => sum + i.totalPurchasedGrams);
   final totalSurplusSum = items.fold<double>(0.0, (sum, i) => sum + i.surplusGrams);
 
-  return GroceryListResult(
+  final baseResult = GroceryListResult(
     items: items,
     stalls: stallGroups,
     totalItems: items.length,
@@ -537,6 +657,12 @@ GroceryListResult generateGroceryList({
     totalPurchasedGrams: (totalPurchasedSum * 10).round() / 10.0,
     totalSurplusGrams: (totalSurplusSum * 10).round() / 10.0,
   );
+
+  if (marketPrices != null) {
+    return enrichGroceryListWithPrices(baseResult, marketPrices);
+  }
+
+  return baseResult;
 }
 
 /// Overload helper to generate grocery list directly from RegionPack recipes and ingredients.
@@ -546,6 +672,7 @@ GroceryListResult generateGroceryListFromRegion({
   required List<RegionIngredient> ingredients,
   Map<String, double> pantryAvailableGrams = const {},
   RituName? rituId,
+  Map<String, CommodityMarketPriceInfo>? marketPrices,
 }) {
   final planRecipes = recipes.map((r) {
     return PlanRecipe(
@@ -585,6 +712,7 @@ GroceryListResult generateGroceryListFromRegion({
     rituId: rituId,
     ingredientCategories: categories,
     ingredientStandardUnits: standardUnits,
+    marketPrices: marketPrices,
   );
 }
 
