@@ -47,7 +47,6 @@ class _MemberAdjustState {
     required this.vesselId,
     required this.count,
     this.skipped = false,
-    this.notes,
   });
 }
 

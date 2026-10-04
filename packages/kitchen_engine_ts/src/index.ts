@@ -342,5 +342,6 @@ export * from './auto_plan.js';
 export * from './grocery_engine.js';
 export * from './sync_engine.js';
 export * from './region_pack_manager.js';
-export * from './consumption_engine.js'
+export * from './consumption_engine.js';
 export * from './nutrition_engine.js';
+export * from './waste_engine.js';

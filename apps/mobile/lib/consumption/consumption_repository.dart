@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:kitchen_engine/consumption_engine.dart';
+import 'package:kitchen_engine/waste_engine.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// SQLite-backed offline repository for consumption tracking and vessel calibration.
@@ -57,6 +58,25 @@ class ConsumptionRepository {
         portion_multiplier REAL NOT NULL DEFAULT 1.0,
         preferred_vessel_id TEXT NOT NULL DEFAULT 'katori',
         default_vessel_count REAL NOT NULL DEFAULT 1.0
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS tracked_leftovers (
+        id TEXT PRIMARY KEY,
+        meal_log_id TEXT,
+        recipe_id TEXT NOT NULL,
+        title_en TEXT NOT NULL,
+        title_ne TEXT NOT NULL,
+        servings_remaining INTEGER NOT NULL,
+        remaining_grams REAL NOT NULL,
+        prepared_at TEXT NOT NULL,
+        use_by_date TEXT NOT NULL,
+        storage_condition TEXT NOT NULL,
+        is_consumed INTEGER NOT NULL DEFAULT 0,
+        consumed_at TEXT,
+        is_discarded INTEGER NOT NULL DEFAULT 0,
+        discard_reason TEXT
       )
     ''');
 
@@ -180,8 +200,14 @@ class ConsumptionRepository {
     );
   }
 
-  /// Logs a home-cooked meal consumption record.
-  Future<void> logMeal(MealConsumptionLog log) async {
+  /// Logs a home-cooked meal consumption record and automatically creates
+  /// a tracked leftover ("Eat first") if yield exceeds consumed portions.
+  Future<TrackedLeftover?> logMeal(
+    MealConsumptionLog log, {
+    StorageCondition storage = StorageCondition.refrigerated,
+    ClimateZone climate = ClimateZone.temperate,
+    DateTime? now,
+  }) async {
     await _db.insert(
       'consumption_logs',
       {
@@ -199,6 +225,19 @@ class ConsumptionRepository {
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+
+    final leftover = WasteEngine.createFromMealLog(
+      log: log,
+      storage: storage,
+      climate: climate,
+      now: now,
+    );
+
+    if (leftover != null) {
+      await saveLeftover(leftover);
+    }
+
+    return leftover;
   }
 
   /// Logs an outside food entry.
@@ -321,6 +360,114 @@ class ConsumptionRepository {
       mealLogs: mealLogs,
       outsideLogs: outsideLogs,
       members: members,
+    );
+  }
+
+  /// Saves or updates a tracked leftover.
+  Future<void> saveLeftover(TrackedLeftover leftover) async {
+    await _db.insert(
+      'tracked_leftovers',
+      {
+        'id': leftover.id,
+        'meal_log_id': leftover.mealLogId,
+        'recipe_id': leftover.recipeId,
+        'title_en': leftover.titleEn,
+        'title_ne': leftover.titleNe,
+        'servings_remaining': leftover.servingsRemaining,
+        'remaining_grams': leftover.remainingGrams,
+        'prepared_at': leftover.preparedAt.toIso8601String(),
+        'use_by_date': leftover.useByDate.toIso8601String(),
+        'storage_condition': leftover.storageCondition.name,
+        'is_consumed': leftover.isConsumed ? 1 : 0,
+        'consumed_at': leftover.consumedAt?.toIso8601String(),
+        'is_discarded': leftover.isDiscarded ? 1 : 0,
+        'discard_reason': leftover.discardReason,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  /// Fetches tracked leftovers, optionally filtering for only active (unconsumed, undiscarded).
+  Future<List<TrackedLeftover>> getTrackedLeftovers({bool? activeOnly}) async {
+    final where = activeOnly == true ? 'is_consumed = 0 AND is_discarded = 0' : null;
+    final rows = await _db.query('tracked_leftovers', where: where, orderBy: 'use_by_date ASC');
+    return rows.map((r) {
+      return TrackedLeftover(
+        id: r['id'] as String,
+        mealLogId: r['meal_log_id'] as String?,
+        recipeId: r['recipe_id'] as String,
+        titleEn: r['title_en'] as String,
+        titleNe: r['title_ne'] as String,
+        servingsRemaining: r['servings_remaining'] as int,
+        remainingGrams: (r['remaining_grams'] as num).toDouble(),
+        preparedAt: DateTime.parse(r['prepared_at'] as String),
+        useByDate: DateTime.parse(r['use_by_date'] as String),
+        storageCondition: (r['storage_condition'] as String) == 'roomTemperature'
+            ? StorageCondition.roomTemperature
+            : StorageCondition.refrigerated,
+        isConsumed: (r['is_consumed'] as int) == 1,
+        consumedAt: r['consumed_at'] != null ? DateTime.parse(r['consumed_at'] as String) : null,
+        isDiscarded: (r['is_discarded'] as int) == 1,
+        discardReason: r['discard_reason'] as String?,
+      );
+    }).toList();
+  }
+
+  /// Marks a leftover as consumed (food saved).
+  Future<void> markLeftoverConsumed(String id, [DateTime? consumedAt]) async {
+    await _db.update(
+      'tracked_leftovers',
+      {
+        'is_consumed': 1,
+        'consumed_at': (consumedAt ?? DateTime.now()).toIso8601String(),
+      },
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  /// Marks a leftover as discarded.
+  Future<void> markLeftoverDiscarded(String id, [String? reason]) async {
+    await _db.update(
+      'tracked_leftovers',
+      {
+        'is_discarded': 1,
+        'discard_reason': reason ?? 'expired',
+      },
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  /// Calculates household waste summary and recurring insights.
+  Future<HouseholdWasteSummary> getWasteSummary({
+    DateTime? now,
+    int? daysBack,
+  }) async {
+    final current = now ?? DateTime.now();
+    final leftovers = await getTrackedLeftovers();
+    final fromDate = current.subtract(Duration(days: daysBack ?? 30));
+    final mealLogs = await getMealLogs(from: fromDate, to: current);
+
+    return WasteEngine.calculateWasteSummary(
+      leftovers: leftovers,
+      recentMealLogs: mealLogs,
+      now: current,
+    );
+  }
+
+  /// Identifies recurring food waste patterns on specific weekdays.
+  Future<List<WasteInsight>> getWasteInsights({
+    int minimumOccurrences = 2,
+    int? daysBack,
+    DateTime? now,
+  }) async {
+    final current = now ?? DateTime.now();
+    final fromDate = current.subtract(Duration(days: daysBack ?? 30));
+    final mealLogs = await getMealLogs(from: fromDate, to: current);
+    return WasteEngine.analyzeWastePatterns(
+      mealLogs,
+      minimumOccurrences: minimumOccurrences,
     );
   }
 }

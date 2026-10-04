@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kitchen_engine/consumption_engine.dart';
+import 'package:kitchen_engine/waste_engine.dart';
 import '../theme/tokens.dart';
 import '../theme/nepali_typography.dart';
 import 'consumption_repository.dart';
@@ -7,6 +8,7 @@ import 'family_nutrition_screen.dart';
 import 'household_vessel_calibration_dialog.dart';
 import 'quick_add_outside_food_dialog.dart';
 import 'post_meal_usual_dialog.dart';
+import 'leftover_screen.dart';
 
 /// Full consumption & non-shaming household nutrition dashboard (Section 11).
 class ConsumptionDashboardScreen extends StatefulWidget {
@@ -14,6 +16,7 @@ class ConsumptionDashboardScreen extends StatefulWidget {
   final ConsumptionRepository repository;
   final WeeklyHouseholdSummary? initialSummary;
   final List<MemberDietaryProfile>? initialMembers;
+  final DateTime? now;
 
   const ConsumptionDashboardScreen({
     super.key,
@@ -21,6 +24,7 @@ class ConsumptionDashboardScreen extends StatefulWidget {
     required this.repository,
     this.initialSummary,
     this.initialMembers,
+    this.now,
   });
 
   @override
@@ -29,11 +33,13 @@ class ConsumptionDashboardScreen extends StatefulWidget {
 
 class _ConsumptionDashboardScreenState extends State<ConsumptionDashboardScreen> {
   WeeklyHouseholdSummary? _summary;
+  HouseholdWasteSummary? _wasteSummary;
   List<MemberDietaryProfile> _members = [];
   HouseholdVesselProfile _vesselProfile = const HouseholdVesselProfile();
   bool _loading = true;
 
   bool get _isNepali => widget.currentLanguage == 'ne';
+  DateTime get _currentTime => widget.now ?? DateTime.now();
 
   @override
   void initState() {
@@ -47,7 +53,7 @@ class _ConsumptionDashboardScreenState extends State<ConsumptionDashboardScreen>
   }
 
   Future<void> _loadDashboardData() async {
-    final now = DateTime.now();
+    final now = _currentTime;
     final weekStart = now.subtract(Duration(days: now.weekday - 1));
     final weekEnd = weekStart.add(const Duration(days: 6, hours: 23, minutes: 59));
 
@@ -57,12 +63,14 @@ class _ConsumptionDashboardScreenState extends State<ConsumptionDashboardScreen>
       weekStart: weekStart,
       weekEnd: weekEnd,
     );
+    final waste = await widget.repository.getWasteSummary(now: now);
 
     if (mounted) {
       setState(() {
         _members = members;
         _vesselProfile = vesselProf;
         _summary = summary;
+        _wasteSummary = waste;
         _loading = false;
       });
     }
@@ -139,6 +147,20 @@ class _ConsumptionDashboardScreenState extends State<ConsumptionDashboardScreen>
         ),
         actions: [
           IconButton(
+            key: const Key('leftovers_waste_action'),
+            icon: const Icon(Icons.kitchen_rounded, color: SitiColors.terracotta),
+            tooltip: _isNepali ? 'बाँकी खाना (Eat First)' : 'Leftovers ("Eat First")',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => LeftoverScreen(
+                  currentLanguage: widget.currentLanguage,
+                  repository: widget.repository,
+                  now: _currentTime,
+                ),
+              ),
+            ).then((_) => _loadDashboardData()),
+          ),
+          IconButton(
             key: const Key('family_nutrition_action'),
             icon: const Icon(Icons.eco_rounded, color: SitiColors.freshGreen),
             tooltip: _isNepali ? 'परिवारको पोषण' : 'Family Nutrition',
@@ -172,6 +194,10 @@ class _ConsumptionDashboardScreenState extends State<ConsumptionDashboardScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Leftover / Eat First Banner
+              if (_wasteSummary != null)
+                _buildLeftoversBanner(_wasteSummary!),
+
               // Gentle Non-Shaming Household Rhythm Card
               _buildHouseholdRhythmCard(summary),
               const SizedBox(height: 16),
@@ -195,6 +221,99 @@ class _ConsumptionDashboardScreenState extends State<ConsumptionDashboardScreen>
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildLeftoversBanner(HouseholdWasteSummary waste) {
+    final eatFirst = waste.eatFirstCount;
+    final topInsight = waste.insights.isNotEmpty ? waste.insights.first : null;
+
+    return Container(
+      key: const Key('leftovers_summary_banner'),
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: eatFirst > 0 ? Colors.orange.shade50 : Colors.green.shade50,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: eatFirst > 0 ? Colors.orange.shade200 : Colors.green.shade200,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                eatFirst > 0 ? Icons.priority_high_rounded : Icons.kitchen_rounded,
+                color: eatFirst > 0 ? Colors.orange.shade800 : SitiColors.freshGreen,
+                size: 22,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  eatFirst > 0
+                      ? (_isNepali ? 'पहिले खानुहोस् ("Eat First")' : 'Leftovers: "Eat First"')
+                      : (_isNepali ? 'बाँकी खाना भण्डारण' : 'Stored Leftovers'),
+                  style: NepaliTypography.titleSmall.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: SitiColors.dark,
+                  ),
+                ),
+              ),
+              TextButton(
+                key: const Key('view_leftovers_button'),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => LeftoverScreen(
+                      currentLanguage: widget.currentLanguage,
+                      repository: widget.repository,
+                      now: _currentTime,
+                    ),
+                  ),
+                ).then((_) => _loadDashboardData()),
+                child: Text(
+                  _isNepali ? 'हेर्नुहोस् →' : 'View →',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: eatFirst > 0 ? Colors.orange.shade900 : SitiColors.freshGreen,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            _isNepali ? waste.gentleFeedbackNe : waste.gentleFeedbackEn,
+            style: NepaliTypography.bodySmall.copyWith(
+              color: SitiColors.dark,
+              height: 1.35,
+            ),
+          ),
+          if (topInsight != null) ...[
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.8),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.lightbulb_outline_rounded, size: 16, color: SitiColors.terracotta),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      _isNepali ? topInsight.insightNe : topInsight.insightEn,
+                      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
       ),
     );
   }

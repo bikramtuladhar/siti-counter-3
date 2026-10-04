@@ -9,6 +9,7 @@ export 'region_pack.dart';
 export 'region_pack_manager.dart';
 export 'consumption_engine.dart';
 export 'nutrition_engine.dart';
+export 'waste_engine.dart';
 
 /// Canonical mass and volume conversion constants and helpers.
 class UnitConverter {
