@@ -4,6 +4,7 @@ import 'package:kitchen_engine/nepali_calendar.dart';
 import 'package:kitchen_engine/region_pack.dart';
 import '../data/region_pack_repository.dart';
 import '../planner/planner_repository.dart';
+import 'market_mode_screen.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
 
@@ -662,14 +663,14 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
               if (widget.onOpenMarketMode != null) {
                 widget.onOpenMarketMode!(result);
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      _isNepali
-                          ? 'बजार मोड चाँडै आउँदैछ (Market Mode)'
-                          : 'Market Mode checklist activated',
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => MarketModeScreen(
+                      groceryResult: result,
+                      repository: widget.repository,
+                      currentLanguage: _language,
+                      onFinishedShopping: _loadData,
                     ),
-                    duration: const Duration(seconds: 2),
                   ),
                 );
               }
