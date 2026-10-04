@@ -4,6 +4,7 @@ import { logger } from 'hono/logger'
 import { syncRouter } from './routes/sync.js'
 import { authRouter } from './routes/auth.js'
 import { coCookingRouter } from './routes/co_cooking.js'
+import { aiRouter } from './routes/ai.js'
 
 export const app = new Hono()
 
@@ -28,6 +29,9 @@ app.route('/', syncRouter)
 
 // Realtime co-cooking synchronization endpoint (/v1/co-cooking/*)
 app.route('/', coCookingRouter)
+
+// AI Assistant endpoint (/v1/ai/assistant)
+app.route('/', aiRouter)
 
 // 404 fallback
 app.notFound((c) => {

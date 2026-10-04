@@ -11,6 +11,7 @@ export 'consumption_engine.dart';
 export 'nutrition_engine.dart';
 export 'waste_engine.dart';
 export 'crew_engine.dart';
+export 'assistant_engine.dart';
 
 /// Canonical mass and volume conversion constants and helpers.
 class UnitConverter {

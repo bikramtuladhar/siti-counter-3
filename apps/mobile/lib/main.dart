@@ -9,6 +9,8 @@ import 'planner/planner_repository.dart';
 import 'planner/weekly_planner_screen.dart';
 import 'screens/active_cooking_session_screen.dart';
 import 'screens/seasonal_kitchen_screen.dart';
+import 'ai/ai_assistant_screen.dart';
+import 'ai/ai_assistant_service.dart';
 import 'theme/tokens.dart';
 import 'theme/nepali_typography.dart';
 import 'widgets/six_ritus_indicator.dart';
@@ -245,6 +247,23 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
                   ),
                 );
               }
+            },
+          ),
+          IconButton(
+            key: const Key('ai_assistant_button'),
+            icon: const Icon(Icons.auto_awesome_rounded, color: SitiColors.terracotta),
+            tooltip: _isNepali ? 'एआई भान्सा सहयोगी' : 'AI Kitchen Assistant',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => AiAssistantScreen(
+                    service: AiAssistantService(
+                      elevationMeters: widget.preferences.elevationMeters,
+                    ),
+                    currentLanguage: widget.preferences.language,
+                  ),
+                ),
+              );
             },
           ),
           IconButton(

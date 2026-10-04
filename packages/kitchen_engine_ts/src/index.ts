@@ -346,3 +346,4 @@ export * from './consumption_engine.js';
 export * from './nutrition_engine.js';
 export * from './waste_engine.js';
 export * from './crew_engine.js';
+export * from './assistant_engine.js';
