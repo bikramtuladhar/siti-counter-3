@@ -12,6 +12,10 @@ class RegionPackManifest {
   final String defaultLanguage;
   final String calendar;
   final String seasonSystem;
+  final String currencyCode;
+  final String currencySymbol;
+  final List<String> marketUnits;
+  final List<String> languages;
 
   const RegionPackManifest({
     required this.id,
@@ -25,21 +29,41 @@ class RegionPackManifest {
     required this.defaultLanguage,
     required this.calendar,
     required this.seasonSystem,
+    this.currencyCode = 'NPR',
+    this.currencySymbol = 'रू',
+    this.marketUnits = const ['kg', 'g'],
+    this.languages = const ['en'],
   });
 
   factory RegionPackManifest.fromJson(Map<String, dynamic> json) {
+    final currency = json['currency'] as Map<String, dynamic>?;
+    final units = json['units'] as Map<String, dynamic>?;
+    final languagesList = (json['languages'] as List<dynamic>?)?.cast<String>();
     return RegionPackManifest(
       id: json['id'] as String,
-      version: json['version'] as String,
+      version: json['version'] as String? ?? '1.0.0',
       name: json['name'] as String,
-      country: json['country'] as String,
-      countryCode: json['countryCode'] as String,
-      region: json['region'] as String,
-      status: json['status'] as String,
-      elevationMeters: json['elevationMeters'] as int,
-      defaultLanguage: json['defaultLanguage'] as String,
-      calendar: json['calendar'] as String,
-      seasonSystem: json['seasonSystem'] as String,
+      country: json['country'] as String? ?? '',
+      countryCode: json['countryCode'] as String? ?? '',
+      region: json['region'] as String? ?? '',
+      status: json['status'] as String? ?? 'verified',
+      elevationMeters: json['elevationMeters'] as int? ?? 1400,
+      defaultLanguage: json['defaultLanguage'] as String? ?? 'en',
+      calendar: json['calendar'] as String? ?? 'gregorian',
+      seasonSystem: json['seasonSystem'] as String? ?? 'six-ritus',
+      currencyCode: currency != null
+          ? (currency['code'] as String? ?? 'NPR')
+          : (json['currencyCode'] as String? ?? 'NPR'),
+      currencySymbol: currency != null
+          ? (currency['symbol'] as String? ?? 'रू')
+          : (json['currencySymbol'] as String? ?? 'रू'),
+      marketUnits: units != null && units['market'] != null
+          ? (units['market'] as List<dynamic>).cast<String>()
+          : (json['marketUnits'] as List<dynamic>?)?.cast<String>() ??
+              const ['kg', 'g'],
+      languages: languagesList ??
+          (json['languages'] as List<dynamic>?)?.cast<String>() ??
+          const ['en'],
     );
   }
 }
@@ -219,6 +243,9 @@ class RegionRecipe {
   /// Grams of protein in one serving.
   final double proteinGramsPerServing;
 
+  /// Origin region pack ID if layered from a specific pack
+  final String? originPackId;
+
   const RegionRecipe({
     required this.id,
     required this.titleEn,
@@ -240,6 +267,7 @@ class RegionRecipe {
     this.caloriesPerServing = 220,
     this.costEstimateNpr = 65,
     this.proteinGramsPerServing = 0,
+    this.originPackId,
   });
 
   factory RegionRecipe.fromJson(Map<String, dynamic> json) {
@@ -274,6 +302,7 @@ class RegionRecipe {
       costEstimateNpr: json['costEstimateNpr'] as int? ?? 65,
       proteinGramsPerServing:
           (json['proteinGramsPerServing'] as num?)?.toDouble() ?? 0,
+      originPackId: json['originPackId'] as String?,
     );
   }
 }

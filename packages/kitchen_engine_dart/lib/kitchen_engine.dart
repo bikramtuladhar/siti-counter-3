@@ -5,6 +5,8 @@ export 'allergen_engine.dart';
 export 'auto_plan.dart';
 export 'grocery_engine.dart';
 export 'sync_engine.dart';
+export 'region_pack.dart';
+export 'region_pack_manager.dart';
 
 /// Canonical mass and volume conversion constants and helpers.
 class UnitConverter {

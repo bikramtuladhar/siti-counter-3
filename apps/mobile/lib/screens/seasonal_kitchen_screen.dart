@@ -7,6 +7,7 @@ import '../data/region_pack_repository.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
 import 'recipe_detail_screen.dart';
+import 'region_manager_screen.dart';
 
 class SeasonalKitchenScreen extends StatefulWidget {
   final RegionPack? initialPack;
@@ -519,6 +520,24 @@ class _SeasonalKitchenScreenState extends State<SeasonalKitchenScreen> {
             color: SitiColors.dark,
           ),
         ),
+        actions: [
+          IconButton(
+            key: const Key('seasonal_kitchen_region_manager_btn'),
+            icon: const Icon(Icons.public_rounded, color: SitiColors.terracotta),
+            tooltip: _isNepali ? 'क्षेत्र व्यवस्थापन' : 'Region Packs',
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => RegionManagerScreen(
+                    currentLanguage: widget.currentLanguage,
+                  ),
+                ),
+              );
+              _loadPack();
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: CustomScrollView(
