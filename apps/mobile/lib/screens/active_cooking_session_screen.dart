@@ -10,6 +10,7 @@ import 'package:kitchen_engine/region_pack.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import '../audio/background_cooking_controller.dart';
 import '../audio/kitchen_voice_controller.dart';
+import '../audio/whistle_detector.dart';
 import '../widgets/kitchen_voice_bar.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
@@ -151,6 +152,8 @@ class ActiveCookingSessionScreen extends StatefulWidget {
   final int initialWhistles;
   final VoidCallback? onSessionComplete;
   final KitchenVoiceController? voiceController;
+  final CookingSignalType signalType;
+  final WhistleDetector? detector;
 
   const ActiveCookingSessionScreen({
     super.key,
@@ -161,6 +164,8 @@ class ActiveCookingSessionScreen extends StatefulWidget {
     this.initialWhistles = 0,
     this.onSessionComplete,
     this.voiceController,
+    this.signalType = CookingSignalType.weightedWhistle,
+    this.detector,
   });
 
   @override
@@ -172,6 +177,10 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
   late int _currentWhistles;
   late int _targetWhistles;
   late CooktopType _cooktop;
+  late CookingSignalType _signalType;
+  late WhistleDetector _detector;
+  String _signalStatusMessage = '';
+  int _elapsedSimmerSeconds = 0;
   int _currentStepIndex = 0;
   bool _isAlarmActive = false;
   bool _isMuted = false;
@@ -192,6 +201,9 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
     _currentWhistles = widget.initialWhistles;
     _targetWhistles = widget.targetWhistles > 0 ? widget.targetWhistles : 4;
     _cooktop = widget.cooktop;
+    _signalType = widget.signalType;
+
+    _initDetector();
 
     _pulseController = AnimationController(
       vsync: this,
@@ -235,6 +247,60 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
 
     // Keep screen awake during active cooking session
     KitchenWakeLock.enable();
+  }
+
+  void _initDetector() {
+    _detector = widget.detector ??
+        WhistleDetector(
+          signalType: _signalType,
+          targetWhistleCount: _targetWhistles,
+          onWhistleDetected: (count) {
+            if (mounted) {
+              setState(() {
+                _currentWhistles = count;
+              });
+              _backgroundController.updateProgress(
+                currentWhistles: _currentWhistles,
+                targetWhistles: _targetWhistles,
+              );
+            }
+          },
+          onTargetReached: () {
+            _triggerAlarm();
+          },
+          onSignalEvent: (event) {
+            if (!mounted) return;
+            setState(() {
+              _signalStatusMessage = event.message;
+              if (event.elapsedSeconds != null) {
+                _elapsedSimmerSeconds = event.elapsedSeconds!;
+              }
+              if (event.currentCount != null && _signalType == CookingSignalType.weightedWhistle) {
+                _currentWhistles = event.currentCount!;
+              }
+            });
+            if (event.status == 'overpressure_alert' || event.status == 'pressure_lost') {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(event.message),
+                  duration: const Duration(seconds: 3),
+                  backgroundColor: event.status == 'overpressure_alert'
+                      ? Colors.red.shade800
+                      : Colors.orange.shade800,
+                ),
+              );
+            }
+          },
+        );
+  }
+
+  void _switchSignalType(CookingSignalType type) {
+    setState(() {
+      _signalType = type;
+      _signalStatusMessage = '';
+      _elapsedSimmerSeconds = 0;
+    });
+    _initDetector();
   }
 
   void _onVoiceCommandChanged() {
@@ -562,17 +628,28 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
                 const SizedBox(height: 12),
               ],
 
+              // Cooking Signal Type Selector Chips
+              _buildSignalTypeSelector(),
+              const SizedBox(height: 12),
+
               // Acoustic vs Manual Mode Toggle Banner with Privacy Primer Link
               _buildListeningModePill(),
               const SizedBox(height: 12),
 
-              // 2-Meter Glanceable Siti Counter Canvas
-              _buildGlanceableSitiCanvas(),
-              const SizedBox(height: 16),
+              // Glanceable Signal Canvas
+              if (_signalType == CookingSignalType.weightedWhistle) ...[
+                // 2-Meter Glanceable Siti Counter Canvas
+                _buildGlanceableSitiCanvas(),
+                const SizedBox(height: 16),
 
-              // Large Tactile Fallback Buttons (+1 / -1)
-              _buildManualControls(),
-              const SizedBox(height: 20),
+                // Large Tactile Fallback Buttons (+1 / -1)
+                _buildManualControls(),
+                const SizedBox(height: 20),
+              ] else ...[
+                // Specialized Appliance Signal Canvas
+                _buildSpecializedSignalCanvas(),
+                const SizedBox(height: 20),
+              ],
 
               // Active Step Card with Cooktop Heat Guidance
               _buildActiveStepCard(),
@@ -655,6 +732,180 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
                 _isVoiceTimerRunning = false;
               });
             },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSignalTypeSelector() {
+    final types = [
+      (CookingSignalType.weightedWhistle, _isNepali ? 'प्रेसर कुकर (Whistle)' : 'Pressure Cooker'),
+      (CookingSignalType.springValveHiss, _isNepali ? 'स्प्रिङ भल्भ (Hiss)' : 'Spring-Valve'),
+      (CookingSignalType.electricBeep, _isNepali ? 'विद्युतीय (Beep)' : 'Electric Cooker'),
+      (CookingSignalType.mechanicalClick, _isNepali ? 'राइस कुकर (Click)' : 'Rice Cooker'),
+      (CookingSignalType.kettleWhistle, _isNepali ? 'किट्ली (Kettle)' : 'Boiling Kettle'),
+    ];
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: types.map((item) {
+          final isSelected = _signalType == item.$1;
+          return Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: ChoiceChip(
+              label: Text(item.$2),
+              selected: isSelected,
+              onSelected: (selected) {
+                if (selected) {
+                  _switchSignalType(item.$1);
+                }
+              },
+              selectedColor: SitiColors.terracotta.withValues(alpha: 0.15),
+              labelStyle: TextStyle(
+                color: isSelected ? SitiColors.terracotta : Colors.grey.shade700,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                fontSize: 12,
+              ),
+              side: BorderSide(
+                color: isSelected ? SitiColors.terracotta : Colors.grey.shade300,
+              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildSpecializedSignalCanvas() {
+    IconData icon;
+    String title;
+    String subtitle;
+    String status;
+
+    switch (_signalType) {
+      case CookingSignalType.springValveHiss:
+        icon = Icons.air_rounded;
+        title = _isNepali ? 'स्प्रिङ भल्भ प्रेसर कुकर' : 'European Spring-Valve Cooker';
+        subtitle = _isNepali
+            ? 'निरन्तर बाफ (Continuous Hiss) र सिमर समय'
+            : 'Continuous Steam Hiss & Simmer Timer';
+        status = _signalStatusMessage.isNotEmpty
+            ? _signalStatusMessage
+            : (_detector.elapsedSimmerSeconds > 0
+                ? (_isNepali
+                    ? 'सिमर समय: ${_detector.elapsedSimmerSeconds} सेकेन्ड'
+                    : 'Simmering: ${_detector.elapsedSimmerSeconds}s elapsed')
+                : (_isNepali ? 'दबाव बाफको आवाज सुन्दै...' : 'Listening for operating steam hiss...'));
+        break;
+      case CookingSignalType.electricBeep:
+        icon = Icons.notifications_active_rounded;
+        title = _isNepali ? 'विद्युतीय प्रेसर कुकर' : 'Electric Pressure Cooker';
+        subtitle = _isNepali
+            ? 'पाकेपछि बज्ने बिप आवाज (Completion Chimes)'
+            : 'Target Completion Beep Sequence';
+        status = _signalStatusMessage.isNotEmpty
+            ? _signalStatusMessage
+            : (_isNepali
+                ? 'पूर्णता बिप सुन्दै... (${_detector.detectedBeeps} बिप)'
+                : 'Listening for completion beeps (${_detector.detectedBeeps} detected)...');
+        break;
+      case CookingSignalType.mechanicalClick:
+        icon = Icons.rice_bowl_rounded;
+        title = _isNepali ? 'पारम्परिक राइस कुकर' : 'Rice Cooker';
+        subtitle = _isNepali
+            ? 'स्विच "Cook" बाट "Warm" मा सर्ने क्लिक'
+            : 'Mechanical Switch "Warm" Click';
+        status = _signalStatusMessage.isNotEmpty
+            ? _signalStatusMessage
+            : (_isNepali ? 'पकिरहेको छ - स्विच क्लिक सुन्दै...' : 'Cooking - Listening for thermostat click...');
+        break;
+      case CookingSignalType.kettleWhistle:
+        icon = Icons.local_cafe_rounded;
+        title = _isNepali ? 'उम्लने चिया किट्ली' : 'Boiling Kettle';
+        subtitle = _isNepali
+            ? 'पानी उम्लँदा निस्कने सिट्ठी (Boil Whistle)'
+            : 'Continuous Resonant Kettle Whistle';
+        status = _signalStatusMessage.isNotEmpty
+            ? _signalStatusMessage
+            : (_isNepali ? 'पानी उम्लने सिट्ठी सुन्दै...' : 'Listening for kettle whistle...');
+        break;
+      case CookingSignalType.weightedWhistle:
+        icon = Icons.soup_kitchen_rounded;
+        title = _isNepali ? 'प्रेसर कुकर सिट्ठी' : 'Pressure Cooker Siti';
+        subtitle = '';
+        status = '';
+        break;
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(color: SitiColors.terracotta.withValues(alpha: 0.3), width: 2),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: SitiColors.terracotta.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, size: 48, color: SitiColors.terracotta),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            title,
+            style: NepaliTypography.titleMedium.copyWith(fontWeight: FontWeight.w800),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            subtitle,
+            style: NepaliTypography.bodySmall.copyWith(color: Colors.grey.shade700),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.amber.shade50,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.amber.shade300),
+            ),
+            child: Text(
+              status,
+              style: NepaliTypography.bodyMedium.copyWith(
+                color: Colors.amber.shade900,
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton.icon(
+            onPressed: () {
+              _triggerAlarm();
+            },
+            icon: const Icon(Icons.check_circle_rounded),
+            label: Text(_isNepali ? 'तयार भयो (Target Reached)' : 'Mark Ready (Target Reached)'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: SitiColors.terracotta,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            ),
           ),
         ],
       ),
