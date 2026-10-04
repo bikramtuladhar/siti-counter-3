@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kitchen_engine/nepali_calendar.dart';
+import 'consumption/consumption_dashboard_screen.dart';
+import 'consumption/consumption_repository.dart';
+import 'consumption/post_meal_usual_dialog.dart';
 import 'onboarding/onboarding_coordinator.dart';
 import 'onboarding/onboarding_state.dart';
 import 'planner/planner_repository.dart';
@@ -62,12 +65,14 @@ class KitchenHomeScreen extends StatefulWidget {
   final OnboardingPreferences preferences;
   final VoidCallback onResetOnboarding;
   final WeeklyPlannerRepository? plannerRepository;
+  final ConsumptionRepository? consumptionRepository;
 
   const KitchenHomeScreen({
     super.key,
     required this.preferences,
     required this.onResetOnboarding,
     this.plannerRepository,
+    this.consumptionRepository,
   });
 
   @override
@@ -79,6 +84,7 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
   int _whistleCount = 0;
   bool _isListening = false;
   WeeklyPlannerRepository? _plannerRepo;
+  ConsumptionRepository? _consumptionRepo;
 
   bool get _isNepali => widget.preferences.language == 'ne';
 
@@ -86,6 +92,7 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
   void initState() {
     super.initState();
     _plannerRepo = widget.plannerRepository;
+    _consumptionRepo = widget.consumptionRepository;
   }
 
   /// Opens the local planner database lazily, the first time the Planner tab is shown.
@@ -101,6 +108,42 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
     } catch (_) {
       // Storage unavailable: planner tab keeps showing its loading state.
     }
+  }
+
+  /// Opens the local consumption database lazily.
+  Future<ConsumptionRepository?> _ensureConsumptionRepo() async {
+    if (_consumptionRepo != null) return _consumptionRepo!;
+    try {
+      final repo = await ConsumptionRepository.openOnDisk();
+      if (mounted) {
+        setState(() {
+          _consumptionRepo = repo;
+        });
+      }
+      return repo;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> _showPostMealPrompt() async {
+    final repo = await _ensureConsumptionRepo();
+    if (repo == null) return;
+    final members = await repo.getMembers();
+    final vesselProfile = await repo.getVesselProfile();
+    if (!mounted) return;
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => PostMealUsualDialog(
+        recipeId: 'dal-bhat',
+        recipeTitle: _isNepali ? 'दाल-भात' : 'Dal Bhat',
+        mealSlot: 'evening-dal-bhat',
+        currentLanguage: widget.preferences.language,
+        repository: repo,
+        members: members,
+        vesselProfile: vesselProfile,
+      ),
+    );
   }
 
   void _incrementWhistle() {
@@ -184,6 +227,25 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
                 ),
               ],
             ),
+          ),
+          IconButton(
+            key: const Key('consumption_dashboard_button'),
+            icon: const Icon(Icons.pie_chart_outline_rounded, color: SitiColors.dark),
+            tooltip: _isNepali ? 'पोषण र खपत' : 'Consumption Dashboard',
+            onPressed: () async {
+              final repo = await _ensureConsumptionRepo();
+              if (repo == null) return;
+              if (context.mounted) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ConsumptionDashboardScreen(
+                      currentLanguage: widget.preferences.language,
+                      repository: repo,
+                    ),
+                  ),
+                );
+              }
+            },
           ),
           IconButton(
             icon: const Icon(Icons.tune_rounded, color: SitiColors.dark),
@@ -307,6 +369,9 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
                         targetWhistles: 4,
                         currentLanguage: widget.preferences.language,
                         initialWhistles: _whistleCount,
+                        onSessionComplete: () {
+                          _showPostMealPrompt();
+                        },
                       ),
                     ),
                   );
