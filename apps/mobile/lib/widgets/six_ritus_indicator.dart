@@ -26,7 +26,9 @@ class _SixRitusIndicatorState extends State<SixRitusIndicator> {
   @override
   void initState() {
     super.initState();
-    _selectedRitu = NepaliCalendar.getRituForBsMonth(widget.currentDate.month).id;
+    _selectedRitu = NepaliCalendar.getRituForBsMonth(
+      widget.currentDate.month,
+    ).id;
   }
 
   Color _getRituColor(RituName ritu) {
@@ -77,7 +79,9 @@ class _SixRitusIndicatorState extends State<SixRitusIndicator> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.4),
+          color: Theme.of(
+            context,
+          ).colorScheme.outlineVariant.withValues(alpha: 0.4),
         ),
       ),
       child: Column(
@@ -109,32 +113,49 @@ class _SixRitusIndicatorState extends State<SixRitusIndicator> {
                 ),
               ),
               const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: _getRituColor(_selectedRitu).withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: _getRituColor(_selectedRitu),
-                    width: 1.5,
+              // Row lays non-flex children out unbounded, so the badge needs its own cap:
+              // an uncapped badge plus the Expanded date column overflowed a 320dp screen.
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 160),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
                   ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      _getRituIcon(_selectedRitu),
-                      size: 16,
+                  decoration: BoxDecoration(
+                    color: _getRituColor(_selectedRitu).withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
                       color: _getRituColor(_selectedRitu),
+                      width: 1.5,
                     ),
-                    const SizedBox(width: 6),
-                    Text(
-                      widget.preferNepali ? activeRituInfo.nameNe : activeRituInfo.nameEn,
-                      style: NepaliTypography.labelLarge.copyWith(
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        _getRituIcon(_selectedRitu),
+                        size: 16,
                         color: _getRituColor(_selectedRitu),
-                        fontWeight: FontWeight.w700,
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 6),
+                      // Shrinkable: the badge sits beside an Expanded date column, so on a
+                      // narrow screen an unconstrained name overflowed the row.
+                      Flexible(
+                        child: Text(
+                          widget.preferNepali
+                              ? activeRituInfo.nameNe
+                              : activeRituInfo.nameEn,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: NepaliTypography.labelLarge.copyWith(
+                            color: _getRituColor(_selectedRitu),
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -162,9 +183,14 @@ class _SixRitusIndicatorState extends State<SixRitusIndicator> {
                     borderRadius: BorderRadius.circular(12),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
-                        color: isSelected ? color : color.withValues(alpha: 0.08),
+                        color: isSelected
+                            ? color
+                            : color.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
@@ -176,10 +202,14 @@ class _SixRitusIndicatorState extends State<SixRitusIndicator> {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            widget.preferNepali ? info.nameNe : info.nameEn.split(' ')[0],
+                            widget.preferNepali
+                                ? info.nameNe
+                                : info.nameEn.split(' ')[0],
                             style: NepaliTypography.bodyMedium.copyWith(
                               color: isSelected ? Colors.white : color,
-                              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                              fontWeight: isSelected
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
                               fontSize: 12,
                             ),
                           ),

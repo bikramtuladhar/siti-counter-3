@@ -21,7 +21,9 @@ import 'displays/display_feed_cache.dart';
 import 'sync/api_session.dart';
 import 'sync/app_sync_coordinator.dart';
 import 'sync/sync_engine.dart';
+import 'settings/household_profile_publisher.dart';
 import 'settings/household_profile_screen.dart';
+import 'settings/social_auth_service.dart';
 import 'settings/settings_service.dart';
 import 'settings/setup_progress.dart';
 import 'sync/sync_repository.dart';
@@ -45,6 +47,11 @@ class _SitiCounterAppState extends State<SitiCounterApp> {
   OnboardingPreferences? _userPreferences;
   SettingsService? _settings;
 
+  /// Social sign-in, built lazily once the sync database (and therefore the guest
+  /// household id) is available. Null while that is still loading, which hides the entry
+  /// point rather than failing when tapped.
+  SocialSignInService? _socialSignInService;
+
   /// Loads the stored household profile on launch.
   ///
   /// Onboarding used to be the only source of these answers and it lived in a field, so
@@ -59,7 +66,10 @@ class _SitiCounterAppState extends State<SitiCounterApp> {
   Future<void> _restore() async {
     try {
       final settings = await SettingsService.openOnDisk();
+      final signIn = await _buildSignInService();
+
       if (!await settings.isOnboardingComplete) {
+        if (mounted) setState(() => _socialSignInService = signIn);
         return;
       }
 
@@ -67,10 +77,52 @@ class _SitiCounterAppState extends State<SitiCounterApp> {
       if (!mounted) return;
       setState(() {
         _settings = settings;
+        _socialSignInService = signIn;
         _userPreferences = preferences;
       });
     } catch (_) {
       // Settings unavailable: fall back to running onboarding again.
+    }
+  }
+
+  /// Builds the sign-in service over the sync database.
+  ///
+  /// Returns a service with no providers configured unless the platform SDKs are linked,
+  /// so the UI reports social sign-in as unavailable rather than presenting buttons that
+  /// cannot work. Wiring `google_sign_in` / `sign_in_with_apple` /
+  /// `flutter_facebook_auth` is the remaining step; each registers itself here.
+  Future<SocialSignInService> _buildSignInService() async {
+    try {
+      final repository = await SyncRepository.openOnDisk();
+      final identity = SyncIdentityReader(repository);
+
+      return SocialSignInService(
+        apiBaseUrl: defaultApiBaseUrl(),
+        deviceId: () async => await identity.deviceId,
+        guestHouseholdId: () async => await identity.guestHouseholdId,
+      );
+    } catch (_) {
+      return SocialSignInService(apiBaseUrl: defaultApiBaseUrl());
+    }
+  }
+
+  /// Re-points the app at the signed-in account's household.
+  ///
+  /// The API already merged the guest household into the account, so the caches stay
+  /// valid; only the marker for "this is a guest install" changes.
+  Future<void> _onSignedIn(SocialSignInResult result) async {
+    try {
+      final settings = _settings ?? await SettingsService.openOnDisk();
+      await settings.setOnboardingComplete(true);
+
+      if (!mounted) return;
+      setState(() {
+        if (_userPreferences != null) {
+          _userPreferences!.isGuest = false;
+        }
+      });
+    } catch (_) {
+      // Sign-in already succeeded server-side; a local flag failure is not worth blocking.
     }
   }
 
@@ -115,6 +167,8 @@ class _SitiCounterAppState extends State<SitiCounterApp> {
                 }
                 unawaited(_persistOnboarding(prefs));
               },
+              signInService: _socialSignInService,
+              onSignedIn: (result) => unawaited(_onSignedIn(result)),
             )
           : KitchenHomeScreen(
               settings: _settings,
@@ -553,35 +607,17 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
         elevation: 0,
         title: Text(
           'Siti Counter 3.0',
+          // The action row is fixed-width, so the title has to yield rather than overflow
+          // on a narrow screen.
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
           style: NepaliTypography.titleMedium.copyWith(
             fontWeight: FontWeight.w700,
             color: SitiColors.dark,
+            fontSize: 18,
           ),
         ),
         actions: [
-          // Guest Mode Indicator Badge
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.amber.shade100,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.amber.shade700, width: 1),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.person_outline_rounded, size: 14, color: Colors.amber.shade900),
-                const SizedBox(width: 4),
-                Text(
-                  _isNepali ? 'अतिथि (Guest)' : 'Guest Mode',
-                  style: NepaliTypography.labelLarge.copyWith(
-                    color: Colors.amber.shade900,
-                    fontSize: 11,
-                  ),
-                ),
-              ],
-            ),
-          ),
           IconButton(
             key: const Key('consumption_dashboard_button'),
             icon: const Icon(Icons.pie_chart_outline_rounded, color: SitiColors.dark),
@@ -642,7 +678,42 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
                 currentDate: todayBs,
                 preferNepali: _isNepali,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
+
+              // Guest badge lives in the body, not the app bar: at 411dp the badge plus
+              // four icon buttons overflowed the action row and the right-most buttons were
+              // clipped off-screen and untappable.
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  key: const Key('guest_mode_badge'),
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.amber.shade100,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.amber.shade700, width: 1),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.person_outline_rounded,
+                        size: 14,
+                        color: Colors.amber.shade900,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        _isNepali ? 'अतिथि (Guest)' : 'Guest Mode',
+                        style: NepaliTypography.labelLarge.copyWith(
+                          color: Colors.amber.shade900,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
 
               // Progressive household setup, shown until every essential is configured.
               _buildSetupChecklist(),
