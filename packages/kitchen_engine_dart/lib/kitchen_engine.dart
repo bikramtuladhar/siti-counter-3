@@ -23,6 +23,7 @@ export 'ocr_engine.dart';
 export 'party_planner_engine.dart';
 export 'launch_gate_monitor.dart';
 export 'multi_dish_kitchen_engine.dart';
+export 'companion_display_engine.dart';
 
 
 
