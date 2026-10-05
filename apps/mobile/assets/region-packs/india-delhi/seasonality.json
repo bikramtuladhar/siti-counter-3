@@ -1,0 +1,47 @@
+{
+  "regionId": "india-delhi",
+  "ritus": [
+    {
+      "id": "vasant",
+      "name": "वसन्त (Vasant / Spring)",
+      "monthsBS": ["Chaitra", "Baisakh"],
+      "monthsGregorian": ["March", "April"],
+      "signatureProduce": ["sarson", "green_peas", "methi", "radish"]
+    },
+    {
+      "id": "grishma",
+      "name": "ग्रीष्म (Grishma / Summer)",
+      "monthsBS": ["Jyeshtha", "Ashadha"],
+      "monthsGregorian": ["May", "June"],
+      "signatureProduce": ["bhindi", "lauki", "karela", "mango", "mint"]
+    },
+    {
+      "id": "varsha",
+      "name": "वर्षा (Varsha / Monsoon)",
+      "monthsBS": ["Shravana", "Bhadrapada"],
+      "monthsGregorian": ["July", "August"],
+      "signatureProduce": ["arbi", "tinda", "torai", "jamun", "corn"]
+    },
+    {
+      "id": "sharad",
+      "name": "शरद (Sharad / Early Autumn)",
+      "monthsBS": ["Ashvina", "Kartika"],
+      "monthsGregorian": ["September", "October"],
+      "signatureProduce": ["cauliflower", "radish", "guava", "green_chillies"]
+    },
+    {
+      "id": "hemant",
+      "name": "हेमन्त (Hemant / Late Autumn)",
+      "monthsBS": ["Margashirsha", "Pausha"],
+      "monthsGregorian": ["November", "December"],
+      "signatureProduce": ["palak", "bathua", "gajar", "fresh_ginger"]
+    },
+    {
+      "id": "shishir",
+      "name": "शिशिर (Shishir / Winter)",
+      "monthsBS": ["Magha", "Phalguna"],
+      "monthsGregorian": ["January", "February"],
+      "signatureProduce": ["sarson_saag", "matar", "shalgam", "sweet_potato"]
+    }
+  ]
+}

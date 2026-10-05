@@ -1,0 +1,42 @@
+[
+  {
+    "id": "diwali",
+    "nameEn": "Deepawali (Diwali)",
+    "nameNe": "दीपावली (दिवाली)",
+    "tithi": "Kartik Amavasya",
+    "approxGregorianMonth": "November",
+    "descriptionEn": "Festival of lights celebrating abundance, joy, and the return of Lord Rama.",
+    "descriptionNe": "प्रकाश और समृद्धि का महापर्व।",
+    "foodTraditions": {
+      "keyDishes": ["dhaba-dal-makhani", "jeera-basmati-rice"],
+      "significance": "Feasting with rich slow-cooked dals, sweets, and sharing with neighbors and community."
+    }
+  },
+  {
+    "id": "navratri-vrat",
+    "nameEn": "Chaitra & Sharad Navratri",
+    "nameNe": "नवरात्रि व्रत",
+    "tithi": "Shukla Pratipada to Navami",
+    "approxGregorianMonth": "October",
+    "descriptionEn": "Nine sacred nights honoring Goddess Durga with fasting and pure sattvic foods.",
+    "descriptionNe": "माँ दुर्गा की आराधना और नौ दिनों का सात्विक व्रत।",
+    "foodTraditions": {
+      "keyDishes": ["jeera-basmati-rice"],
+      "fastingRules": "Strict Phalahar: No onions, garlic, wheat, or lentils. Cook exclusively with Sendha Namak (rock salt), Kuttu, and Singhara.",
+      "significance": "Body detoxification and spiritual focus through seasonal transition."
+    }
+  },
+  {
+    "id": "makar-sankranti-lohri",
+    "nameEn": "Lohri & Makar Sankranti",
+    "nameNe": "लोहड़ी व मकर संक्रांति",
+    "tithi": "Magha Sankranti",
+    "approxGregorianMonth": "January",
+    "descriptionEn": "Harvest festival celebrating the sun transition and winter solstice across northern plains.",
+    "descriptionNe": "सूर्य के मकर राशि में प्रवेश और फसल कटाई का उत्सव।",
+    "foodTraditions": {
+      "keyDishes": ["aloo-gobi-matar-delhi"],
+      "significance": "Celebration with fresh mustard greens, jaggery, sesame seeds, and winter harvest tubers."
+    }
+  }
+]

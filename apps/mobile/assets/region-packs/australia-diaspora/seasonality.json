@@ -1,0 +1,33 @@
+{
+  "regionId": "australia-diaspora",
+  "ritus": [
+    {
+      "id": "spring",
+      "name": "Southern Spring (September - November)",
+      "monthsBS": [],
+      "monthsGregorian": ["September", "October", "November"],
+      "signatureProduce": ["asparagus", "spinach", "green_beans", "strawberries", "peas"]
+    },
+    {
+      "id": "summer",
+      "name": "Southern Summer (December - February)",
+      "monthsBS": [],
+      "monthsGregorian": ["December", "January", "February"],
+      "signatureProduce": ["tomatoes", "zucchini", "sweet_corn", "mangoes", "capsicum"]
+    },
+    {
+      "id": "autumn",
+      "name": "Southern Autumn (March - May)",
+      "monthsBS": [],
+      "monthsGregorian": ["March", "April", "May"],
+      "signatureProduce": ["pumpkin", "apples", "mushrooms", "eggplant", "pears"]
+    },
+    {
+      "id": "winter",
+      "name": "Southern Winter (June - August)",
+      "monthsBS": [],
+      "monthsGregorian": ["June", "July", "August"],
+      "signatureProduce": ["kale", "broccoli", "mandarins", "silverbeet", "cauliflower"]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "id": "fiesta-gran-poder",
+    "nameEn": "Fiesta Mayor del Señor Jesús del Gran Poder",
+    "nameNe": "ग्रान पोदिर उत्सव (ला पाज)",
+    "tithi": "Festividad de la Santísima Trinidad",
+    "approxGregorianMonth": "May",
+    "descriptionEn": "Major religious and folkloric festival filling the streets of La Paz with dances, brass bands, and communal food.",
+    "descriptionNe": "ला पाजको सबैभन्दा ठूलो सांस्कृतिक उत्सव।",
+    "foodTraditions": {
+      "keyDishes": ["pesque-de-quinua-lapaz", "sopa-de-mani-chuno"],
+      "significance": "Celebration featuring high-altitude hearty soups and communal quinoa feasts."
+    }
+  }
+]

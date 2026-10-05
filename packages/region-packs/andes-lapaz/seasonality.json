@@ -1,0 +1,33 @@
+{
+  "regionId": "andes-lapaz",
+  "ritus": [
+    {
+      "id": "primavera",
+      "name": "Primavera (Spring: September - November)",
+      "monthsBS": [],
+      "monthsGregorian": ["September", "October", "November"],
+      "signatureProduce": ["quinoa", "papa_huayro", "habas_verdes", "cebolla_verde"]
+    },
+    {
+      "id": "verano",
+      "name": "Verano lluvioso (Summer: December - February)",
+      "monthsBS": [],
+      "monthsGregorian": ["December", "January", "February"],
+      "signatureProduce": ["choclo_andino", "habas", "calabaza_andina"]
+    },
+    {
+      "id": "otono",
+      "name": "Otoño de Cosecha (Autumn: March - May)",
+      "monthsBS": [],
+      "monthsGregorian": ["March", "April", "May"],
+      "signatureProduce": ["oca", "papalisa", "quinua_real", "tarwi"]
+    },
+    {
+      "id": "invierno",
+      "name": "Invierno Seco y Heladas (Winter: June - August)",
+      "monthsBS": [],
+      "monthsGregorian": ["June", "July", "August"],
+      "signatureProduce": ["chuno", "tunta", "cebada", "haba_seca"]
+    }
+  ]
+}

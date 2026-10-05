@@ -519,7 +519,13 @@ export class RegionPackManager {
       else targetId = 'shishir'
 
       return (
-        seasons.find(s => s.id === targetId) ??
+        seasons.find(
+          s =>
+            s.id === targetId ||
+            (targetId === 'basanta' && s.id === 'vasant') ||
+            (targetId === 'barsha' && s.id === 'varsha') ||
+            (targetId === 'hemanta' && s.id === 'hemant')
+        ) ??
         seasons[0] ?? {
           id: 'sharad',
           name: 'शरद् ऋतु (Sharad)',
@@ -836,6 +842,78 @@ export class RegionPackManager {
         ingredientCount: 28,
         isBuiltIn: false,
         isInstalled: false
+      },
+      {
+        id: 'andes-lapaz',
+        name: 'Andes (Bolivia / La Paz Altiplano)',
+        nativeName: 'Bolivia (Nuestra Señora de La Paz Altiplano)',
+        country: 'Bolivia',
+        countryCode: 'BO',
+        status: 'verified',
+        version: '1.0.0',
+        description:
+          'High-altitude Andean plateau (3,600m) where water boils at 87.4°C requiring specialized pressure cooker calibrations, royal quinoa and chuño.',
+        elevationMeters: 3600,
+        climateZone: 'highland',
+        seasonSystem: 'four-seasons-southern',
+        defaultLanguage: 'es',
+        calendar: 'gregorian',
+        currencyCode: 'BOB',
+        currencySymbol: 'Bs',
+        marketUnits: ['kg', 'g', 'libra', 'arroba', 'monton', 'atado'],
+        sizeBytes: 163840,
+        recipeCount: 8,
+        ingredientCount: 28,
+        isBuiltIn: false,
+        isInstalled: false
+      },
+      {
+        id: 'india-delhi',
+        name: 'India (Delhi & Northern Plains)',
+        nativeName: 'भारत (दिल्ली व उत्तरी मैदान)',
+        country: 'India',
+        countryCode: 'IN',
+        status: 'verified',
+        version: '1.0.0',
+        description:
+          'Delhi NCR and Northern Plains featuring IFCT nutrition references, mandi volume units (katori, pao, seer), rajma, dal makhani, and festive Vrat rules.',
+        elevationMeters: 216,
+        climateZone: 'subtropical',
+        seasonSystem: 'six-ritus',
+        defaultLanguage: 'hi',
+        calendar: 'gregorian',
+        currencyCode: 'INR',
+        currencySymbol: '₹',
+        marketUnits: ['kg', 'g', 'katori', 'bunch', 'packet', 'pao', 'quintal', 'seer'],
+        sizeBytes: 215040,
+        recipeCount: 25,
+        ingredientCount: 55,
+        isBuiltIn: false,
+        isInstalled: false
+      },
+      {
+        id: 'australia-diaspora',
+        name: 'Australia (Diaspora & Southern Seasons)',
+        nativeName: 'Australia (Diaspora - Sydney / Melbourne)',
+        country: 'Australia',
+        countryCode: 'AU',
+        status: 'verified',
+        version: '1.0.0',
+        description:
+          'Australian diaspora households featuring Southern Hemisphere inverted seasons, Taste of Home ingredient substitutions (Tasmanian pepperberry, Aussie lamb), and metric units.',
+        elevationMeters: 50,
+        climateZone: 'temperate',
+        seasonSystem: 'four-seasons-southern',
+        defaultLanguage: 'en',
+        calendar: 'gregorian',
+        currencyCode: 'AUD',
+        currencySymbol: '$',
+        marketUnits: ['kg', 'g', 'cup', 'bunch', 'punnet', 'pack', 'tray'],
+        sizeBytes: 198656,
+        recipeCount: 15,
+        ingredientCount: 40,
+        isBuiltIn: false,
+        isInstalled: false
       }
     ]
   }
@@ -944,11 +1022,12 @@ export class RegionPackManager {
         }
 
       case 'australia-nsw':
+      case 'australia-diaspora':
         return {
           manifest: {
-            id: 'australia-nsw',
+            id: id,
             version: '1.0.0',
-            name: 'Australia (New South Wales / Sydney)',
+            name: 'Australia (Diaspora & Southern Seasons)',
             country: 'Australia',
             countryCode: 'AU',
             region: 'New South Wales',
@@ -959,10 +1038,10 @@ export class RegionPackManager {
             seasonSystem: 'four-seasons-southern',
             currencyCode: 'AUD',
             currencySymbol: '$',
-            marketUnits: ['kg', 'g', 'cup', 'bunch', 'punnet']
+            marketUnits: ['kg', 'g', 'cup', 'bunch', 'punnet', 'pack', 'tray']
           },
           seasonality: {
-            regionId: 'australia-nsw',
+            regionId: id,
             ritus: [
               {
                 id: 'spring',
@@ -1004,6 +1083,30 @@ export class RegionPackManager {
               storageDays: 2,
               allergens: ['fish'],
               availability: { spring: 'available', summer: 'available' }
+            },
+            {
+              id: 'tasmanian_pepperberry',
+              nameEn: 'Tasmanian Mountain Pepperberry',
+              nameNe: 'माउन्टेन पेपरबेरी (टिमुरको विकल्प)',
+              aliases: ['timur substitute', 'pepperberry'],
+              category: 'spices',
+              standardUnit: 'g',
+              marketPackageGrams: 50,
+              storageDays: 365,
+              allergens: [],
+              availability: { spring: 'available', summer: 'available' }
+            },
+            {
+              id: 'aussie_lamb',
+              nameEn: 'Australian Diced Spring Lamb',
+              nameNe: 'अस्ट्रेलियन भेडाको मासु (खसीको विकल्प)',
+              aliases: ['goat substitute', 'lamb'],
+              category: 'meat',
+              standardUnit: 'kg',
+              marketPackageGrams: 1000,
+              storageDays: 3,
+              allergens: [],
+              availability: { spring: 'peak', summer: 'available' }
             }
           ],
           recipes: [
@@ -1031,38 +1134,64 @@ export class RegionPackManager {
               ],
               seasonality: ['spring'],
               tags: ['high-protein', 'spring', 'quick']
+            },
+            {
+              id: 'sydney-spring-lamb-curry',
+              titleEn: 'Diaspora Spring Lamb Curry (Dashain in Sydney)',
+              titleNe: 'अस्ट्रेलियन खसी/भेडाको मासु (दसैँ विशेष)',
+              category: 'masu',
+              cuisine: 'Nepali Diaspora',
+              dietary: ['gluten-free'],
+              prepTimeMinutes: 15,
+              cookTimeMinutes: 35,
+              servings: 4,
+              difficulty: 'medium',
+              pressureCooker: {
+                enabled: true,
+                recommendedWhistles: 4,
+                altitudeWhistleOffsetKathmandu: 0,
+                heatLevel: 'medium',
+                releaseType: 'natural'
+              },
+              ingredients: [
+                { ingredientId: 'aussie_lamb', quantity: 800, unit: 'g' },
+                { ingredientId: 'tasmanian_pepperberry', quantity: 5, unit: 'g' }
+              ],
+              seasonality: ['spring'],
+              tags: ['diaspora', 'dashain', 'meat']
             }
           ],
           festivals: []
         }
 
       case 'bolivia-lapaz':
+      case 'andes-lapaz':
         return {
           manifest: {
-            id: 'bolivia-lapaz',
+            id: id,
             version: '1.0.0',
-            name: 'Bolivia (La Paz & Altiplano)',
+            name: 'Andes (Bolivia / La Paz Altiplano)',
             country: 'Bolivia',
             countryCode: 'BO',
             region: 'La Paz',
-            status: 'community',
+            status: 'verified',
             elevationMeters: 3600,
             defaultLanguage: 'es',
             calendar: 'gregorian',
             seasonSystem: 'four-seasons-southern',
             currencyCode: 'BOB',
             currencySymbol: 'Bs',
-            marketUnits: ['kg', 'g', 'libra', 'arroba']
+            marketUnits: ['kg', 'g', 'libra', 'arroba', 'monton', 'atado']
           },
           seasonality: {
-            regionId: 'bolivia-lapaz',
+            regionId: id,
             ritus: [
               {
                 id: 'spring',
                 name: 'Primavera (Spring)',
                 monthsBS: [],
                 monthsGregorian: ['September', 'October', 'November'],
-                signatureProduce: ['quinoa', 'potato']
+                signatureProduce: ['quinoa', 'potato', 'chuno']
               }
             ]
           },
@@ -1078,6 +1207,18 @@ export class RegionPackManager {
               storageDays: 365,
               allergens: [],
               availability: { spring: 'peak' }
+            },
+            {
+              id: 'chuno',
+              nameEn: 'Freeze-Dried Black Potato (Chuño)',
+              nameNe: 'छुन्यो (कालो सुख्खा आलु)',
+              aliases: ['chuno negro', 'freeze dried potato'],
+              category: 'vegetables',
+              standardUnit: 'kg',
+              marketPackageGrams: 1000,
+              storageDays: 730,
+              allergens: [],
+              availability: { spring: 'available' }
             }
           ],
           recipes: [
@@ -1102,9 +1243,128 @@ export class RegionPackManager {
               ingredients: [{ ingredientId: 'quinoa', quantity: 250, unit: 'g' }],
               seasonality: ['spring'],
               tags: ['high-altitude', 'superfood']
+            },
+            {
+              id: 'sopa-de-mani-chuno',
+              titleEn: 'Altiplano Peanut Soup with Chuño',
+              titleNe: 'सोपा दे मानी र छुन्यो',
+              category: 'soup',
+              cuisine: 'Andean',
+              dietary: ['vegetarian', 'gluten-free'],
+              prepTimeMinutes: 20,
+              cookTimeMinutes: 40,
+              servings: 4,
+              difficulty: 'hard',
+              pressureCooker: {
+                enabled: true,
+                recommendedWhistles: 6,
+                altitudeWhistleOffsetKathmandu: 2,
+                heatLevel: 'medium',
+                releaseType: 'natural'
+              },
+              ingredients: [
+                { ingredientId: 'chuno', quantity: 250, unit: 'g' },
+                { ingredientId: 'quinoa', quantity: 100, unit: 'g' }
+              ],
+              seasonality: ['spring'],
+              tags: ['high-altitude', 'chuño']
             }
           ],
           festivals: []
+        }
+
+      case 'india-delhi':
+        return {
+          manifest: {
+            id: 'india-delhi',
+            version: '1.0.0',
+            name: 'India (Delhi & Northern Plains)',
+            country: 'India',
+            countryCode: 'IN',
+            region: 'Delhi NCR',
+            status: 'verified',
+            elevationMeters: 216,
+            defaultLanguage: 'hi',
+            calendar: 'gregorian',
+            seasonSystem: 'six-ritus',
+            currencyCode: 'INR',
+            currencySymbol: '₹',
+            marketUnits: ['kg', 'g', 'katori', 'bunch', 'packet', 'pao', 'quintal', 'seer']
+          },
+          seasonality: {
+            regionId: 'india-delhi',
+            ritus: [
+              {
+                id: 'hemant',
+                name: 'हेमन्त (Hemant / Late Autumn)',
+                monthsBS: ['Margashirsha', 'Pausha'],
+                monthsGregorian: ['November', 'December'],
+                signatureProduce: ['palak', 'rajma', 'cauliflower']
+              }
+            ]
+          },
+          ingredients: [
+            {
+              id: 'rajma',
+              nameEn: 'Red Kidney Beans (Rajma)',
+              nameNe: 'राजमा',
+              aliases: ['chitra rajma', 'kidney beans'],
+              category: 'pulses',
+              standardUnit: 'kg',
+              marketPackageGrams: 1000,
+              storageDays: 365,
+              allergens: [],
+              availability: { hemant: 'peak' }
+            },
+            {
+              id: 'urad_dal_black',
+              nameEn: 'Whole Black Gram (Sabut Urad)',
+              nameNe: 'साबुत उड़द दाल',
+              aliases: ['kali dal', 'makhani dal'],
+              category: 'pulses',
+              standardUnit: 'kg',
+              marketPackageGrams: 1000,
+              storageDays: 365,
+              allergens: [],
+              availability: { hemant: 'peak' }
+            }
+          ],
+          recipes: [
+            {
+              id: 'delhi-rajma-masala',
+              titleEn: 'Delhi Punjabi Style Rajma Masala',
+              titleNe: 'दिल्ली पंजाबी राजमा मसाला',
+              category: 'dal',
+              cuisine: 'North Indian / Punjabi',
+              dietary: ['vegetarian', 'gluten-free'],
+              prepTimeMinutes: 15,
+              cookTimeMinutes: 35,
+              servings: 4,
+              difficulty: 'easy',
+              pressureCooker: {
+                enabled: true,
+                recommendedWhistles: 4,
+                altitudeWhistleOffsetKathmandu: 0,
+                heatLevel: 'medium',
+                releaseType: 'natural'
+              },
+              ingredients: [{ ingredientId: 'rajma', quantity: 250, unit: 'g' }],
+              seasonality: ['hemant'],
+              tags: ['high-protein', 'comfort']
+            }
+          ],
+          festivals: [
+            {
+              id: 'diwali',
+              nameEn: 'Deepawali',
+              nameNe: 'दीपावली',
+              tithi: 'Kartik Amavasya',
+              approxGregorianMonth: 'November',
+              descriptionEn: 'Festival of lights celebrated across India.',
+              descriptionNe: 'प्रकाश र समृद्धिको महापर्व।',
+              keyDishes: ['delhi-rajma-masala']
+            }
+          ]
         }
 
       default:
@@ -1112,3 +1372,4 @@ export class RegionPackManager {
     }
   }
 }
+

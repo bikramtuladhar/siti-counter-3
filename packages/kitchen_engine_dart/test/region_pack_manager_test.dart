@@ -219,4 +219,79 @@ void main() {
       expect(whistles, equals(6));
     });
   });
+
+  group('RegionPackManager - Expanded Region Packs (Issue #44)', () {
+    test('India Delhi Pack: IFCT references, mandi units (katori, pao, seer), rajma, and Diwali festival', () async {
+      final manager = RegionPackManager();
+      final delhiEntry = manager.catalog.firstWhere((c) => c.id == 'india-delhi');
+      expect(delhiEntry.countryCode, equals('IN'));
+      expect(delhiEntry.currencyCode, equals('INR'));
+      expect(delhiEntry.marketUnits, contains('katori'));
+      expect(delhiEntry.marketUnits, contains('pao'));
+      expect(delhiEntry.marketUnits, contains('seer'));
+
+      await manager.installFromCatalog('india-delhi');
+      expect(manager.isInstalled('india-delhi'), isTrue);
+
+      manager.setPrimaryPack('india-delhi');
+      final novDate = DateTime(2026, 11, 15);
+      final context = manager.resolveContext(forDate: novDate);
+
+      expect(context.effectiveElevationMeters, equals(216));
+      expect(context.activeSeasonId, equals('hemant'));
+      expect(context.currencySymbol, equals('₹'));
+
+      final rajma = context.combinedIngredients.firstWhere((i) => i.id == 'rajma');
+      expect(rajma.nameNe, equals('राजमा'));
+
+      final rajmaRecipe = context.combinedRecipes.firstWhere((r) => r.id == 'delhi-rajma-masala');
+      expect(rajmaRecipe.pressureCooker.recommendedWhistles, equals(4));
+
+      final diwali = context.combinedFestivals.firstWhere((f) => f.id == 'diwali');
+      expect(diwali.tithi, equals('Kartik Amavasya'));
+    });
+
+    test('Australia Diaspora Pack: Taste of Home substitutions (Tasmanian pepperberry, Aussie lamb)', () async {
+      final manager = RegionPackManager();
+      await manager.installFromCatalog('australia-diaspora');
+      manager.loadBuiltInPack(RegionPackManager.getSamplePack('nepal-bagmati')!);
+      manager.setPrimaryPack('australia-diaspora');
+      manager.addSecondaryPack('nepal-bagmati');
+
+      final octoberDate = DateTime(2026, 10, 20); // October = Spring in Southern Hemisphere
+      final context = manager.resolveContext(forDate: octoberDate);
+
+      expect(context.activeSeasonId, equals('spring'));
+      expect(context.effectiveElevationMeters, equals(50));
+
+      final lambCurry = context.combinedRecipes.firstWhere((r) => r.id == 'sydney-spring-lamb-curry');
+      expect(lambCurry.ingredients.any((i) => i.ingredientId == 'aussie_lamb'), isTrue);
+      expect(lambCurry.ingredients.any((i) => i.ingredientId == 'tasmanian_pepperberry'), isTrue);
+
+      final pepperberry = context.combinedIngredients.firstWhere((i) => i.id == 'tasmanian_pepperberry');
+      expect(pepperberry.category, equals('spices'));
+    });
+
+    test('Andes High-Altitude Pack: 3,600m calibration, chuño, peanut soup, and +2 whistle offset', () async {
+      final manager = RegionPackManager();
+      await manager.installFromCatalog('andes-lapaz');
+      manager.setPrimaryPack('andes-lapaz');
+
+      final context = manager.resolveContext();
+      expect(context.effectiveElevationMeters, equals(3600));
+      expect(context.effectiveBoilingPointCelsius, closeTo(87.4, 0.3));
+      expect(context.effectiveMarketUnits, contains('arroba'));
+      expect(context.effectiveMarketUnits, contains('monton'));
+
+      final chuno = context.combinedIngredients.firstWhere((i) => i.id == 'chuno');
+      expect(chuno.category, equals('vegetables'));
+
+      final peanutSoup = context.combinedRecipes.firstWhere((r) => r.id == 'sopa-de-mani-chuno');
+      expect(peanutSoup.pressureCooker.recommendedWhistles, equals(6));
+      expect(peanutSoup.pressureCooker.altitudeWhistleOffsetKathmandu, equals(2));
+
+      final whistles = context.adjustWhistlesForRecipe(peanutSoup);
+      expect(whistles, equals(8)); // 6 recommended + 2 altitude offset
+    });
+  });
 }

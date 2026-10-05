@@ -1,0 +1,306 @@
+[
+  {
+    "id": "rajma",
+    "nameEn": "Red Kidney Beans (Chitra Rajma)",
+    "nameNe": "राजमा (चित्रा)",
+    "aliases": ["kidney beans", "lal rajma", "chitra rajma"],
+    "category": "pulses",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "vasant": "available",
+      "grishma": "available",
+      "varsha": "available",
+      "sharad": "available",
+      "hemant": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "urad_dal_black",
+    "nameEn": "Whole Black Gram (Sabut Urad)",
+    "nameNe": "साबुत उड़द दाल",
+    "aliases": ["kali dal", "makhani dal", "black gram"],
+    "category": "pulses",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "vasant": "available",
+      "grishma": "available",
+      "varsha": "available",
+      "sharad": "available",
+      "hemant": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "paneer",
+    "nameEn": "Fresh Indian Cottage Cheese (Paneer)",
+    "nameNe": "पनीर",
+    "aliases": ["cottage cheese", "chena"],
+    "category": "dairy",
+    "standardUnit": "g",
+    "marketPackageGrams": 200,
+    "storageDays": 4,
+    "allergens": ["dairy"],
+    "availability": {
+      "vasant": "available",
+      "grishma": "available",
+      "varsha": "available",
+      "sharad": "available",
+      "hemant": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "basmati_rice",
+    "nameEn": "Dehraduni Aged Basmati Rice",
+    "nameNe": "बासमती चावल",
+    "aliases": ["aged basmati", "long grain rice"],
+    "category": "grains",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 730,
+    "allergens": [],
+    "availability": {
+      "vasant": "available",
+      "grishma": "available",
+      "varsha": "available",
+      "sharad": "peak",
+      "hemant": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "palak",
+    "nameEn": "Fresh Desi Spinach (Palak)",
+    "nameNe": "पालक",
+    "aliases": ["spinach", "desi palak"],
+    "category": "greens",
+    "standardUnit": "bunch",
+    "marketPackageGrams": 500,
+    "storageDays": 3,
+    "allergens": [],
+    "availability": {
+      "vasant": "available",
+      "grishma": "out_of_season",
+      "varsha": "limited",
+      "sharad": "available",
+      "hemant": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "mustard_oil",
+    "nameEn": "Cold-pressed Kachi Ghani Mustard Oil",
+    "nameNe": "कच्ची घानी सरसों का तेल",
+    "aliases": ["sarson ka tel", "mustard oil"],
+    "category": "oils",
+    "standardUnit": "l",
+    "marketPackageGrams": 1000,
+    "storageDays": 365,
+    "allergens": ["mustard"],
+    "availability": {
+      "vasant": "peak",
+      "grishma": "available",
+      "varsha": "available",
+      "sharad": "available",
+      "hemant": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "desi_ghee",
+    "nameEn": "A2 Bilona Cow Ghee",
+    "nameNe": "देसी घी",
+    "aliases": ["clarified butter", "cow ghee", "shuddh ghee"],
+    "category": "dairy",
+    "standardUnit": "g",
+    "marketPackageGrams": 500,
+    "storageDays": 180,
+    "allergens": ["dairy"],
+    "availability": {
+      "vasant": "available",
+      "grishma": "available",
+      "varsha": "available",
+      "sharad": "available",
+      "hemant": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "potato",
+    "nameEn": "Pahari / Agra Potatoes",
+    "nameNe": "आलू",
+    "aliases": ["alu", "aloo", "potato"],
+    "category": "vegetables",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 21,
+    "allergens": [],
+    "availability": {
+      "vasant": "available",
+      "grishma": "available",
+      "varsha": "available",
+      "sharad": "available",
+      "hemant": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "cauliflower",
+    "nameEn": "Delhi Mandi Cauliflower (Phool Gobi)",
+    "nameNe": "फूलगोभी",
+    "aliases": ["gobi", "phool gobi"],
+    "category": "vegetables",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 5,
+    "allergens": [],
+    "availability": {
+      "vasant": "available",
+      "grishma": "out_of_season",
+      "varsha": "out_of_season",
+      "sharad": "peak",
+      "hemant": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "green_peas",
+    "nameEn": "Fresh Green Peas (Matar)",
+    "nameNe": "हरी मटर",
+    "aliases": ["matar", "fresh peas"],
+    "category": "vegetables",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 5,
+    "allergens": [],
+    "availability": {
+      "vasant": "peak",
+      "grishma": "out_of_season",
+      "varsha": "out_of_season",
+      "sharad": "available",
+      "hemant": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "ginger",
+    "nameEn": "Fresh Ginger (Adrak)",
+    "nameNe": "अदरक",
+    "aliases": ["adrak"],
+    "category": "aromatics",
+    "standardUnit": "g",
+    "marketPackageGrams": 250,
+    "storageDays": 20,
+    "allergens": [],
+    "availability": {
+      "vasant": "available",
+      "grishma": "available",
+      "varsha": "available",
+      "sharad": "available",
+      "hemant": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "garlic",
+    "nameEn": "Garlic Cloves (Lehsun)",
+    "nameNe": "लहसुन",
+    "aliases": ["lehsun"],
+    "category": "aromatics",
+    "standardUnit": "g",
+    "marketPackageGrams": 250,
+    "storageDays": 60,
+    "allergens": [],
+    "availability": {
+      "vasant": "available",
+      "grishma": "available",
+      "varsha": "available",
+      "sharad": "available",
+      "hemant": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "onion",
+    "nameEn": "Red Onions (Piyaz)",
+    "nameNe": "लाल प्याज",
+    "aliases": ["pyaz", "onion"],
+    "category": "aromatics",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 30,
+    "allergens": [],
+    "availability": {
+      "vasant": "available",
+      "grishma": "available",
+      "varsha": "available",
+      "sharad": "available",
+      "hemant": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "tomato",
+    "nameEn": "Desi Tomatoes (Tamatar)",
+    "nameNe": "देसी टमाटर",
+    "aliases": ["tamatar", "tomato"],
+    "category": "vegetables",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 7,
+    "allergens": [],
+    "availability": {
+      "vasant": "available",
+      "grishma": "available",
+      "varsha": "available",
+      "sharad": "peak",
+      "hemant": "peak",
+      "shishir": "peak"
+    }
+  },
+  {
+    "id": "cumin_seeds",
+    "nameEn": "Cumin Seeds (Jeera)",
+    "nameNe": "जीरा",
+    "aliases": ["jeera", "zeera"],
+    "category": "spices",
+    "standardUnit": "g",
+    "marketPackageGrams": 100,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "vasant": "available",
+      "grishma": "available",
+      "varsha": "available",
+      "sharad": "available",
+      "hemant": "available",
+      "shishir": "available"
+    }
+  },
+  {
+    "id": "kasuri_methi",
+    "nameEn": "Nagauri Dried Fenugreek Leaves (Kasuri Methi)",
+    "nameNe": "कसूरी मेथी",
+    "aliases": ["dried fenugreek", "kasuri methi"],
+    "category": "spices",
+    "standardUnit": "g",
+    "marketPackageGrams": 100,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "vasant": "available",
+      "grishma": "available",
+      "varsha": "available",
+      "sharad": "available",
+      "hemant": "available",
+      "shishir": "available"
+    }
+  }
+]

@@ -1,0 +1,255 @@
+[
+  {
+    "id": "delhi-rajma-masala",
+    "titleEn": "Delhi Punjabi Style Rajma Masala",
+    "titleNe": "दिल्ली पंजाबी राजमा मसाला",
+    "category": "dal",
+    "cuisine": "North Indian / Punjabi",
+    "dietary": ["vegetarian", "gluten-free"],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 35,
+    "servings": 4,
+    "difficulty": "easy",
+    "pressureCooker": {
+      "enabled": true,
+      "recommendedWhistles": 4,
+      "altitudeWhistleOffsetKathmandu": 0,
+      "heatLevel": "medium",
+      "releaseType": "natural"
+    },
+    "elevationBand": {
+      "testedElevationMeters": 216,
+      "boilingPointCelsius": 99.2,
+      "waterMultiplier": 1.0
+    },
+    "ingredients": [
+      { "ingredientId": "rajma", "quantity": 250, "unit": "g", "notes": "Soaked overnight for 8 hours" },
+      { "ingredientId": "onion", "quantity": 150, "unit": "g" },
+      { "ingredientId": "tomato", "quantity": 200, "unit": "g" },
+      { "ingredientId": "ginger", "quantity": 15, "unit": "g" },
+      { "ingredientId": "garlic", "quantity": 15, "unit": "g" },
+      { "ingredientId": "desi_ghee", "quantity": 30, "unit": "g" },
+      { "ingredientId": "kasuri_methi", "quantity": 5, "unit": "g" }
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "instructionEn": "Add soaked rajma with 750ml water and 1 tsp salt to 5L pressure cooker.",
+        "instructionNe": "भिगोया हुआ राजमा, ७५० मिली पानी और नमक प्रेशर कुकर में डालें।",
+        "whistles": 4
+      },
+      {
+        "stepNumber": 2,
+        "instructionEn": "Sauté onions, ginger, garlic, and tomato puree in desi ghee until oil separates.",
+        "instructionNe": "देसी घी में प्याज, अदरक-लहसुन और टमाटर का तड़का लगाएं।",
+        "timerMinutes": 10
+      },
+      {
+        "stepNumber": 3,
+        "instructionEn": "Combine masala with soft rajma and simmer gently, crushing a few beans for thick gravy.",
+        "instructionNe": "उबले राजमा में मसाला मिलाकर धीमी आंच पर १० मिनट पकाएं।",
+        "timerMinutes": 10
+      }
+    ],
+    "seasonality": ["hemant", "shishir", "vasant"],
+    "tags": ["comfort", "high-protein", "mandi-staple", "punjabi"],
+    "costEstimateNpr": 120,
+    "proteinGramsPerServing": 16.5
+  },
+  {
+    "id": "dhaba-dal-makhani",
+    "titleEn": "Slow-Simmered Dhaba Dal Makhani",
+    "titleNe": "ढाबा स्टाइल दाल मखनी",
+    "category": "dal",
+    "cuisine": "North Indian",
+    "dietary": ["vegetarian", "gluten-free"],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 55,
+    "servings": 4,
+    "difficulty": "medium",
+    "pressureCooker": {
+      "enabled": true,
+      "recommendedWhistles": 6,
+      "altitudeWhistleOffsetKathmandu": 0,
+      "heatLevel": "medium",
+      "releaseType": "natural"
+    },
+    "elevationBand": {
+      "testedElevationMeters": 216,
+      "boilingPointCelsius": 99.2,
+      "waterMultiplier": 1.0
+    },
+    "ingredients": [
+      { "ingredientId": "urad_dal_black", "quantity": 200, "unit": "g" },
+      { "ingredientId": "rajma", "quantity": 50, "unit": "g" },
+      { "ingredientId": "tomato", "quantity": 200, "unit": "g" },
+      { "ingredientId": "desi_ghee", "quantity": 40, "unit": "g" },
+      { "ingredientId": "ginger", "quantity": 20, "unit": "g" },
+      { "ingredientId": "kasuri_methi", "quantity": 5, "unit": "g" }
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "instructionEn": "Pressure cook soaked black urad and rajma with 1L water for 6 whistles until melt-in-mouth soft.",
+        "instructionNe": "साबुत उड़द और राजमा को ६ सीटी आने तक अच्छी तरह प्रेशर कुक करें।",
+        "whistles": 6
+      },
+      {
+        "stepNumber": 2,
+        "instructionEn": "Add tomato puree, ginger juliennes, and slow simmer with butter and desi ghee for creamy velvet texture.",
+        "instructionNe": "टमाटर प्यूरी, अदरक और देसी घी डालकर धीमी आंच पर गाढ़ी मखमली होने तक पकाएं।",
+        "timerMinutes": 25
+      }
+    ],
+    "seasonality": ["hemant", "shishir"],
+    "tags": ["royal", "creamy", "classic", "ifct-rich"],
+    "costEstimateNpr": 160,
+    "proteinGramsPerServing": 18.2
+  },
+  {
+    "id": "jeera-basmati-rice",
+    "titleEn": "Fragrant Delhi Jeera Basmati Rice",
+    "titleNe": "शाही जीरा बासमती चावल",
+    "category": "bhat",
+    "cuisine": "North Indian",
+    "dietary": ["vegetarian", "gluten-free"],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 12,
+    "servings": 4,
+    "difficulty": "easy",
+    "pressureCooker": {
+      "enabled": true,
+      "recommendedWhistles": 1,
+      "altitudeWhistleOffsetKathmandu": 0,
+      "heatLevel": "high",
+      "releaseType": "quick"
+    },
+    "elevationBand": {
+      "testedElevationMeters": 216,
+      "boilingPointCelsius": 99.2,
+      "waterMultiplier": 1.0
+    },
+    "ingredients": [
+      { "ingredientId": "basmati_rice", "quantity": 300, "unit": "g" },
+      { "ingredientId": "cumin_seeds", "quantity": 10, "unit": "g" },
+      { "ingredientId": "desi_ghee", "quantity": 20, "unit": "g" }
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "instructionEn": "Crack cumin seeds in hot desi ghee until fragrant, add washed basmati rice and 500ml water.",
+        "instructionNe": "गरम देसी घी में जीरा चटकाएं, धुले बासमती चावल और ५०० मिली पानी डालें।",
+        "whistles": 1
+      },
+      {
+        "stepNumber": 2,
+        "instructionEn": "Turn off heat after exactly 1 whistle and release steam quickly after 3 minutes for distinct fluffy grains.",
+        "instructionNe": "१ सीटी के बाद आंच बंद करें और ३ मिनट बाद भाप निकाल दें।",
+        "timerMinutes": 3
+      }
+    ],
+    "seasonality": ["vasant", "grishma", "varsha", "sharad", "hemant", "shishir"],
+    "tags": ["rice", "aromatic", "staple", "quick"],
+    "costEstimateNpr": 70,
+    "proteinGramsPerServing": 6.8
+  },
+  {
+    "id": "palak-paneer-delhi",
+    "titleEn": "Delhi Green Market Palak Paneer",
+    "titleNe": "देसी पालक पनीर",
+    "category": "tarkari",
+    "cuisine": "North Indian",
+    "dietary": ["vegetarian", "gluten-free"],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 20,
+    "servings": 4,
+    "difficulty": "medium",
+    "pressureCooker": {
+      "enabled": false,
+      "recommendedWhistles": 0,
+      "altitudeWhistleOffsetKathmandu": 0,
+      "heatLevel": "medium",
+      "releaseType": "quick"
+    },
+    "elevationBand": {
+      "testedElevationMeters": 216,
+      "boilingPointCelsius": 99.2,
+      "waterMultiplier": 1.0
+    },
+    "ingredients": [
+      { "ingredientId": "palak", "quantity": 500, "unit": "g" },
+      { "ingredientId": "paneer", "quantity": 250, "unit": "g" },
+      { "ingredientId": "garlic", "quantity": 15, "unit": "g" },
+      { "ingredientId": "desi_ghee", "quantity": 25, "unit": "g" },
+      { "ingredientId": "kasuri_methi", "quantity": 5, "unit": "g" }
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "instructionEn": "Blanch washed palak in boiling water for 2 minutes, shock in ice water and blend into emerald puree.",
+        "instructionNe": "पालक को २ मिनट उबालकर ठंडे पानी में डालें और बारीक पीस लें।",
+        "timerMinutes": 5
+      },
+      {
+        "stepNumber": 2,
+        "instructionEn": "Temper garlic in desi ghee, add spinach puree, simmer gently, then fold in fresh paneer cubes.",
+        "instructionNe": "घी में लहसुन भूनकर पालक प्यूरी डालें और ताजे पनीर के टुकड़े मिलाएं।",
+        "timerMinutes": 10
+      }
+    ],
+    "seasonality": ["hemant", "shishir", "vasant"],
+    "tags": ["greens", "paneer", "ifct-iron", "protein"],
+    "costEstimateNpr": 180,
+    "proteinGramsPerServing": 19.5
+  },
+  {
+    "id": "aloo-gobi-matar-delhi",
+    "titleEn": "Mandi Fresh Aloo Gobi Matar",
+    "titleNe": "मंडी फ्रेश आलू गोभी मटर",
+    "category": "tarkari",
+    "cuisine": "North Indian",
+    "dietary": ["vegetarian", "gluten-free", "vegan"],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "easy",
+    "pressureCooker": {
+      "enabled": true,
+      "recommendedWhistles": 1,
+      "altitudeWhistleOffsetKathmandu": 0,
+      "heatLevel": "medium",
+      "releaseType": "quick"
+    },
+    "elevationBand": {
+      "testedElevationMeters": 216,
+      "boilingPointCelsius": 99.2,
+      "waterMultiplier": 1.0
+    },
+    "ingredients": [
+      { "ingredientId": "cauliflower", "quantity": 400, "unit": "g" },
+      { "ingredientId": "potato", "quantity": 250, "unit": "g" },
+      { "ingredientId": "green_peas", "quantity": 150, "unit": "g" },
+      { "ingredientId": "mustard_oil", "quantity": 25, "unit": "ml" },
+      { "ingredientId": "ginger", "quantity": 10, "unit": "g" },
+      { "ingredientId": "cumin_seeds", "quantity": 5, "unit": "g" }
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "instructionEn": "Heat kachi ghani mustard oil till smoking, add cumin, ginger, aloo, and gobi florets.",
+        "instructionNe": "सरसों का तेल गरम करें, जीरा, अदरक, आलू और गोभी डालकर भूनें।",
+        "timerMinutes": 5
+      },
+      {
+        "stepNumber": 2,
+        "instructionEn": "Add green peas with a splash of water, close cooker and cook for 1 quick whistle.",
+        "instructionNe": "मटर और थोड़ा पानी डालकर १ सीटी आने तक पकाएं और तुरंत भाप निकालें।",
+        "whistles": 1
+      }
+    ],
+    "seasonality": ["sharad", "hemant", "shishir"],
+    "tags": ["sabzi", "everyday", "seasonal", "vegan"],
+    "costEstimateNpr": 90,
+    "proteinGramsPerServing": 5.4
+  }
+]

@@ -1,0 +1,87 @@
+[
+  {
+    "id": "quinoa",
+    "nameEn": "Royal Bolivian Quinoa (Quinua Real)",
+    "nameNe": "रोयल किनोवा",
+    "aliases": ["quinua real", "royal quinoa", "white quinoa"],
+    "category": "grains",
+    "standardUnit": "kg",
+    "marketPackageGrams": 500,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "primavera": "available",
+      "verano": "available",
+      "otono": "peak",
+      "invierno": "peak"
+    }
+  },
+  {
+    "id": "chuno",
+    "nameEn": "Freeze-Dried Black Potato (Chuño Altiplánico)",
+    "nameNe": "छुन्यो (कालो सुख्खा आलु)",
+    "aliases": ["chuno negro", "freeze dried potato"],
+    "category": "vegetables",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 730,
+    "allergens": [],
+    "availability": {
+      "primavera": "available",
+      "verano": "available",
+      "otono": "available",
+      "invierno": "peak"
+    }
+  },
+  {
+    "id": "papa_huayro",
+    "nameEn": "Native Andean Potato (Papa Huayro)",
+    "nameNe": "एन्डियन आलु (Papa Huayro)",
+    "aliases": ["papa andina", "native potato", "huayro"],
+    "category": "vegetables",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 25,
+    "allergens": [],
+    "availability": {
+      "primavera": "peak",
+      "verano": "available",
+      "otono": "peak",
+      "invierno": "available"
+    }
+  },
+  {
+    "id": "habas_secas",
+    "nameEn": "Dried Andean Broad Beans (Habas)",
+    "nameNe": "सुकेको बकुल्ला (Habas)",
+    "aliases": ["fava beans", "broad beans", "habas"],
+    "category": "pulses",
+    "standardUnit": "kg",
+    "marketPackageGrams": 500,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "primavera": "available",
+      "verano": "peak",
+      "otono": "available",
+      "invierno": "available"
+    }
+  },
+  {
+    "id": "queso_criollo",
+    "nameEn": "Altiplano Fresh Salted Cheese (Queso Criollo)",
+    "nameNe": "ताजा चीज (Queso Criollo)",
+    "aliases": ["queso criollo", "queso menonita", "fresh cheese"],
+    "category": "dairy",
+    "standardUnit": "g",
+    "marketPackageGrams": 250,
+    "storageDays": 7,
+    "allergens": ["dairy"],
+    "availability": {
+      "primavera": "available",
+      "verano": "available",
+      "otono": "available",
+      "invierno": "available"
+    }
+  }
+]

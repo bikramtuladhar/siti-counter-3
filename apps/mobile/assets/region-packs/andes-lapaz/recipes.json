@@ -1,0 +1,95 @@
+[
+  {
+    "id": "pesque-de-quinua-lapaz",
+    "titleEn": "Pesque de Quinua Real (3,600m Calibrated)",
+    "titleNe": "पेस्के दे किनोवा (उच्च उचाइको किनोवा र चीज)",
+    "category": "khaja",
+    "cuisine": "Bolivian Andean",
+    "dietary": ["vegetarian", "gluten-free"],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 30,
+    "servings": 4,
+    "difficulty": "medium",
+    "pressureCooker": {
+      "enabled": true,
+      "recommendedWhistles": 5,
+      "altitudeWhistleOffsetKathmandu": 2,
+      "heatLevel": "medium",
+      "releaseType": "natural"
+    },
+    "elevationBand": {
+      "testedElevationMeters": 3600,
+      "boilingPointCelsius": 87.4,
+      "waterMultiplier": 1.35
+    },
+    "ingredients": [
+      { "ingredientId": "quinoa", "quantity": 300, "unit": "g" },
+      { "ingredientId": "queso_criollo", "quantity": 150, "unit": "g" }
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "instructionEn": "Rinse royal quinoa vigorously, combine with 900ml water (1.35x altitude compensation) and 1/2 tsp salt in pressure cooker.",
+        "instructionNe": "किनोवा राम्रोसँग पखालेर ९०० मिली पानीसँग कुकरमा हाल्नुहोस्।",
+        "whistles": 5
+      },
+      {
+        "stepNumber": 2,
+        "instructionEn": "After natural steam release, vigorously whisk with wooden spoon and beat in fresh queso criollo until rich and creamy.",
+        "instructionNe": "भाप सेलाएपछि काठको डाडुले मज्जाले फिटेर ताजा चीज मिसाउनुहोस्।",
+        "timerMinutes": 5
+      }
+    ],
+    "seasonality": ["primavera", "verano", "otono", "invierno"],
+    "tags": ["high-altitude", "andean", "superfood", "comfort"],
+    "costEstimateNpr": 280,
+    "proteinGramsPerServing": 14.5
+  },
+  {
+    "id": "sopa-de-mani-chuno",
+    "titleEn": "Altiplano Peanut Soup with Rehydrated Chuño",
+    "titleNe": "सोपा दे मानी र छुन्यो (बदाम र सुख्खा आलुको सुप)",
+    "category": "soup",
+    "cuisine": "Bolivian Andean",
+    "dietary": ["vegetarian", "gluten-free"],
+    "prepTimeMinutes": 25,
+    "cookTimeMinutes": 40,
+    "servings": 4,
+    "difficulty": "hard",
+    "pressureCooker": {
+      "enabled": true,
+      "recommendedWhistles": 6,
+      "altitudeWhistleOffsetKathmandu": 2,
+      "heatLevel": "medium",
+      "releaseType": "natural"
+    },
+    "elevationBand": {
+      "testedElevationMeters": 3600,
+      "boilingPointCelsius": 87.4,
+      "waterMultiplier": 1.35
+    },
+    "ingredients": [
+      { "ingredientId": "chuno", "quantity": 250, "unit": "g", "notes": "Soaked overnight and crushed by hand" },
+      { "ingredientId": "papa_huayro", "quantity": 250, "unit": "g" },
+      { "ingredientId": "habas_secas", "quantity": 100, "unit": "g" }
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "instructionEn": "Add soaked chuño chunks, native potatoes, peeled habas, and blended peanut paste with 1.2L water into pressure cooker.",
+        "instructionNe": "भिजाएको छुन्यो, आलु, बकुल्ला र पिसेको बदाम १.२ लिटर पानीसँग कुकरमा हाल्नुहोस्।",
+        "whistles": 6
+      },
+      {
+        "stepNumber": 2,
+        "instructionEn": "Simmer gently until potatoes are tender and broth is deeply savory.",
+        "instructionNe": "धीमी आंचमा ५ मिनेट थप उमाल्नुहोस्।",
+        "timerMinutes": 5
+      }
+    ],
+    "seasonality": ["otono", "invierno"],
+    "tags": ["high-altitude", "chuño", "traditional", "andean-soup"],
+    "costEstimateNpr": 320,
+    "proteinGramsPerServing": 16.0
+  }
+]

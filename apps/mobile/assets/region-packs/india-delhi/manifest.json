@@ -1,0 +1,29 @@
+{
+  "id": "india-delhi",
+  "version": "1.0.0",
+  "name": "India (Delhi & Northern Plains)",
+  "country": "India",
+  "countryCode": "IN",
+  "region": "Delhi NCR",
+  "status": "verified",
+  "elevationMeters": 216,
+  "currency": {
+    "code": "INR",
+    "symbol": "₹",
+    "numberFormat": "lakh-crore"
+  },
+  "languages": ["hi", "en", "pa"],
+  "defaultLanguage": "hi",
+  "calendar": "gregorian",
+  "seasonSystem": "six-ritus",
+  "units": {
+    "market": ["kg", "g", "katori", "bunch", "packet", "pao", "quintal", "seer"],
+    "standard": "metric"
+  },
+  "defaultMealRhythm": [
+    { "id": "subah-ka-nashta", "name": "सुबह का नाश्ता (Breakfast)", "time": "08:30" },
+    { "id": "dopahar-ka-khana", "name": "दोपहर का खाना (Lunch)", "time": "13:30" },
+    { "id": "shaam-ki-chai", "name": "शाम की चाय व स्नैक्स (Evening Chai)", "time": "17:00" },
+    { "id": "raat-ka-khana", "name": "रात का खाना (Dinner)", "time": "20:30" }
+  ]
+}

@@ -65,6 +65,9 @@ flutter:
 
   assets:
     - assets/region-packs/nepal-bagmati/
+    - assets/region-packs/india-delhi/
+    - assets/region-packs/australia-diaspora/
+    - assets/region-packs/andes-lapaz/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

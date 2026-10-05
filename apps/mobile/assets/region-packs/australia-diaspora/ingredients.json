@@ -1,0 +1,138 @@
+[
+  {
+    "id": "asparagus",
+    "nameEn": "Fresh Australian Asparagus",
+    "nameNe": "अष्ट्रेलियाली कुरिलो",
+    "aliases": ["asparagus spears", "green asparagus"],
+    "category": "vegetables",
+    "standardUnit": "bunch",
+    "marketPackageGrams": 250,
+    "storageDays": 4,
+    "allergens": [],
+    "availability": {
+      "spring": "peak",
+      "summer": "available",
+      "autumn": "out_of_season",
+      "winter": "out_of_season"
+    }
+  },
+  {
+    "id": "tasmanian_salmon",
+    "nameEn": "Tasmanian Atlantic Salmon Fillet",
+    "nameNe": "तास्मानियाली साल्मन माछा",
+    "aliases": ["atlantic salmon", "salmon fillet"],
+    "category": "meat",
+    "standardUnit": "g",
+    "marketPackageGrams": 400,
+    "storageDays": 2,
+    "allergens": ["fish"],
+    "availability": {
+      "spring": "available",
+      "summer": "available",
+      "autumn": "available",
+      "winter": "available"
+    }
+  },
+  {
+    "id": "aussie_lamb",
+    "nameEn": "Australian Diced Spring Lamb (Khasi Substitute)",
+    "nameNe": "अस्ट्रेलियन भेडाको मासु (खसीको विकल्प)",
+    "aliases": ["lamb shoulder", "diced lamb", "goat substitute"],
+    "category": "meat",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 3,
+    "allergens": [],
+    "availability": {
+      "spring": "peak",
+      "summer": "available",
+      "autumn": "available",
+      "winter": "available"
+    }
+  },
+  {
+    "id": "tasmanian_pepperberry",
+    "nameEn": "Tasmanian Mountain Pepperberry (Timur Substitute)",
+    "nameNe": "माउन्टेन पेपरबेरी (टिमुरको विकल्प)",
+    "aliases": ["native pepperberry", "mountain pepper", "timur substitute"],
+    "category": "spices",
+    "standardUnit": "g",
+    "marketPackageGrams": 50,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "spring": "available",
+      "summer": "available",
+      "autumn": "peak",
+      "winter": "available"
+    }
+  },
+  {
+    "id": "silverbeet_spinach",
+    "nameEn": "Australian Silverbeet / English Spinach (Saag Substitute)",
+    "nameNe": "सिल्भरबीट / पालुङ्गो (तोरीको सागको विकल्प)",
+    "aliases": ["swiss chard", "silverbeet", "english spinach"],
+    "category": "greens",
+    "standardUnit": "bunch",
+    "marketPackageGrams": 350,
+    "storageDays": 4,
+    "allergens": [],
+    "availability": {
+      "spring": "peak",
+      "summer": "available",
+      "autumn": "available",
+      "winter": "peak"
+    }
+  },
+  {
+    "id": "grassfed_ghee",
+    "nameEn": "Australian Grass-fed Clarified Butter (Ghee)",
+    "nameNe": "अस्ट्रेलियन घ्यू",
+    "aliases": ["grassfed ghee", "clarified butter"],
+    "category": "dairy",
+    "standardUnit": "g",
+    "marketPackageGrams": 500,
+    "storageDays": 180,
+    "allergens": ["dairy"],
+    "availability": {
+      "spring": "available",
+      "summer": "available",
+      "autumn": "available",
+      "winter": "available"
+    }
+  },
+  {
+    "id": "red_lentils",
+    "nameEn": "Australian Red Split Lentils (Masoor)",
+    "nameNe": "रातो मुसुरो दाल",
+    "aliases": ["red lentils", "masoor dal"],
+    "category": "pulses",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 365,
+    "allergens": [],
+    "availability": {
+      "spring": "available",
+      "summer": "available",
+      "autumn": "available",
+      "winter": "available"
+    }
+  },
+  {
+    "id": "sunwhite_rice",
+    "nameEn": "Australian Medium Grain Rice (Calrose)",
+    "nameNe": "अस्ट्रेलियन चामल (Calrose)",
+    "aliases": ["calrose rice", "sunwhite"],
+    "category": "grains",
+    "standardUnit": "kg",
+    "marketPackageGrams": 1000,
+    "storageDays": 730,
+    "allergens": [],
+    "availability": {
+      "spring": "available",
+      "summer": "available",
+      "autumn": "available",
+      "winter": "available"
+    }
+  }
+]

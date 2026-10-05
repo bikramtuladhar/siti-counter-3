@@ -199,3 +199,85 @@ describe('RegionPackManager TS - Household Overrides', () => {
     assert.strictEqual(whistles, 6)
   })
 })
+
+describe('RegionPackManager TS - Expanded Region Packs (Issue #44)', () => {
+  it('India Delhi Pack: IFCT references, mandi units (katori, pao, seer), rajma, and Diwali festival', async () => {
+    const manager = new RegionPackManager()
+    const delhiEntry = manager.catalog.find(c => c.id === 'india-delhi')
+    assert.ok(delhiEntry)
+    assert.strictEqual(delhiEntry.countryCode, 'IN')
+    assert.strictEqual(delhiEntry.currencyCode, 'INR')
+    assert.ok(delhiEntry.marketUnits.includes('katori'))
+    assert.ok(delhiEntry.marketUnits.includes('pao'))
+    assert.ok(delhiEntry.marketUnits.includes('seer'))
+
+    await manager.installFromCatalog('india-delhi')
+    assert.strictEqual(manager.isInstalled('india-delhi'), true)
+
+    manager.setPrimaryPack('india-delhi')
+    const novDate = new Date(2026, 10, 15) // November
+    const context = manager.resolveContext({ forDate: novDate })
+
+    assert.strictEqual(context.effectiveElevationMeters, 216)
+    assert.strictEqual(context.activeSeasonId, 'hemant')
+    assert.strictEqual(context.currencySymbol, '₹')
+
+    const rajmaIngredient = context.combinedIngredients.find(i => i.id === 'rajma')
+    assert.ok(rajmaIngredient)
+    assert.strictEqual(rajmaIngredient.nameNe, 'राजमा')
+
+    const rajmaRecipe = context.combinedRecipes.find(r => r.id === 'delhi-rajma-masala')
+    assert.ok(rajmaRecipe)
+    assert.strictEqual(rajmaRecipe.pressureCooker.recommendedWhistles, 4)
+
+    const diwaliFestival = context.combinedFestivals.find(f => f.id === 'diwali')
+    assert.ok(diwaliFestival)
+    assert.strictEqual(diwaliFestival.tithi, 'Kartik Amavasya')
+  })
+
+  it('Australia Diaspora Pack: Taste of Home substitutions (Tasmanian pepperberry, Aussie lamb)', async () => {
+    const manager = new RegionPackManager()
+    await manager.installFromCatalog('australia-diaspora')
+    manager.loadBuiltInPack(RegionPackManager.getSamplePack('nepal-bagmati')!)
+    manager.setPrimaryPack('australia-diaspora')
+    manager.addSecondaryPack('nepal-bagmati')
+
+    const octoberDate = new Date(2026, 9, 20) // October = Spring in Southern Hemisphere
+    const context = manager.resolveContext({ forDate: octoberDate })
+
+    assert.strictEqual(context.activeSeasonId, 'spring')
+    assert.strictEqual(context.effectiveElevationMeters, 50)
+
+    const lambCurry = context.combinedRecipes.find(r => r.id === 'sydney-spring-lamb-curry')
+    assert.ok(lambCurry)
+    assert.ok(lambCurry.ingredients.some(i => i.ingredientId === 'aussie_lamb'))
+    assert.ok(lambCurry.ingredients.some(i => i.ingredientId === 'tasmanian_pepperberry'))
+
+    const pepperberry = context.combinedIngredients.find(i => i.id === 'tasmanian_pepperberry')
+    assert.ok(pepperberry)
+    assert.strictEqual(pepperberry.category, 'spices')
+  })
+
+  it('Andes High-Altitude Pack: 3,600m calibration, chuño, peanut soup, and +2 whistle offset', async () => {
+    const manager = new RegionPackManager()
+    await manager.installFromCatalog('andes-lapaz')
+    manager.setPrimaryPack('andes-lapaz')
+
+    const context = manager.resolveContext()
+    assert.strictEqual(context.effectiveElevationMeters, 3600)
+    assert.ok(Math.abs(context.effectiveBoilingPointCelsius - 87.4) < 0.3)
+    assert.ok(context.effectiveMarketUnits.includes('arroba'))
+    assert.ok(context.effectiveMarketUnits.includes('monton'))
+
+    const chuno = context.combinedIngredients.find(i => i.id === 'chuno')
+    assert.ok(chuno)
+
+    const peanutSoup = context.combinedRecipes.find(r => r.id === 'sopa-de-mani-chuno')
+    assert.ok(peanutSoup)
+    assert.strictEqual(peanutSoup.pressureCooker.recommendedWhistles, 6)
+    assert.strictEqual(peanutSoup.pressureCooker.altitudeWhistleOffsetKathmandu, 2)
+
+    const whistles = context.adjustWhistlesForRecipe(peanutSoup)
+    assert.strictEqual(whistles, 8) // 6 recommended + 2 altitude offset
+  })
+})

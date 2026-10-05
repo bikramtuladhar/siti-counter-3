@@ -1,0 +1,15 @@
+[
+  {
+    "id": "dashain-spring-australia",
+    "nameEn": "Southern Spring Dashain (Sydney / Melbourne)",
+    "nameNe": "अस्ट्रेलियामा दसैँ (वसन्त ऋतु)",
+    "tithi": "Ashwin Shukla Dashami",
+    "approxGregorianMonth": "October",
+    "descriptionEn": "Celebrating Dashain in sunny Southern Hemisphere spring with park picnics and family gatherings.",
+    "descriptionNe": "दक्षिणी गोलार्धको वसन्त ऋतुमा मनाइने दसैँ।",
+    "foodTraditions": {
+      "keyDishes": ["sydney-spring-lamb-curry", "aussie-masoor-dal"],
+      "significance": "Aussie diced lamb curry, sel roti using locally milled rice, and spring asparagus gatherings."
+    }
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "id": "sydney-spring-lamb-curry",
+    "titleEn": "Diaspora Spring Lamb Curry (Dashain in Sydney)",
+    "titleNe": "अस्ट्रेलियन खसी/भेडाको मासु (दसैँ विशेष)",
+    "category": "masu",
+    "cuisine": "Nepali Diaspora",
+    "dietary": ["gluten-free"],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 35,
+    "servings": 4,
+    "difficulty": "medium",
+    "pressureCooker": {
+      "enabled": true,
+      "recommendedWhistles": 4,
+      "altitudeWhistleOffsetKathmandu": 0,
+      "heatLevel": "medium",
+      "releaseType": "natural"
+    },
+    "elevationBand": {
+      "testedElevationMeters": 50,
+      "boilingPointCelsius": 99.8,
+      "waterMultiplier": 1.0
+    },
+    "ingredients": [
+      { "ingredientId": "aussie_lamb", "quantity": 800, "unit": "g" },
+      { "ingredientId": "tasmanian_pepperberry", "quantity": 5, "unit": "g", "notes": "Crushed mountain pepperberry for numbing timur punch" },
+      { "ingredientId": "grassfed_ghee", "quantity": 30, "unit": "g" }
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "instructionEn": "Brown diced lamb in grassfed ghee with whole spices and crushed Tasmanian pepperberry.",
+        "instructionNe": "घ्यूमा अस्ट्रेलियन भेडाको मासु र टिमुरको विकल्प पेपरबेरी हालेर भुट्नुहोस्।",
+        "timerMinutes": 10
+      },
+      {
+        "stepNumber": 2,
+        "instructionEn": "Add 200ml warm water, secure lid and pressure cook for 4 whistles until tender.",
+        "instructionNe": "पानी हालेर ४ सिठी आउन्जेल पकाउनुहोस्।",
+        "whistles": 4
+      }
+    ],
+    "seasonality": ["spring", "autumn", "winter"],
+    "tags": ["diaspora", "dashain", "meat", "taste-of-home"],
+    "costEstimateNpr": 1400,
+    "proteinGramsPerServing": 32.0
+  },
+  {
+    "id": "aussie-masoor-dal",
+    "titleEn": "Quick Aussie Red Lentil Dal (Tadka Dal)",
+    "titleNe": "रातो मुसुरोको दाल (झारेको)",
+    "category": "dal",
+    "cuisine": "Nepali Diaspora",
+    "dietary": ["vegetarian", "gluten-free"],
+    "prepTimeMinutes": 5,
+    "cookTimeMinutes": 12,
+    "servings": 4,
+    "difficulty": "easy",
+    "pressureCooker": {
+      "enabled": true,
+      "recommendedWhistles": 2,
+      "altitudeWhistleOffsetKathmandu": 0,
+      "heatLevel": "high",
+      "releaseType": "natural"
+    },
+    "elevationBand": {
+      "testedElevationMeters": 50,
+      "boilingPointCelsius": 99.8,
+      "waterMultiplier": 1.0
+    },
+    "ingredients": [
+      { "ingredientId": "red_lentils", "quantity": 200, "unit": "g" },
+      { "ingredientId": "grassfed_ghee", "quantity": 20, "unit": "g" }
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "instructionEn": "Pressure cook red lentils with 600ml water and turmeric for 2 fast whistles.",
+        "instructionNe": "मुसुरो दाल पानी र बेसारसँग २ सिठी लगाउनुहोस्।",
+        "whistles": 2
+      },
+      {
+        "stepNumber": 2,
+        "instructionEn": "Temper with hot ghee and cumin seeds, pour over steaming dal.",
+        "instructionNe": "घ्यू र जिराले झानेर दालमा हाल्नुहोस्।",
+        "timerMinutes": 2
+      }
+    ],
+    "seasonality": ["spring", "summer", "autumn", "winter"],
+    "tags": ["quick", "comfort", "staple", "high-protein"],
+    "costEstimateNpr": 180,
+    "proteinGramsPerServing": 12.5
+  },
+  {
+    "id": "sydney-spring-salmon-asparagus",
+    "titleEn": "Pan-seared Salmon with Spring Asparagus",
+    "titleNe": "साल्मन माछा र कुरिलो (Spring Special)",
+    "category": "tarkari",
+    "cuisine": "Modern Australian",
+    "dietary": ["gluten-free"],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 12,
+    "servings": 2,
+    "difficulty": "easy",
+    "pressureCooker": {
+      "enabled": false,
+      "recommendedWhistles": 0,
+      "altitudeWhistleOffsetKathmandu": 0,
+      "heatLevel": "medium",
+      "releaseType": "quick"
+    },
+    "elevationBand": {
+      "testedElevationMeters": 50,
+      "boilingPointCelsius": 99.8,
+      "waterMultiplier": 1.0
+    },
+    "ingredients": [
+      { "ingredientId": "tasmanian_salmon", "quantity": 350, "unit": "g" },
+      { "ingredientId": "asparagus", "quantity": 200, "unit": "g" },
+      { "ingredientId": "grassfed_ghee", "quantity": 15, "unit": "g" }
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "instructionEn": "Sear salmon skin-side down in ghee until crisp (4 mins), flip for 2 mins.",
+        "instructionNe": "तातो घ्यूमा साल्मन माछा कुरकुरे हुन्जेल फ्राई गर्नुहोस्।",
+        "timerMinutes": 6
+      },
+      {
+        "stepNumber": 2,
+        "instructionEn": "Sauté tender spring asparagus in pan drippings for 3 minutes.",
+        "instructionNe": "कुरिलोलाई ३ मिनेट हल्का भुट्नुहोस्।",
+        "timerMinutes": 3
+      }
+    ],
+    "seasonality": ["spring"],
+    "tags": ["spring", "omega-3", "quick", "aussie-fresh"],
+    "costEstimateNpr": 800,
+    "proteinGramsPerServing": 34.0
+  }
+]

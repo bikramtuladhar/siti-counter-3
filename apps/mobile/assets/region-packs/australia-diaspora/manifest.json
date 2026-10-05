@@ -1,0 +1,28 @@
+{
+  "id": "australia-diaspora",
+  "version": "1.0.0",
+  "name": "Australia (Diaspora & Southern Seasons)",
+  "country": "Australia",
+  "countryCode": "AU",
+  "region": "New South Wales",
+  "status": "verified",
+  "elevationMeters": 50,
+  "currency": {
+    "code": "AUD",
+    "symbol": "$",
+    "numberFormat": "western"
+  },
+  "languages": ["en", "ne"],
+  "defaultLanguage": "en",
+  "calendar": "gregorian",
+  "seasonSystem": "four-seasons-southern",
+  "units": {
+    "market": ["kg", "g", "cup", "bunch", "punnet", "pack", "tray"],
+    "standard": "metric"
+  },
+  "defaultMealRhythm": [
+    { "id": "morning-brekkie", "name": "Morning Brekkie / Tea", "time": "08:00" },
+    { "id": "lunch-box", "name": "Work / Uni Lunchbox", "time": "12:30" },
+    { "id": "evening-dinner", "name": "Evening Dal Bhat / Dinner", "time": "19:00" }
+  ]
+}

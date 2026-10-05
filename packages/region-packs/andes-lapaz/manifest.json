@@ -1,0 +1,28 @@
+{
+  "id": "andes-lapaz",
+  "version": "1.0.0",
+  "name": "Andes (Bolivia / La Paz Altiplano)",
+  "country": "Bolivia",
+  "countryCode": "BO",
+  "region": "La Paz Altiplano",
+  "status": "verified",
+  "elevationMeters": 3600,
+  "currency": {
+    "code": "BOB",
+    "symbol": "Bs",
+    "numberFormat": "western"
+  },
+  "languages": ["es", "ay", "qu", "en"],
+  "defaultLanguage": "es",
+  "calendar": "gregorian",
+  "seasonSystem": "four-seasons-southern",
+  "units": {
+    "market": ["kg", "g", "libra", "arroba", "monton", "atado"],
+    "standard": "metric"
+  },
+  "defaultMealRhythm": [
+    { "id": "desayuno", "name": "Desayuno Paceño (Breakfast)", "time": "07:30" },
+    { "id": "almuerzo", "name": "Almuerzo Tradicional (Main Lunch)", "time": "12:30" },
+    { "id": "te-o-cena", "name": "Té de la Tarde o Cena (Light Dinner)", "time": "19:30" }
+  ]
+}
