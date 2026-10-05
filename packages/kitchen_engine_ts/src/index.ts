@@ -355,3 +355,5 @@ export * from './fuel_engine.js';
 export * from './subscription_engine.js';
 export * from './retailer_handoff_engine.js';
 export * from './community_engine.js';
+export * from './ocr_engine.js';
+
