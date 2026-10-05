@@ -8,10 +8,15 @@ class KitchenReadyScreen extends StatefulWidget {
   final OnboardingPreferences prefs;
   final VoidCallback onStartCooking;
 
+  /// Opens social sign-in so the household's data can be attached to an account.
+  /// Optional: a build without a sign-in service simply hides the entry point.
+  final VoidCallback? onCreateAccount;
+
   const KitchenReadyScreen({
     super.key,
     required this.prefs,
     required this.onStartCooking,
+    this.onCreateAccount,
   });
 
   @override
@@ -387,6 +392,35 @@ class _KitchenReadyScreenState extends State<KitchenReadyScreen> {
                   ),
                 ),
               ),
+              if (widget.onCreateAccount != null) ...[
+                const SizedBox(height: 10),
+
+                // Optional account creation, offered before the guest CTA so a user who
+                // wants an account can take it without hunting for it, and one who does not
+                // is not blocked.
+                OutlinedButton.icon(
+                  key: const Key('offer_account_button'),
+                  onPressed: widget.onCreateAccount,
+                  icon: const Icon(Icons.person_add_alt_1_rounded, size: 20),
+                  label: Text(
+                    _isNepali
+                        ? 'खाता बनाएर सुरक्षित गर्नुहोस्'
+                        : 'Create an account to keep my setup',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                    foregroundColor: SitiColors.terracotta,
+                    side: const BorderSide(color: SitiColors.terracotta),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                ),
+              ],
               const SizedBox(height: 12),
               Center(
                 child: Text(
