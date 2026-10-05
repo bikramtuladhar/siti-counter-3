@@ -40,7 +40,7 @@ void main() {
         dishTitleNe: 'खसीको मासु',
         currentWhistles: 2,
         targetWhistles: 5,
-        status: 'cooking',
+        status: CompanionStatus.cooking,
       );
 
       expect(service.activeSitiWidget, isNotNull);
@@ -103,7 +103,7 @@ void main() {
         dishTitleNe: 'पहेँलो दाल',
         currentWhistles: 3,
         targetWhistles: 3,
-        status: 'alarm',
+        status: CompanionStatus.alarm,
       );
 
       final grocery = CompanionDisplayEngine.buildGroceryChecklistWidget([
@@ -163,7 +163,7 @@ void main() {
           currentStepInstructionEn: 'Heat cooker with ghee and jimbu',
           currentStepInstructionNe: 'घिउ र जिम्बू हालेर कुकर तताउनुहोस्',
           isAlarmActive: false,
-          status: 'cooking',
+          status: CompanionStatus.cooking,
           lastHapticPattern: WatchHapticPattern.whistle,
         ),
       );
@@ -207,7 +207,7 @@ void main() {
 
       expect(find.text('3/3'), findsOneWidget);
       expect(service.watchCompanionState!.isAlarmActive, isTrue);
-      expect(service.watchCompanionState!.status, equals('alarm'));
+      expect(service.watchCompanionState!.status, equals(CompanionStatus.alarm));
       expect(
         service.watchCompanionState!.lastHapticPattern,
         equals(WatchHapticPattern.targetReached),
@@ -220,7 +220,21 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(service.watchCompanionState!.isAlarmActive, isFalse);
-      expect(service.watchCompanionState!.status, equals('done'));
+      expect(service.watchCompanionState!.status, equals(CompanionStatus.completed));
+      expect(service.watchCompanionState!.isAlarmAcknowledged, isTrue);
+      expect(find.byKey(const Key('watch_alarm_alert')), findsNothing);
+
+      // 6. An acknowledged alarm must stay dismissed: a further whistle cannot re-arm it.
+      service.incrementWatchWhistle();
+      await tester.pumpAndSettle();
+
+      expect(service.watchCompanionState!.currentWhistles, equals(4));
+      expect(service.watchCompanionState!.isAlarmActive, isFalse);
+      expect(service.watchCompanionState!.status, equals(CompanionStatus.completed));
+      expect(
+        service.watchCompanionState!.lastHapticPattern,
+        equals(WatchHapticPattern.none),
+      );
       expect(find.byKey(const Key('watch_alarm_alert')), findsNothing);
     });
   });

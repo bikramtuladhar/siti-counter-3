@@ -42,12 +42,12 @@ void main() {
         dishTitleNe: 'कालो दाल',
         currentWhistles: 2,
         targetWhistles: 4,
-        status: 'cooking',
+        status: CompanionStatus.cooking,
       );
 
       expect(activeWidget.progressPercent, 50);
       expect(activeWidget.isAlarmActive, isFalse);
-      expect(activeWidget.status, 'cooking');
+      expect(activeWidget.status, CompanionStatus.cooking);
 
       // Reached target -> alarm
       final completedWidget = CompanionDisplayEngine.buildActiveSitiWidget(
@@ -56,12 +56,12 @@ void main() {
         dishTitleNe: 'कालो दाल',
         currentWhistles: 4,
         targetWhistles: 4,
-        status: 'cooking',
+        status: CompanionStatus.cooking,
       );
 
       expect(completedWidget.progressPercent, 100);
       expect(completedWidget.isAlarmActive, isTrue);
-      expect(completedWidget.status, 'alarm');
+      expect(completedWidget.status, CompanionStatus.alarm);
     });
 
     test('Grocery Checklist Widget data summary', () {
@@ -110,7 +110,7 @@ void main() {
       expect(targetReached.currentWhistles, 6);
       expect(targetReached.lastHapticPattern, WatchHapticPattern.targetReached);
       expect(targetReached.isAlarmActive, isTrue);
-      expect(targetReached.status, 'alarm');
+      expect(targetReached.status, CompanionStatus.alarm);
     });
   });
 }

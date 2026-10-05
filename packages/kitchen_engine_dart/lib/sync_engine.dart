@@ -94,13 +94,21 @@ class SyncChange {
       };
 
   factory SyncChange.fromJson(Map<String, dynamic> json) {
+    // Decoded JSON gives Map<String, dynamic>, but a const/literal nested map can arrive as
+    // Map<dynamic, dynamic>; copy defensively so one loosely-typed payload cannot fail the
+    // whole sync pass.
+    final rawPayload = json['payload'];
+    final payload = rawPayload is Map
+        ? Map<String, dynamic>.from(rawPayload)
+        : <String, dynamic>{};
+
     return SyncChange(
       id: json['id'] as String,
       householdId: (json['householdId'] ?? '') as String,
       entityType: json['entityType'] as String,
       entityId: json['entityId'] as String,
       version: (json['version'] as num?)?.toInt() ?? 1,
-      payload: (json['payload'] as Map<String, dynamic>?) ?? {},
+      payload: payload,
       deleted: json['deleted'] as bool? ?? false,
       createdAt: (json['createdAt'] as num?)?.toInt() ??
           (UuidV7.getTimestampMs(json['id'] as String? ?? '') ?? DateTime.now().millisecondsSinceEpoch),

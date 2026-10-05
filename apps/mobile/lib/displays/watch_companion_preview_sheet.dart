@@ -69,7 +69,7 @@ class WatchCompanionPreviewSheet extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
-                                  state.status.toUpperCase(),
+                                  state.status.wireValue.toUpperCase(),
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 9,

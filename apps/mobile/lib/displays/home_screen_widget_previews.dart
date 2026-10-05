@@ -104,11 +104,13 @@ class ActiveSitiWidgetCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: data.isAlarmActive
                         ? SitiColors.alert
-                        : (data.status == 'cooking' ? SitiColors.freshGreen : Colors.grey[400]),
+                        : (data.status == CompanionStatus.cooking
+                              ? SitiColors.freshGreen
+                              : Colors.grey[400]),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    data.status.toUpperCase(),
+                    data.status.wireValue.toUpperCase(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 10,
