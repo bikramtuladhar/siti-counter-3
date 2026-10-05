@@ -6,6 +6,7 @@ import '../groceries/grocery_list_screen.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
 import 'planner_models.dart';
+import 'recipe_picker_sheet.dart';
 import 'planner_repository.dart';
 
 /// The Weekly Meal Planner screen with custom meal rhythms, drag & drop slotting,
@@ -139,174 +140,31 @@ class _WeeklyPlannerScreenState extends State<WeeklyPlannerScreen> {
     required String slotId,
   }) async {
     final pack = RegionPackRepository().currentPack;
-    final recipes = pack?.recipes ?? [];
+    final recipes = pack?.recipes ?? const [];
 
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => Container(
-        height: MediaQuery.of(ctx).size.height * 0.75,
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              _isNepali ? 'खाना छान्नुहोस् (Select Recipe)' : 'Select Recipe',
-              style: NepaliTypography.titleMedium.copyWith(
-                fontWeight: FontWeight.w800,
-                color: SitiColors.dark,
-              ),
-            ),
-            const SizedBox(height: 12),
-
-            // Leftover suggestion section if any leftovers exist
-            if (_leftovers.isNotEmpty) ...[
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.orange.shade50,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: Colors.orange.shade200),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.inventory_2_outlined, size: 16, color: Colors.orange.shade900),
-                        const SizedBox(width: 6),
-                        Text(
-                          _isNepali ? 'फ्रिजमा बचेको खाना (Leftovers)' : 'Available Leftovers',
-                          style: NepaliTypography.labelMedium.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: Colors.orange.shade900,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    ..._leftovers.map((l) => ListTile(
-                          dense: true,
-                          contentPadding: EdgeInsets.zero,
-                          title: Text(_isNepali ? l.titleNe : l.titleEn),
-                          subtitle: Text(
-                            _isNepali
-                                ? 'बाँकी ${NepaliCalendar.toDevanagariDigits(l.servingsRemaining)} भाग | म्याद: ${l.useByDateIso}'
-                                : '${l.servingsRemaining} servings left | Use by: ${l.useByDateIso}',
-                            style: TextStyle(fontSize: 12, color: Colors.orange.shade800),
-                          ),
-                          trailing: ElevatedButton(
-                            onPressed: () async {
-                              Navigator.pop(ctx);
-                              final dummyRecipe = RegionRecipe(
-                                id: l.recipeId,
-                                titleEn: l.titleEn,
-                                titleNe: l.titleNe,
-                                category: 'leftover',
-                                cuisine: 'nepali',
-                                dietary: const [],
-                                prepTimeMinutes: 0,
-                                cookTimeMinutes: 5,
-                                servings: l.servingsRemaining,
-                                difficulty: 'easy',
-                                pressureCooker: const RecipeWhistleProfile(
-                                  enabled: false,
-                                  recommendedWhistles: 0,
-                                  altitudeWhistleOffsetKathmandu: 0,
-                                  heatLevel: 'low',
-                                  releaseType: 'quick',
-                                ),
-                                elevationBand: const RecipeElevationBand(
-                                  testedElevationMeters: 1400,
-                                  boilingPointCelsius: 95.3,
-                                  waterMultiplier: 1.0,
-                                ),
-                                ingredients: const [],
-                                steps: const [],
-                                seasonality: const [],
-                                tags: const ['leftover'],
-                                rating: 5.0,
-                                caloriesPerServing: 200,
-                                costEstimateNpr: 0,
-                              );
-                              await _assignMealToSlot(
-                                dateIso: dateIso,
-                                slotId: slotId,
-                                recipe: dummyRecipe,
-                                isLeftover: true,
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.orange.shade800,
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                            ),
-                            child: Text(_isNepali ? 'छान्नुहोस्' : 'Use'),
-                          ),
-                        )),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 14),
-            ],
-
-            Expanded(
-              child: ListView.separated(
-                itemCount: recipes.length,
-                separatorBuilder: (_, _) => const Divider(height: 1),
-                itemBuilder: (ctx, idx) {
-                  final recipe = recipes[idx];
-                  return ListTile(
-                    key: Key('recipe_picker_item_${recipe.id}'),
-                    leading: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: SitiColors.terracotta.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(Icons.soup_kitchen_rounded,
-                          color: SitiColors.terracotta, size: 20),
-                    ),
-                    title: Text(
-                      _isNepali ? recipe.titleNe : recipe.titleEn,
-                      style: NepaliTypography.labelLarge.copyWith(fontWeight: FontWeight.w700),
-                    ),
-                    subtitle: Text(
-                      _isNepali ? recipe.titleEn : recipe.titleNe,
-                      style: NepaliTypography.bodySmall.copyWith(color: Colors.grey.shade600),
-                    ),
-                    trailing: const Icon(Icons.add_circle_outline_rounded,
-                        color: SitiColors.terracotta),
-                    onTap: () async {
-                      Navigator.pop(ctx);
-                      await _assignMealToSlot(
-                        dateIso: dateIso,
-                        slotId: slotId,
-                        recipe: recipe,
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+      builder: (ctx) => RecipePickerSheet(
+        recipes: recipes,
+        leftovers: _leftovers,
+        preferNepali: _isNepali,
+        onSelectRecipe: (recipe) async {
+          await _assignMealToSlot(
+            dateIso: dateIso,
+            slotId: slotId,
+            recipe: recipe,
+          );
+        },
+        onUseLeftover: (leftover) async {
+          await _assignMealToSlot(
+            dateIso: dateIso,
+            slotId: slotId,
+            recipe: RecipePickerSheet.leftoverAsRecipe(leftover),
+            isLeftover: true,
+          );
+        },
       ),
     );
   }

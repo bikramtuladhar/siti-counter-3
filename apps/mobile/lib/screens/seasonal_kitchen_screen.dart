@@ -6,6 +6,7 @@ import 'package:kitchen_engine/region_pack.dart';
 import '../data/region_pack_repository.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
+import '../widgets/recipe_search.dart';
 import 'recipe_detail_screen.dart';
 import 'region_manager_screen.dart';
 
@@ -38,6 +39,9 @@ class _SeasonalKitchenScreenState extends State<SeasonalKitchenScreen> {
   String _selectedCategoryFilter = 'all'; // all, peak, in_season, vegetables, spices
 
   final Set<String> _addedToGroceryIds = {};
+
+  /// Search query for the recipes shown for the selected ingredient.
+  String _recipeQuery = '';
 
   bool get _isNepali => widget.currentLanguage == 'ne';
 
@@ -121,7 +125,13 @@ class _SeasonalKitchenScreenState extends State<SeasonalKitchenScreen> {
 
   void _showRecipesBottomSheet(RegionIngredient ingredient) {
     if (_regionPack == null) return;
-    final matchingRecipes = _regionPack!.getRecipesForIngredient(ingredient.id);
+    // Search narrows the recipes for this ingredient rather than replacing the whole
+    // browsing surface, so the ingredient the cook chose stays visible above the results.
+    final matchingRecipes = RecipeSearch.filter(
+      _regionPack!.getRecipesForIngredient(ingredient.id),
+      _recipeQuery,
+      preferNepali: _isNepali,
+    );
     final ingredientName = _isNepali ? ingredient.nameNe : ingredient.nameEn;
 
     showModalBottomSheet<void>(
@@ -199,6 +209,14 @@ class _SeasonalKitchenScreenState extends State<SeasonalKitchenScreen> {
                   ),
                 ),
                 const Divider(height: 16),
+                RecipeSearchField(
+                  preferNepali: _isNepali,
+                  hintText: _isNepali
+                      ? 'यस सामग्रीका परिकार खोज्नुहोस्'
+                      : 'Search these recipes',
+                  onChanged: (value) => setState(() => _recipeQuery = value),
+                ),
+                const SizedBox(height: 12),
                 Expanded(
                   child: matchingRecipes.isEmpty
                       ? Center(
@@ -212,8 +230,12 @@ class _SeasonalKitchenScreenState extends State<SeasonalKitchenScreen> {
                                 const SizedBox(height: 12),
                                 Text(
                                   _isNepali
-                                      ? 'यस सामग्रीको लागि कुनै सिधा रेसिपी भेटिएन'
-                                      : 'No direct recipes found for this ingredient',
+                                      ? (_recipeQuery.trim().isEmpty
+                                            ? 'यस सामग्रीको लागि कुनै सिधा रेसिपी भेटिएन'
+                                            : '"$_recipeQuery" सँग मिल्ने परिकार भेटिएन')
+                                      : (_recipeQuery.trim().isEmpty
+                                            ? 'No direct recipes found for this ingredient'
+                                            : 'No recipes match "$_recipeQuery"'),
                                   textAlign: TextAlign.center,
                                   style: NepaliTypography.bodyMedium.copyWith(
                                     color: Colors.grey.shade600,
