@@ -353,3 +353,4 @@ export * from './allergen_card_engine.js';
 export * from './smart_display_engine.js';
 export * from './fuel_engine.js';
 export * from './subscription_engine.js';
+export * from './retailer_handoff_engine.js';

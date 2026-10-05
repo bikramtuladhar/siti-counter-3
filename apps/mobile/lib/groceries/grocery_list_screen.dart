@@ -3,6 +3,8 @@ import 'package:kitchen_engine/kitchen_engine.dart';
 import 'package:kitchen_engine/nepali_calendar.dart';
 import 'package:kitchen_engine/region_pack.dart';
 import '../commerce/market_price_service.dart';
+import '../commerce/retailer_handoff_service.dart';
+import '../commerce/retailer_handoff_sheet.dart';
 import '../data/region_pack_repository.dart';
 import '../planner/planner_repository.dart';
 import 'market_mode_screen.dart';
@@ -17,6 +19,7 @@ class GroceryListScreen extends StatefulWidget {
   final WeeklyPlannerRepository repository;
   final RegionPackRepository? regionPackRepository;
   final MarketPriceService? marketPriceService;
+  final RetailerHandoffService? retailerHandoffService;
   final String currentLanguage;
   final void Function(GroceryListResult result)? onOpenMarketMode;
 
@@ -26,6 +29,7 @@ class GroceryListScreen extends StatefulWidget {
     required this.repository,
     this.regionPackRepository,
     this.marketPriceService,
+    this.retailerHandoffService,
     this.currentLanguage = 'ne',
     this.onOpenMarketMode,
   });
@@ -50,7 +54,18 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
   void initState() {
     super.initState();
     _language = widget.currentLanguage;
+    widget.retailerHandoffService?.addListener(_onRetailerServiceChanged);
     _loadData();
+  }
+
+  @override
+  void dispose() {
+    widget.retailerHandoffService?.removeListener(_onRetailerServiceChanged);
+    super.dispose();
+  }
+
+  void _onRetailerServiceChanged() {
+    if (mounted) setState(() {});
   }
 
   Future<void> _loadData() async {
@@ -184,6 +199,27 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
           ],
         ),
         actions: [
+          if (widget.retailerHandoffService?.partnerLinksEnabled ?? true) ...[
+            IconButton(
+              key: const Key('shop_online_btn'),
+              tooltip: _isNepali ? 'अनलाइन अर्डर (Daraz, Bhatbhateni)' : 'Order Online',
+              icon: const Icon(Icons.shopping_bag_outlined, color: SitiColors.terracotta),
+              onPressed: () {
+                final neededItems = _groceryResult?.items
+                        .where((i) => !i.isSufficientInPantry)
+                        .map((i) => _isNepali ? i.nameNe : i.nameEn)
+                        .toList() ??
+                    [];
+                RetailerHandoffSheet.show(
+                  context: context,
+                  retailerService:
+                      widget.retailerHandoffService ?? RetailerHandoffService(),
+                  basketItemNames: neededItems,
+                  currentLanguage: _language,
+                );
+              },
+            ),
+          ],
           TextButton(
             key: const Key('toggle_language_btn'),
             onPressed: () {
@@ -559,6 +595,44 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
                         ),
                       ),
                     ),
+                    if (widget.retailerHandoffService?.partnerLinksEnabled ?? true) ...[
+                      const SizedBox(width: 6),
+                      InkWell(
+                        key: Key('item_retailer_btn_${item.ingredientId}'),
+                        onTap: () {
+                          RetailerHandoffSheet.show(
+                            context: context,
+                            retailerService: widget.retailerHandoffService ?? RetailerHandoffService(),
+                            singleItemName: _isNepali ? item.nameNe : item.nameEn,
+                            currentLanguage: _language,
+                          );
+                        },
+                        borderRadius: BorderRadius.circular(6),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.shade50,
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: Colors.orange.shade200),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.shopping_cart_outlined, size: 12, color: SitiColors.terracotta),
+                              const SizedBox(width: 2),
+                              Text(
+                                _isNepali ? 'अनलाइन' : 'Online',
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: SitiColors.terracotta,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ],
                 ),
                 const SizedBox(height: 4),
