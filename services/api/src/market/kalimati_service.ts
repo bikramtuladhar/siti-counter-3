@@ -225,7 +225,32 @@ export class KalimatiService {
   }
 
   public static getLatestPrice(commodityId: string): MarketCommodityPrice | undefined {
-    return dailyPricesStore.get(`latest_${commodityId}`)
+    const existing = dailyPricesStore.get(`latest_${commodityId}`);
+    if (existing) return existing;
+
+    const normId = commodityId.replace('_red', '');
+    const canonical = KALIMATI_CANONICAL_COMMODITIES.find(
+      (c: any) => c.commodityId === commodityId || c.commodityId === normId
+    );
+    if (canonical) {
+      return {
+        id: `canonical_${canonical.commodityId}`,
+        marketCode: 'kalimati',
+        marketName: 'Kalimati Wholesale Market',
+        commodityId: canonical.commodityId,
+        commodityNameEn: canonical.nameEn,
+        commodityNameNe: canonical.nameNe,
+        category: canonical.category,
+        unit: canonical.unit,
+        minPrice: canonical.baseMin,
+        maxPrice: canonical.baseMax,
+        avgPrice: canonical.baseAvg,
+        priceTrend: 'stable',
+        date: new Date().toISOString().split('T')[0],
+        updatedAt: new Date().toISOString(),
+      };
+    }
+    return undefined;
   }
 
   public static recordCrowdsourcedObservation(params: {

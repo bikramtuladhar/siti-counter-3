@@ -8,6 +8,7 @@ import { aiRouter } from './routes/ai.js'
 import { alexaRouter } from './routes/alexa.js'
 import { checkoutRouter } from './routes/checkout.js'
 import { marketRouter } from './routes/market.js'
+import { communityRouter } from './routes/community.js'
 import { KalimatiService } from './market/kalimati_service.js'
 
 export const app = new Hono()
@@ -45,6 +46,9 @@ app.route('/', checkoutRouter)
 
 // Regional Market Price Board endpoints (/v1/market/*)
 app.route('/', marketRouter)
+
+// Community contributions & moderation endpoints (/v1/community/*)
+app.route('/', communityRouter)
 
 // 404 fallback
 app.notFound((c) => {

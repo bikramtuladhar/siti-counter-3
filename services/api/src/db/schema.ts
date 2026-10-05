@@ -130,4 +130,20 @@ export const priceObservations = sqliteTable('price_observations', {
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull()
 })
 
+export const communityContributions = sqliteTable('community_contributions', {
+  id: text('id').primaryKey(),
+  type: text('type', { enum: ['recipe', 'ingredient_alias', 'price_observation'] }).notNull(),
+  status: text('status', { enum: ['pending', 'screening', 'auto_approved', 'flagged', 'verified', 'rejected'] }).notNull().default('pending'),
+  badge: text('badge', { enum: ['community', 'verified'] }).notNull().default('community'),
+  title: text('title').notNull(),
+  submitterHouseholdId: text('submitter_household_id').notNull(),
+  submitterName: text('submitter_name').notNull(),
+  payload: text('payload', { mode: 'json' }).$type<Record<string, unknown>>().notNull(),
+  moderationScorecard: text('moderation_scorecard', { mode: 'json' }).$type<Record<string, unknown>>(),
+  reviewerId: text('reviewer_id'),
+  reviewerNotes: text('reviewer_notes'),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+})
+
 
