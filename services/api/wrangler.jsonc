@@ -10,11 +10,13 @@
   "triggers": {
     "crons": ["0 4 * * *"]
   },
-  // Social sign-in configuration. Secrets (FACEBOOK_APP_SECRET) belong in `wrangler secret put`,
-  // not here; the public ids are safe to commit. A provider with no id answers 503
-  // NOT_CONFIGURED rather than accepting an unverified token.
+  // Social sign-in configuration. Must match the client ids the app is built with
+  // (--dart-define), and APPLE_CLIENT_ID must equal the iOS bundle identifier
+  // (com.siticounter.sitiCounter) because Apple sets it as the token audience.
+  // Secrets (FACEBOOK_APP_SECRET) belong in `wrangler secret put`, not here. A provider with
+  // no id answers 503 NOT_CONFIGURED rather than accepting an unverified token.
   "vars": {
-    "APPLE_CLIENT_ID": "com.siticounter.app",
+    "APPLE_CLIENT_ID": "com.siticounter.sitiCounter",
     "GOOGLE_CLIENT_ID": "",
     "FACEBOOK_APP_ID": ""
   },

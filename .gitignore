@@ -11,6 +11,9 @@ build/
 # Expo / React Native
 .expo/
 *.jks
+*.keystore
+# Android/iOS signing credentials (see apps/mobile/README.md)
+key.properties
 *.p8
 *.p12
 *.key
