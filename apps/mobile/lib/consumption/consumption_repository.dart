@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:kitchen_engine/consumption_engine.dart';
+import 'package:kitchen_engine/sync_engine.dart';
 import 'package:kitchen_engine/waste_engine.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -60,6 +61,14 @@ class ConsumptionRepository {
         portion_multiplier REAL NOT NULL DEFAULT 1.0,
         preferred_vessel_id TEXT NOT NULL DEFAULT 'katori',
         default_vessel_count REAL NOT NULL DEFAULT 1.0
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS member_allergies (
+        member_id TEXT NOT NULL,
+        allergen TEXT NOT NULL,
+        PRIMARY KEY (member_id, allergen)
       )
     ''');
 
@@ -155,6 +164,80 @@ class ConsumptionRepository {
         defaultVesselCount: (r['default_vessel_count'] as num?)?.toDouble() ?? 1.0,
       );
     }).toList();
+  }
+
+  /// Allergens recorded for a member, by member id.
+  ///
+  /// Allergies are the one safety-critical field the household must be able to state up
+  /// front, and the sync protocol treats them as a prompt-the-user conflict rather than
+  /// last-write-wins, so they are stored per member rather than as a household-wide flag.
+  Future<Set<String>> getMemberAllergies(String memberId) async {
+    final rows = await _db.query(
+      'member_allergies',
+      columns: ['allergen'],
+      where: 'member_id = ?',
+      whereArgs: [memberId],
+    );
+    return rows.map((r) => r['allergen'] as String).toSet();
+  }
+
+  /// Every recorded allergen across the household, unioned.
+  ///
+  /// Used as a hard filter when planning and shopping, so a single member's allergy is
+  /// never lost by looking at only one member.
+  Future<Set<String>> getHouseholdAllergens() async {
+    final rows = await _db.query('member_allergies', columns: ['allergen']);
+    return rows.map((r) => r['allergen'] as String).toSet();
+  }
+
+  /// Creates a household member with a role and allergens.
+  Future<MemberDietaryProfile> addMember({
+    required String name,
+    String role = 'Adult',
+    List<String> allergies = const [],
+    String nutritionProfile = 'everyday',
+    double portionMultiplier = 1.0,
+  }) async {
+    final member = MemberDietaryProfile(
+      memberId: UuidV7.generate(),
+      name: name,
+      role: role,
+      nutritionProfile: nutritionProfile,
+      portionMultiplier: portionMultiplier,
+    );
+
+    await saveMember(member);
+    await setMemberAllergies(member.memberId, allergies);
+    return member;
+  }
+
+  /// Replaces a member's recorded allergens.
+  Future<void> setMemberAllergies(String memberId, List<String> allergies) async {
+    await _db.transaction((txn) async {
+      await txn.delete(
+        'member_allergies',
+        where: 'member_id = ?',
+        whereArgs: [memberId],
+      );
+      final batch = txn.batch();
+      for (final allergen in allergies.toSet()) {
+        batch.insert('member_allergies', {
+          'member_id': memberId,
+          'allergen': allergen,
+        });
+      }
+      await batch.commit(noResult: true);
+    });
+  }
+
+  /// How many vessels this household has calibrated.
+  ///
+  /// Used by the setup checklist to decide whether the measurements step is done.
+  Future<int> countCalibratedVessels() async {
+    final result = await _db.rawQuery(
+      'SELECT COUNT(*) AS c FROM household_vessel_calibrations',
+    );
+    return (result.first['c'] as num?)?.toInt() ?? 0;
   }
 
   /// Saves or updates a household member.

@@ -21,6 +21,9 @@ import 'displays/display_feed_cache.dart';
 import 'sync/api_session.dart';
 import 'sync/app_sync_coordinator.dart';
 import 'sync/sync_engine.dart';
+import 'settings/household_profile_screen.dart';
+import 'settings/settings_service.dart';
+import 'settings/setup_progress.dart';
 import 'sync/sync_repository.dart';
 import 'theme/tokens.dart';
 import 'theme/nepali_typography.dart';
@@ -40,6 +43,48 @@ class SitiCounterApp extends StatefulWidget {
 
 class _SitiCounterAppState extends State<SitiCounterApp> {
   OnboardingPreferences? _userPreferences;
+  SettingsService? _settings;
+
+  /// Loads the stored household profile on launch.
+  ///
+  /// Onboarding used to be the only source of these answers and it lived in a field, so
+  /// every relaunch started from scratch. Now a returning user goes straight to the kitchen
+  /// and picks up the extended setup checklist.
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_restore());
+  }
+
+  Future<void> _restore() async {
+    try {
+      final settings = await SettingsService.openOnDisk();
+      if (!await settings.isOnboardingComplete) {
+        return;
+      }
+
+      final preferences = await settings.loadPreferences();
+      if (!mounted) return;
+      setState(() {
+        _settings = settings;
+        _userPreferences = preferences;
+      });
+    } catch (_) {
+      // Settings unavailable: fall back to running onboarding again.
+    }
+  }
+
+  Future<void> _persistOnboarding(OnboardingPreferences prefs) async {
+    try {
+      final settings = _settings ?? await SettingsService.openOnDisk();
+      await settings.saveOnboardingPreferences(prefs);
+      if (mounted) {
+        setState(() => _settings = settings);
+      }
+    } catch (_) {
+      // Storage unavailable: the app runs from memory and re-asks next launch.
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +105,19 @@ class _SitiCounterAppState extends State<SitiCounterApp> {
       home: _userPreferences == null
           ? OnboardingCoordinator(
               onComplete: (prefs) {
-                setState(() {
-                  _userPreferences = prefs;
-                });
+                // Enter the kitchen first, then persist. Persisting must never be able to
+                // strand someone on the last onboarding screen: if storage is unavailable
+                // the app still works, it just re-asks next launch.
+                if (mounted) {
+                  setState(() {
+                    _userPreferences = prefs;
+                  });
+                }
+                unawaited(_persistOnboarding(prefs));
               },
             )
           : KitchenHomeScreen(
+              settings: _settings,
               preferences: _userPreferences!,
               onResetOnboarding: () {
                 setState(() {
@@ -83,6 +135,9 @@ class KitchenHomeScreen extends StatefulWidget {
   final WeeklyPlannerRepository? plannerRepository;
   final ConsumptionRepository? consumptionRepository;
 
+  /// Stored household profile, used by the progressive setup checklist.
+  final SettingsService? settings;
+
   /// Server-connected state (delta sync + glanceable display feed). Injected in tests;
   /// when null the screen bootstraps its own against the local sync database.
   final AppSyncCoordinator? syncCoordinator;
@@ -99,6 +154,7 @@ class KitchenHomeScreen extends StatefulWidget {
     required this.onResetOnboarding,
     this.plannerRepository,
     this.consumptionRepository,
+    this.settings,
     this.syncCoordinator,
     this.accessTokenProvider,
     this.apiBaseUrl = kDefaultApiBaseUrl,
@@ -236,6 +292,125 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
       _displayService.dispose();
     }
     super.dispose();
+  }
+
+  void _openHouseholdSetup() {
+    final settings = widget.settings;
+    if (settings == null) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => HouseholdProfileScreen(
+          settings: settings,
+          consumptionRepository: _consumptionRepo,
+          onChanged: () => setState(() {}),
+        ),
+      ),
+    );
+  }
+
+  /// Compact entry point to the extended household setup.
+  ///
+  /// Hidden entirely once everything is configured, so a finished household never sees it
+  /// again. Completion is read from real data by the profile screen, not tracked here.
+  Widget _buildSetupChecklist() {
+    final settings = widget.settings;
+    if (settings == null) return const SizedBox.shrink();
+
+    return FutureBuilder<SetupProgress>(
+      future: _loadSetupProgress(),
+      builder: (context, snapshot) {
+        final progress = snapshot.data;
+        if (progress == null || progress.isComplete) {
+          return const SizedBox.shrink();
+        }
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 4),
+          child: Material(
+            color: SitiColors.terracotta.withValues(alpha: 0.07),
+            borderRadius: BorderRadius.circular(16),
+            child: InkWell(
+              key: const Key('setup_checklist_card'),
+              onTap: _openHouseholdSetup,
+              borderRadius: BorderRadius.circular(16),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.checklist_rtl_rounded,
+                          color: SitiColors.terracotta,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            _isNepali
+                                ? 'भान्सा सेटअप पूरा गर्नुहोस्'
+                                : 'Finish setting up your kitchen',
+                            style: NepaliTypography.titleSmall.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: SitiColors.dark,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '${progress.completed}/${progress.total}',
+                          style: NepaliTypography.labelLarge.copyWith(
+                            color: SitiColors.terracotta,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: LinearProgressIndicator(
+                        value: progress.fraction,
+                        backgroundColor: Colors.grey.shade200,
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          SitiColors.terracotta,
+                        ),
+                        minHeight: 6,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _isNepali
+                          ? '${progress.remainingIds.length} काम बाँकी छन् — खाना खान पहिले पनि सकिन्छ।'
+                          : '${progress.remainingIds.length} left. You can cook first and finish these later.',
+                      style: NepaliTypography.bodySmall.copyWith(
+                        color: Colors.grey.shade700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /// Reads the observable household facts and derives the setup checklist.
+  ///
+  /// Delegates to the shared derivation so the home card and the profile screen can never
+  /// disagree about what is still outstanding.
+  Future<SetupProgress> _loadSetupProgress() async {
+    final consumption = _consumptionRepo;
+
+    return loadSetupProgress(
+      settings: widget.settings!,
+      memberCount: () async =>
+          consumption == null ? 0 : (await consumption.getMembers()).length,
+      calibratedVesselCount: () async =>
+          consumption == null ? 0 : await consumption.countCalibratedVessels(),
+    );
   }
 
   void _openCompanionDisplays() {
@@ -467,6 +642,10 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
                 currentDate: todayBs,
                 preferNepali: _isNepali,
               ),
+              const SizedBox(height: 16),
+
+              // Progressive household setup, shown until every essential is configured.
+              _buildSetupChecklist(),
               const SizedBox(height: 24),
 
               // Whistle Counter Hero Card
