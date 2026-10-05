@@ -24,6 +24,7 @@ import 'sync/sync_engine.dart';
 import 'settings/household_profile_publisher.dart';
 import 'settings/household_profile_screen.dart';
 import 'settings/social_auth_service.dart';
+import 'settings/social_provider_registry.dart';
 import 'settings/settings_service.dart';
 import 'settings/setup_progress.dart';
 import 'sync/sync_repository.dart';
@@ -98,6 +99,9 @@ class _SitiCounterAppState extends State<SitiCounterApp> {
 
       return SocialSignInService(
         apiBaseUrl: defaultApiBaseUrl(),
+        // Only providers supplied with a client id at build time are offered, so the
+        // sign-in sheet shows the buttons for exactly the deployments that can verify them.
+        providers: SocialProviderRegistry.configured(),
         deviceId: () async => await identity.deviceId,
         guestHouseholdId: () async => await identity.guestHouseholdId,
       );
