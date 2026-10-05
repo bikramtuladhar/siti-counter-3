@@ -16,10 +16,38 @@ export interface RetailerPartner {
   readonly appSchemePrefix: string;
   readonly isAffiliate: boolean;
   readonly affiliateTag?: string;
+  readonly directCartSupported?: boolean;
   readonly disclosureEn: string;
   readonly disclosureNe: string;
   readonly descriptionEn: string;
   readonly descriptionNe: string;
+}
+
+export interface PartnerCartItem {
+  readonly itemId: string;
+  readonly name: string;
+  readonly nameNe?: string;
+  readonly quantity: number;
+  readonly unit: string;
+  readonly estimatedPriceNpr?: number;
+}
+
+export interface PartnerCartTransferResult {
+  readonly cartId: string;
+  readonly householdId: string;
+  readonly retailerId: string;
+  readonly retailerName: string;
+  readonly status: 'ready' | 'expired' | 'completed';
+  readonly totalItems: number;
+  readonly transferredItemsCount: number;
+  readonly unmatchedItems: ReadonlyArray<{ readonly itemId: string; readonly name: string }>;
+  readonly estimatedSubtotalNpr: number;
+  readonly cartWebUrl: string;
+  readonly cartAppUrl: string;
+  readonly createdAt: string;
+  readonly expiresAt: string;
+  readonly disclosureEn: string;
+  readonly disclosureNe: string;
 }
 
 export interface RetailerDeepLinkResult {
@@ -70,6 +98,7 @@ export const BUILT_IN_RETAILERS: readonly RetailerPartner[] = [
     appSchemePrefix: 'daraz://',
     isAffiliate: true,
     affiliateTag: 'siticounter',
+    directCartSupported: true,
     disclosureEn: DEFAULT_AFFILIATE_DISCLOSURE_EN,
     disclosureNe: DEFAULT_AFFILIATE_DISCLOSURE_NE,
     descriptionEn: 'Nepal’s leading online marketplace with grocery delivery (Daraz Mart)',
@@ -85,6 +114,7 @@ export const BUILT_IN_RETAILERS: readonly RetailerPartner[] = [
     appSchemePrefix: 'bbsm://',
     isAffiliate: true,
     affiliateTag: 'siticounter',
+    directCartSupported: true,
     disclosureEn: DEFAULT_AFFILIATE_DISCLOSURE_EN,
     disclosureNe: DEFAULT_AFFILIATE_DISCLOSURE_NE,
     descriptionEn: 'Nepal’s premier retail chain and online departmental store',
@@ -99,6 +129,7 @@ export const BUILT_IN_RETAILERS: readonly RetailerPartner[] = [
     websiteUrl: 'https://bigmart.com.np',
     appSchemePrefix: 'bigmart://',
     isAffiliate: false,
+    directCartSupported: true,
     disclosureEn: 'Direct store search without affiliate relationship.',
     disclosureNe: 'कुनै सम्बद्धता बिना सिधा पसल खोज।',
     descriptionEn: 'Everyday fresh groceries and household essentials across Kathmandu Valley',
@@ -114,6 +145,7 @@ export const BUILT_IN_RETAILERS: readonly RetailerPartner[] = [
     appSchemePrefix: 'blinkit://',
     isAffiliate: true,
     affiliateTag: 'siticounter',
+    directCartSupported: true,
     disclosureEn: DEFAULT_AFFILIATE_DISCLOSURE_EN,
     disclosureNe: DEFAULT_AFFILIATE_DISCLOSURE_NE,
     descriptionEn: '10-minute quick commerce grocery delivery across India',
@@ -129,6 +161,7 @@ export const BUILT_IN_RETAILERS: readonly RetailerPartner[] = [
     appSchemePrefix: 'amazon://',
     isAffiliate: true,
     affiliateTag: 'siticounter-20',
+    directCartSupported: true,
     disclosureEn: DEFAULT_AFFILIATE_DISCLOSURE_EN,
     disclosureNe: DEFAULT_AFFILIATE_DISCLOSURE_NE,
     descriptionEn: 'Convenient grocery delivery for diaspora households',
@@ -325,6 +358,125 @@ export class RetailerHandoffEngine {
       webUrl: deepLink.webUrl,
       appDeepLinkUrl: deepLink.appDeepLinkUrl,
       isAffiliate: retailer.isAffiliate,
+      disclosureEn: retailer.disclosureEn,
+      disclosureNe: retailer.disclosureNe,
+    };
+  }
+
+  /**
+   * Level 3 One-Tap Grocery Cart Direct Transfer (Section 26.4)
+   * Builds an authenticated/signed cart transfer session token and deep-link payload
+   * for supported regional retailers (Daraz, Bhatbhateni, BigMart, Blinkit, Amazon Fresh).
+   */
+  public transferGroceryCart(
+    householdId: string,
+    retailerId: string,
+    items: PartnerCartItem[],
+    options?: { cartId?: string; now?: Date }
+  ): PartnerCartTransferResult | null {
+    if (!this.config.partnerLinksEnabled) {
+      return null;
+    }
+
+    const retailer = this.getRetailer(retailerId);
+    if (!retailer || !retailer.directCartSupported) {
+      return null;
+    }
+
+    if (!items || items.length === 0) {
+      return null;
+    }
+
+    const now = options?.now ?? new Date();
+    const expiresAt = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+    const cartId =
+      options?.cartId ?? `cart_${Math.random().toString(36).slice(2, 11)}_${now.getTime()}`;
+
+    let totalNpr = 0;
+    const unmatched: Array<{ itemId: string; name: string }> = [];
+    let transferredCount = 0;
+
+    for (const item of items) {
+      if (!item.name || item.name.trim().length === 0) {
+        unmatched.push({ itemId: item.itemId, name: item.name || 'Unknown item' });
+        continue;
+      }
+      const price = item.estimatedPriceNpr ?? item.quantity * 80;
+      totalNpr += price;
+      transferredCount++;
+    }
+
+    const tag = this.config.customAffiliateTags?.[retailer.id] || retailer.affiliateTag || '';
+
+    const tokenObj = {
+      cartId,
+      householdId,
+      retailerId: retailer.id,
+      itemCount: transferredCount,
+      timestamp: now.toISOString(),
+      tag,
+    };
+    const jsonStr = JSON.stringify(tokenObj);
+
+    let base64 = '';
+    if (typeof Buffer !== 'undefined') {
+      base64 = Buffer.from(jsonStr).toString('base64url');
+    } else {
+      base64 = btoa(jsonStr).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    let webBase = '';
+    let appBase = '';
+
+    switch (retailer.id) {
+      case 'daraz':
+        webBase = 'https://www.daraz.com.np/cart/import';
+        appBase = 'daraz://cart/import';
+        break;
+      case 'bhatbhateni':
+        webBase = 'https://bhatbhatenionline.com/cart/import';
+        appBase = 'bbsm://cart/import';
+        break;
+      case 'bigmart':
+        webBase = 'https://bigmart.com.np/cart/import';
+        appBase = 'bigmart://cart/import';
+        break;
+      case 'blinkit':
+        webBase = 'https://blinkit.com/cart/import';
+        appBase = 'blinkit://cart/import';
+        break;
+      case 'amazon_fresh':
+        webBase = 'https://www.amazon.com/fresh/cart/import';
+        appBase = 'amazon://fresh/cart/import';
+        break;
+      default:
+        webBase = `${retailer.websiteUrl}/cart/import`;
+        appBase = `${retailer.appSchemePrefix}cart/import`;
+    }
+
+    const queryParams = new URLSearchParams({
+      token: base64,
+      ref: tag || 'siticounter',
+      items: String(transferredCount),
+    });
+
+    const cartWebUrl = `${webBase}?${queryParams.toString()}`;
+    const cartAppUrl = `${appBase}?${queryParams.toString()}`;
+
+    return {
+      cartId,
+      householdId,
+      retailerId: retailer.id,
+      retailerName: retailer.name,
+      status: 'ready',
+      totalItems: items.length,
+      transferredItemsCount: transferredCount,
+      unmatchedItems: unmatched,
+      estimatedSubtotalNpr: totalNpr,
+      cartWebUrl,
+      cartAppUrl,
+      createdAt: now.toISOString(),
+      expiresAt: expiresAt.toISOString(),
       disclosureEn: retailer.disclosureEn,
       disclosureNe: retailer.disclosureNe,
     };

@@ -104,3 +104,49 @@ test('RetailerHandoffEngine - Basket handoff generates multi-item search query',
   assert.ok(basket.webUrl.includes('Potato%20Tomato%20Mustard%20Oil'));
   assert.ok(basket.appDeepLinkUrl.includes('Potato%20Tomato%20Mustard%20Oil'));
 });
+
+test('RetailerHandoffEngine - Level 3 One-Tap Grocery Cart direct transfer', () => {
+  const engine = new RetailerHandoffEngine();
+  const fixedDate = new Date('2026-10-05T08:00:00.000Z');
+
+  const items = [
+    { itemId: 'item_1', name: 'Mustard Oil (तोरीको तेल)', quantity: 2, unit: 'L', estimatedPriceNpr: 640 },
+    { itemId: 'item_2', name: 'Basmati Rice', quantity: 5, unit: 'kg', estimatedPriceNpr: 950 },
+    { itemId: 'item_3', name: '', quantity: 1, unit: 'pkt' }, // empty name -> unmatched
+  ];
+
+  // Daraz Direct Transfer
+  const darazResult = engine.transferGroceryCart('hh_123', 'daraz', items, {
+    cartId: 'cart_test_daraz_99',
+    now: fixedDate,
+  });
+
+  assert.ok(darazResult);
+  assert.equal(darazResult.cartId, 'cart_test_daraz_99');
+  assert.equal(darazResult.householdId, 'hh_123');
+  assert.equal(darazResult.retailerId, 'daraz');
+  assert.equal(darazResult.totalItems, 3);
+  assert.equal(darazResult.transferredItemsCount, 2);
+  assert.equal(darazResult.unmatchedItems.length, 1);
+  assert.equal(darazResult.estimatedSubtotalNpr, 1590);
+  assert.ok(darazResult.cartWebUrl.startsWith('https://www.daraz.com.np/cart/import?token='));
+  assert.ok(darazResult.cartAppUrl.startsWith('daraz://cart/import?token='));
+  assert.ok(darazResult.cartWebUrl.includes('ref=siticounter'));
+
+  // Bhatbhateni Direct Transfer
+  const bbsmResult = engine.transferGroceryCart('hh_123', 'bhatbhateni', items, { now: fixedDate });
+  assert.ok(bbsmResult);
+  assert.ok(bbsmResult.cartWebUrl.startsWith('https://bhatbhatenionline.com/cart/import?token='));
+  assert.ok(bbsmResult.cartAppUrl.startsWith('bbsm://cart/import?token='));
+
+  // BigMart Direct Transfer
+  const bmResult = engine.transferGroceryCart('hh_123', 'bigmart', items, { now: fixedDate });
+  assert.ok(bmResult);
+  assert.ok(bmResult.cartWebUrl.startsWith('https://bigmart.com.np/cart/import?token='));
+  assert.ok(bmResult.cartAppUrl.startsWith('bigmart://cart/import?token='));
+
+  // Opt-out disables cart transfer
+  engine.setPartnerLinksEnabled(false);
+  assert.equal(engine.transferGroceryCart('hh_123', 'daraz', items), null);
+});
+

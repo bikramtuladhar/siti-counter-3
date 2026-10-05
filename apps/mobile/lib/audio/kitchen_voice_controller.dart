@@ -1,6 +1,5 @@
 library;
 
-import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:kitchen_engine/kitchen_engine.dart';
 

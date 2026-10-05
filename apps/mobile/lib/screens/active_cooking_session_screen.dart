@@ -180,7 +180,6 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
   late CookingSignalType _signalType;
   late WhistleDetector _detector;
   String _signalStatusMessage = '';
-  int _elapsedSimmerSeconds = 0;
   int _currentStepIndex = 0;
   bool _isAlarmActive = false;
   bool _isMuted = false;
@@ -272,9 +271,6 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
             if (!mounted) return;
             setState(() {
               _signalStatusMessage = event.message;
-              if (event.elapsedSeconds != null) {
-                _elapsedSimmerSeconds = event.elapsedSeconds!;
-              }
               if (event.currentCount != null && _signalType == CookingSignalType.weightedWhistle) {
                 _currentWhistles = event.currentCount!;
               }
@@ -298,7 +294,6 @@ class _ActiveCookingSessionScreenState extends State<ActiveCookingSessionScreen>
     setState(() {
       _signalType = type;
       _signalStatusMessage = '';
-      _elapsedSimmerSeconds = 0;
     });
     _initDetector();
   }

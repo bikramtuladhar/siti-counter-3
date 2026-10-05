@@ -17,8 +17,8 @@ class RetailerHandoffService extends ChangeNotifier {
   RetailerHandoffService({
     bool partnerLinksEnabled = true,
     String? preferredRetailerId,
-    String this._countryCode = 'NP',
-    UrlLauncherCallback? this._urlLauncher,
+    this._countryCode = 'NP',
+    this._urlLauncher,
   })  : _engine = RetailerHandoffEngine(
           partnerLinksEnabled: partnerLinksEnabled,
           preferredRetailerId: preferredRetailerId,
@@ -49,6 +49,23 @@ class RetailerHandoffService extends ChangeNotifier {
 
   BasketHandoffResult? getBasketHandoff(String retailerId, List<String> itemQueries) {
     return _engine.generateBasketHandoff(retailerId, itemQueries);
+  }
+
+  /// Level 3 One-Tap Direct Cart Transfer (Section 26.4)
+  PartnerCartTransferResult? transferGroceryCart({
+    required String householdId,
+    required String retailerId,
+    required List<PartnerCartItem> items,
+    String? cartId,
+    DateTime? now,
+  }) {
+    return _engine.transferGroceryCart(
+      householdId,
+      retailerId,
+      items,
+      cartId: cartId,
+      now: now,
+    );
   }
 
   /// Launches the retailer link (App scheme preferred, Web fallback)

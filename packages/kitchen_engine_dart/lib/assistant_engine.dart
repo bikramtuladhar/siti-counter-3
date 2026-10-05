@@ -1,10 +1,6 @@
 library;
 
-import 'allergen_engine.dart';
 import 'kitchen_engine.dart';
-import 'nepali_calendar.dart';
-import 'region_pack.dart';
-import 'waste_engine.dart';
 
 /// The routing tier that fulfilled the AI assistant request.
 enum AiRoutingTier {

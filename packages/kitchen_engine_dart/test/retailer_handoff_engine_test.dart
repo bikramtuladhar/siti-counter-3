@@ -99,5 +99,48 @@ void main() {
       expect(basket.webUrl, contains('Potato%20Tomato%20Mustard%20Oil'));
       expect(basket.appDeepLinkUrl, contains('Potato%20Tomato%20Mustard%20Oil'));
     });
+
+    test('Level 3 One-Tap Grocery Cart direct transfer', () {
+      final engine = RetailerHandoffEngine();
+      final fixedDate = DateTime.utc(2026, 10, 5, 8, 0, 0);
+
+      final items = [
+        const PartnerCartItem(itemId: 'item_1', name: 'Mustard Oil (तोरीको तेल)', quantity: 2, unit: 'L', estimatedPriceNpr: 640),
+        const PartnerCartItem(itemId: 'item_2', name: 'Basmati Rice', quantity: 5, unit: 'kg', estimatedPriceNpr: 950),
+        const PartnerCartItem(itemId: 'item_3', name: '', quantity: 1, unit: 'pkt'), // empty name -> unmatched
+      ];
+
+      // Daraz Direct Transfer
+      final darazResult = engine.transferGroceryCart('hh_123', 'daraz', items,
+          cartId: 'cart_test_daraz_99', now: fixedDate);
+
+      expect(darazResult, isNotNull);
+      expect(darazResult!.cartId, 'cart_test_daraz_99');
+      expect(darazResult.householdId, 'hh_123');
+      expect(darazResult.retailerId, 'daraz');
+      expect(darazResult.totalItems, 3);
+      expect(darazResult.transferredItemsCount, 2);
+      expect(darazResult.unmatchedItems.length, 1);
+      expect(darazResult.estimatedSubtotalNpr, 1590);
+      expect(darazResult.cartWebUrl, startsWith('https://www.daraz.com.np/cart/import?token='));
+      expect(darazResult.cartAppUrl, startsWith('daraz://cart/import?token='));
+      expect(darazResult.cartWebUrl, contains('ref=siticounter'));
+
+      // Bhatbhateni Direct Transfer
+      final bbsmResult = engine.transferGroceryCart('hh_123', 'bhatbhateni', items, now: fixedDate);
+      expect(bbsmResult, isNotNull);
+      expect(bbsmResult!.cartWebUrl, startsWith('https://bhatbhatenionline.com/cart/import?token='));
+      expect(bbsmResult.cartAppUrl, startsWith('bbsm://cart/import?token='));
+
+      // BigMart Direct Transfer
+      final bmResult = engine.transferGroceryCart('hh_123', 'bigmart', items, now: fixedDate);
+      expect(bmResult, isNotNull);
+      expect(bmResult!.cartWebUrl, startsWith('https://bigmart.com.np/cart/import?token='));
+      expect(bmResult.cartAppUrl, startsWith('bigmart://cart/import?token='));
+
+      // Opt-out disables cart transfer
+      engine.setPartnerLinksEnabled(false);
+      expect(engine.transferGroceryCart('hh_123', 'daraz', items), isNull);
+    });
   });
 }

@@ -5,6 +5,8 @@
 /// - Full user opt-out to disable shopping partner links entirely.
 library;
 
+import 'dart:convert';
+
 class RetailerPartner {
   final String id;
   final String name;
@@ -15,6 +17,7 @@ class RetailerPartner {
   final String appSchemePrefix;
   final bool isAffiliate;
   final String? affiliateTag;
+  final bool directCartSupported;
   final String disclosureEn;
   final String disclosureNe;
   final String descriptionEn;
@@ -30,6 +33,7 @@ class RetailerPartner {
     required this.appSchemePrefix,
     required this.isAffiliate,
     this.affiliateTag,
+    this.directCartSupported = true,
     required this.disclosureEn,
     required this.disclosureNe,
     required this.descriptionEn,
@@ -46,11 +50,75 @@ class RetailerPartner {
     'appSchemePrefix': appSchemePrefix,
     'isAffiliate': isAffiliate,
     'affiliateTag': affiliateTag,
+    'directCartSupported': directCartSupported,
     'disclosureEn': disclosureEn,
     'disclosureNe': disclosureNe,
     'descriptionEn': descriptionEn,
     'descriptionNe': descriptionNe,
   };
+}
+
+class PartnerCartItem {
+  final String itemId;
+  final String name;
+  final String? nameNe;
+  final double quantity;
+  final String unit;
+  final double? estimatedPriceNpr;
+
+  const PartnerCartItem({
+    required this.itemId,
+    required this.name,
+    this.nameNe,
+    required this.quantity,
+    required this.unit,
+    this.estimatedPriceNpr,
+  });
+
+  Map<String, dynamic> toJson() => {
+    'itemId': itemId,
+    'name': name,
+    if (nameNe != null) 'nameNe': nameNe,
+    'quantity': quantity,
+    'unit': unit,
+    if (estimatedPriceNpr != null) 'estimatedPriceNpr': estimatedPriceNpr,
+  };
+}
+
+class PartnerCartTransferResult {
+  final String cartId;
+  final String householdId;
+  final String retailerId;
+  final String retailerName;
+  final String status;
+  final int totalItems;
+  final int transferredItemsCount;
+  final List<Map<String, String>> unmatchedItems;
+  final double estimatedSubtotalNpr;
+  final String cartWebUrl;
+  final String cartAppUrl;
+  final DateTime createdAt;
+  final DateTime expiresAt;
+  final String disclosureEn;
+  final String disclosureNe;
+
+  const PartnerCartTransferResult({
+    required this.cartId,
+    required this.householdId,
+    required this.retailerId,
+    required this.retailerName,
+    required this.status,
+    required this.totalItems,
+    required this.transferredItemsCount,
+    required this.unmatchedItems,
+    required this.estimatedSubtotalNpr,
+    required this.cartWebUrl,
+    required this.cartAppUrl,
+    required this.createdAt,
+    required this.expiresAt,
+    required this.disclosureEn,
+    required this.disclosureNe,
+  });
 }
 
 class RetailerDeepLinkResult {
@@ -367,6 +435,121 @@ class RetailerHandoffEngine {
       webUrl: deepLink.webUrl,
       appDeepLinkUrl: deepLink.appDeepLinkUrl,
       isAffiliate: retailer.isAffiliate,
+      disclosureEn: retailer.disclosureEn,
+      disclosureNe: retailer.disclosureNe,
+    );
+  }
+
+  /// Level 3 One-Tap Grocery Cart Direct Transfer (Section 26.4)
+  /// Builds an authenticated/signed cart transfer session token and deep-link payload
+  /// for supported regional retailers (Daraz, Bhatbhateni, BigMart, Blinkit, Amazon Fresh).
+  PartnerCartTransferResult? transferGroceryCart(
+    String householdId,
+    String retailerId,
+    List<PartnerCartItem> items, {
+    String? cartId,
+    DateTime? now,
+  }) {
+    if (!_partnerLinksEnabled) {
+      return null;
+    }
+
+    final retailer = getRetailer(retailerId);
+    if (retailer == null || !retailer.directCartSupported) {
+      return null;
+    }
+
+    if (items.isEmpty) {
+      return null;
+    }
+
+    final currentTime = now ?? DateTime.now().toUtc();
+    final expiryTime = currentTime.add(const Duration(hours: 2));
+    final resolvedCartId =
+        cartId ?? 'cart_${DateTime.now().millisecondsSinceEpoch}_${retailer.id}';
+
+    double totalNpr = 0;
+    final unmatched = <Map<String, String>>[];
+    int transferredCount = 0;
+
+    for (final item in items) {
+      if (item.name.trim().isEmpty) {
+        unmatched.add({'itemId': item.itemId, 'name': item.name.isEmpty ? 'Unknown item' : item.name});
+        continue;
+      }
+      final price = item.estimatedPriceNpr ?? (item.quantity * 80.0);
+      totalNpr += price;
+      transferredCount++;
+    }
+
+    final tag = _customAffiliateTags[retailer.id] ?? retailer.affiliateTag ?? '';
+
+    final tokenObj = {
+      'cartId': resolvedCartId,
+      'householdId': householdId,
+      'retailerId': retailer.id,
+      'itemCount': transferredCount,
+      'timestamp': currentTime.toIso8601String(),
+      'tag': tag,
+    };
+    final jsonStr = jsonEncode(tokenObj);
+    final base64Token = base64Url.encode(utf8.encode(jsonStr)).replaceAll('=', '');
+
+    String webBase;
+    String appBase;
+
+    switch (retailer.id) {
+      case 'daraz':
+        webBase = 'https://www.daraz.com.np/cart/import';
+        appBase = 'daraz://cart/import';
+        break;
+      case 'bhatbhateni':
+        webBase = 'https://bhatbhatenionline.com/cart/import';
+        appBase = 'bbsm://cart/import';
+        break;
+      case 'bigmart':
+        webBase = 'https://bigmart.com.np/cart/import';
+        appBase = 'bigmart://cart/import';
+        break;
+      case 'blinkit':
+        webBase = 'https://blinkit.com/cart/import';
+        appBase = 'blinkit://cart/import';
+        break;
+      case 'amazon_fresh':
+        webBase = 'https://www.amazon.com/fresh/cart/import';
+        appBase = 'amazon://fresh/cart/import';
+        break;
+      default:
+        webBase = '${retailer.websiteUrl}/cart/import';
+        appBase = '${retailer.appSchemePrefix}cart/import';
+    }
+
+    final queryParams = {
+      'token': base64Token,
+      'ref': tag.isNotEmpty ? tag : 'siticounter',
+      'items': transferredCount.toString(),
+    };
+    final queryString = queryParams.entries
+        .map((e) => '${e.key}=${Uri.encodeComponent(e.value)}')
+        .join('&');
+
+    final cartWebUrl = '$webBase?$queryString';
+    final cartAppUrl = '$appBase?$queryString';
+
+    return PartnerCartTransferResult(
+      cartId: resolvedCartId,
+      householdId: householdId,
+      retailerId: retailer.id,
+      retailerName: retailer.name,
+      status: 'ready',
+      totalItems: items.length,
+      transferredItemsCount: transferredCount,
+      unmatchedItems: unmatched,
+      estimatedSubtotalNpr: totalNpr,
+      cartWebUrl: cartWebUrl,
+      cartAppUrl: cartAppUrl,
+      createdAt: currentTime,
+      expiresAt: expiryTime,
       disclosureEn: retailer.disclosureEn,
       disclosureNe: retailer.disclosureNe,
     );

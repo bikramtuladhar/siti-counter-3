@@ -10,16 +10,22 @@ class RetailerHandoffSheet extends StatefulWidget {
   final RetailerHandoffService retailerService;
   final String? singleItemName;
   final List<String>? basketItemNames;
+  final List<PartnerCartItem>? cartItems;
+  final String householdId;
   final String currentLanguage;
   final void Function(String url, bool isAppDeepLink)? onLaunchUrl;
+  final void Function(PartnerCartTransferResult result)? onDirectCartTransfer;
 
   const RetailerHandoffSheet({
     super.key,
     required this.retailerService,
     this.singleItemName,
     this.basketItemNames,
+    this.cartItems,
+    this.householdId = 'hh_local_default',
     this.currentLanguage = 'ne',
     this.onLaunchUrl,
+    this.onDirectCartTransfer,
   });
 
   static Future<void> show({
@@ -27,8 +33,11 @@ class RetailerHandoffSheet extends StatefulWidget {
     required RetailerHandoffService retailerService,
     String? singleItemName,
     List<String>? basketItemNames,
+    List<PartnerCartItem>? cartItems,
+    String householdId = 'hh_local_default',
     String currentLanguage = 'ne',
     void Function(String url, bool isAppDeepLink)? onLaunchUrl,
+    void Function(PartnerCartTransferResult result)? onDirectCartTransfer,
   }) {
     return showModalBottomSheet<void>(
       context: context,
@@ -38,8 +47,11 @@ class RetailerHandoffSheet extends StatefulWidget {
         retailerService: retailerService,
         singleItemName: singleItemName,
         basketItemNames: basketItemNames,
+        cartItems: cartItems,
+        householdId: householdId,
         currentLanguage: currentLanguage,
         onLaunchUrl: onLaunchUrl,
+        onDirectCartTransfer: onDirectCartTransfer,
       ),
     );
   }
@@ -72,6 +84,47 @@ class _RetailerHandoffSheetState extends State<RetailerHandoffSheet> {
     _service.launchLink(url);
     widget.onLaunchUrl?.call(url, isAppScheme);
     Navigator.of(context).pop();
+  }
+
+  List<PartnerCartItem> get _resolvedCartItems {
+    if (widget.cartItems != null && widget.cartItems!.isNotEmpty) {
+      return widget.cartItems!;
+    }
+    if (widget.basketItemNames != null && widget.basketItemNames!.isNotEmpty) {
+      return widget.basketItemNames!
+          .asMap()
+          .entries
+          .map((e) => PartnerCartItem(
+                itemId: 'item_${e.key}',
+                name: e.value,
+                quantity: 1,
+                unit: 'pkt',
+              ))
+          .toList();
+    }
+    if (widget.singleItemName != null && widget.singleItemName!.isNotEmpty) {
+      return [
+        PartnerCartItem(
+          itemId: 'item_single',
+          name: widget.singleItemName!,
+          quantity: 1,
+          unit: 'pkt',
+        )
+      ];
+    }
+    return [];
+  }
+
+  void _handleDirectCartTransfer(RetailerPartner retailer) {
+    final transferResult = _service.transferGroceryCart(
+      householdId: widget.householdId,
+      retailerId: retailer.id,
+      items: _resolvedCartItems,
+    );
+    if (transferResult != null) {
+      widget.onDirectCartTransfer?.call(transferResult);
+      _handleLaunch(transferResult.cartAppUrl, true);
+    }
   }
 
   @override
@@ -325,6 +378,27 @@ class _RetailerHandoffSheetState extends State<RetailerHandoffSheet> {
             ],
           ),
           const SizedBox(height: 10),
+          if (retailer.directCartSupported && _resolvedCartItems.isNotEmpty) ...[
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                key: Key('btn_direct_cart_transfer_${retailer.id}'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF0F766E), // Deep teal
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                ),
+                icon: const Icon(Icons.bolt, size: 16, color: Colors.amberAccent),
+                label: Text(
+                  _isNepali ? 'एक-ट्याप कार्ट अर्डर (One-Tap Cart)' : 'One-Tap Cart Checkout',
+                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+                onPressed: () => _handleDirectCartTransfer(retailer),
+              ),
+            ),
+            const SizedBox(height: 8),
+          ],
           Row(
             children: [
               // Open in App Button (Deep link)

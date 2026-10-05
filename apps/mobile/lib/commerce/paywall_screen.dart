@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kitchen_engine/kitchen_engine.dart';
 import '../theme/tokens.dart';
 import '../theme/nepali_typography.dart';
 import 'subscription_service.dart';
