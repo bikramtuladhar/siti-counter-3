@@ -358,5 +358,6 @@ export * from './community_engine.js';
 export * from './ocr_engine.js';
 export * from './party_planner_engine.js';
 export * from './launch_gate_monitor.js';
+export * from './multi_dish_kitchen_engine.js';
 
 
