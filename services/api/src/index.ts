@@ -9,6 +9,8 @@ import { alexaRouter } from './routes/alexa.js'
 import { checkoutRouter } from './routes/checkout.js'
 import { marketRouter } from './routes/market.js'
 import { communityRouter } from './routes/community.js'
+import { telemetryRouter } from './routes/telemetry.js'
+import { legalRouter } from './routes/legal.js'
 import { KalimatiService } from './market/kalimati_service.js'
 
 export const app = new Hono()
@@ -49,6 +51,12 @@ app.route('/', marketRouter)
 
 // Community contributions & moderation endpoints (/v1/community/*)
 app.route('/', communityRouter)
+
+// Telemetry & Launch Gate monitoring endpoints (/v1/telemetry/*)
+app.route('/', telemetryRouter)
+
+// Legal, Privacy & Compliance endpoints (/v1/legal/*)
+app.route('/', legalRouter)
 
 // 404 fallback
 app.notFound((c) => {
