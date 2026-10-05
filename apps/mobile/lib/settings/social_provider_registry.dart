@@ -41,6 +41,15 @@ class SocialProviderRegistry {
     defaultValue: 'com.siticounter.sitiCounter',
   );
 
+  /// The Android/iOS OAuth client id, used to identify this app to Google.
+  ///
+  /// Optional on Android, where Google can resolve it from the package name plus the
+  /// registered signing fingerprint. Set it when Google Console's client is of a type that
+  /// needs naming explicitly.
+  static const String androidClientId = String.fromEnvironment(
+    'GOOGLE_ANDROID_CLIENT_ID',
+  );
+
   static const String facebookAppId = String.fromEnvironment('FACEBOOK_APP_ID');
 
   /// Builds a provider only when it is fully configured, so an unconfigured build never
@@ -49,7 +58,10 @@ class SocialProviderRegistry {
 
   static SocialAuthProvider? google() {
     if (googleClientId.isEmpty) return null;
-    return _GoogleProvider(clientId: googleClientId);
+    return _GoogleProvider(
+      serverClientId: googleClientId,
+      androidClientId: androidClientId.isEmpty ? null : androidClientId,
+    );
   }
 
   static SocialAuthProvider? apple() {
@@ -85,18 +97,40 @@ class SocialProviderRegistry {
   }
 }
 
+/// Google sign-in.
+///
+/// Two client ids are involved and they are not interchangeable:
+///
+/// - `clientId` identifies *this app* to Google (the Android/iOS client).
+/// - `serverClientId` is the **Web** client id from the same project. The returned ID token
+///   carries it as the `aud` claim, so it is the value the API verifies.
+///
+/// Not calling `initialize()` is what produces
+/// `clientConfigurationError: serverClientId must be provided on Android`, so
+/// initialisation is mandatory. It is done once per provider instance because
+/// `GoogleSignIn.instance` is process-wide.
 class _GoogleProvider implements SocialAuthProvider {
-  final String clientId;
+  final String serverClientId;
+  final String? androidClientId;
   final GoogleSignIn _client = GoogleSignIn.instance;
 
-  _GoogleProvider({required this.clientId});
+  bool _initialized = false;
+
+  _GoogleProvider({required this.serverClientId, this.androidClientId});
 
   @override
-  bool isAvailable() => clientId.isNotEmpty;
+  bool isAvailable() => serverClientId.isNotEmpty;
 
   @override
   Future<String> requestToken() async {
-    // Attempt silent sign-in first so a returning user is not prompted again.
+    if (!_initialized) {
+      await _client.initialize(
+        clientId: androidClientId,
+        serverClientId: serverClientId,
+      );
+      _initialized = true;
+    }
+
     // Try a silent sign-in first so a returning user is not prompted again; fall back to
     // the interactive flow when no cached credential is usable.
     GoogleSignInAccount? account;

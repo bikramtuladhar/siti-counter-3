@@ -112,21 +112,38 @@ For iOS, the equivalent is a distribution certificate plus provisioning profile;
 
 ### Google
 
+Google uses **two** client ids and they are not interchangeable:
+
+| Role | What it does | Value |
+| :--- | :--- | :--- |
+| **server / Web client id** | Becomes the `aud` claim of the returned ID token, so this is what the API verifies | `228915460049-54cpjsd261jreom9cji2ql9v0jbolger.apps.googleusercontent.com` |
+| **Android client id** | Identifies this app to Google | Set per build via `--dart-define=GOOGLE_ANDROID_CLIENT_ID=...`; optional, Google can infer it from the package name + registered fingerprint |
+
+Other identifiers:
+
 | | |
 | :--- | :--- |
-| Client id (Android) | `228915460049-54cpjsd261jreom9cji2ql9v0jbolger.apps.googleusercontent.com` |
-| Package name | `com.siticounter.siti_counter` |
+| Package name (Android) | `com.siticounter.siti_counter` |
 | Bundle id (iOS client) | `com.siticounter.sitiCounter` |
 
-An OAuth **client id is not a secret** — it is embedded in the shipped binary either way —
-so it is committed here and defaulted in `SocialProviderRegistry`. It must stay identical to
-`GOOGLE_CLIENT_ID` in `services/api/wrangler.jsonc`, because the API verifies the token's
-audience against it. If they disagree, tokens fail as `INVALID_ID_TOKEN`, which looks like a
-bad token rather than a config mismatch.
+`SocialProviderRegistry` calls `GoogleSignIn.instance.initialize(clientId:, serverClientId:)`
+once per provider instance. **Skipping that call is what produces**
+`GoogleSignInExceptionCode.clientConfigurationError: serverClientId must be provided on
+Android` — the SDK has no default for it. The server client id is committed and defaulted; an
+OAuth client id is not a secret, since it is embedded in the shipped binary either way.
+
+The server client id must stay identical to `GOOGLE_CLIENT_ID` in
+`services/api/wrangler.jsonc`, because the API checks the token's audience against it. If they
+disagree, tokens fail as `INVALID_ID_TOKEN`, which reads like a bad token rather than a config
+mismatch.
 
 Registered SHA-1 fingerprints must include this machine's debug key
 (`FE:D3:08:94:B2:06:72:EB:CE:88:22:BE:DD:39:D6:9A:97:AE:7D:B4`) **and** the Play App Signing
 key, since Play re-signs release builds.
+
+Sign-in needs the Play Services app, so it works on the emulator only if that image includes
+Google Play services. A device with no Google account signed in will reach Google's
+`PreAddAccountActivity` and stop there — that is the expected state, not a bug.
 
 ### All providers
 
