@@ -14,8 +14,17 @@ enum SyncStatus {
 
 class SyncResult {
   final bool success;
+
+  /// Local outbox mutations the server accepted.
   final int appliedCount;
+
+  /// Remote changes the server returned in this response.
   final int remoteCount;
+
+  /// How many of those remote changes were actually written to the local entity cache.
+  /// Lower than [remoteCount] when a delta was older than what was already cached.
+  final int appliedRemoteCount;
+
   final int conflictsCount;
   final String? syncToken;
   final String? errorMessage;
@@ -24,6 +33,7 @@ class SyncResult {
     required this.success,
     this.appliedCount = 0,
     this.remoteCount = 0,
+    this.appliedRemoteCount = 0,
     this.conflictsCount = 0,
     this.syncToken,
     this.errorMessage,
@@ -35,6 +45,10 @@ typedef SyncTransport = Future<Map<String, dynamic>> Function({
   required Map<String, dynamic> body,
   Map<String, String>? headers,
 });
+
+/// Supplies the bearer token for household-scoped API calls. Null while signed out or in
+/// tests, in which case requests are sent unauthenticated and the server rejects them.
+typedef AccessTokenProvider = String? Function();
 
 /// Offline-first delta synchronization engine.
 ///
@@ -48,6 +62,7 @@ class SyncEngine {
   final String apiBaseUrl;
   final String householdId;
   final SyncTransport? transport;
+  final AccessTokenProvider? accessTokenProvider;
   final ValueNotifier<SyncStatus> statusNotifier = ValueNotifier<SyncStatus>(SyncStatus.idle);
 
   // Maximum payload budget: 28KB leaves safe headroom below 30KB limit
@@ -60,7 +75,15 @@ class SyncEngine {
     this.apiBaseUrl = 'https://api.siticounter.app',
     required this.householdId,
     this.transport,
+    this.accessTokenProvider,
   });
+
+  /// Auth headers for a request, omitted entirely when no token is available.
+  Map<String, String> get _authHeaders {
+    final token = accessTokenProvider?.call();
+    if (token == null || token.isEmpty) return const {};
+    return {'Authorization': 'Bearer $token'};
+  }
 
   SyncStatus get status => statusNotifier.value;
 
@@ -134,6 +157,16 @@ class SyncEngine {
       final serverConflicts = (responseJson['conflicts'] as List?) ?? [];
       final remoteChangesRaw = (responseJson['remoteChanges'] as List?) ?? [];
 
+      // Apply server-authoritative changes into the local entity mirror. Without this the
+      // remote side of a sync is discarded and the app has no offline copy of server state.
+      final appliedRemote = await repository.applyRemoteChanges(
+        householdId,
+        remoteChangesRaw
+            .whereType<Map>()
+            .map((raw) => SyncChange.fromJson(Map<String, dynamic>.from(raw)))
+            .toList(),
+      );
+
       // Acknowledge successfully applied outbox items
       final appliedIds = batchChanges
           .where((c) => !serverConflicts.any((sc) => sc['id'] == c.id))
@@ -182,6 +215,7 @@ class SyncEngine {
         success: true,
         appliedCount: applied,
         remoteCount: remoteChangesRaw.length,
+        appliedRemoteCount: appliedRemote,
         conflictsCount: serverConflicts.length,
         syncToken: syncToken,
       );
@@ -202,6 +236,7 @@ class SyncEngine {
         headers: {
           'Content-Type': 'application/json',
           'Accept-Encoding': 'gzip, deflate',
+          ..._authHeaders,
         },
       );
     }
@@ -213,6 +248,7 @@ class SyncEngine {
       final req = await client.postUrl(uri);
       req.headers.set('Content-Type', 'application/json');
       req.headers.set('Accept-Encoding', 'gzip, deflate');
+      _authHeaders.forEach(req.headers.set);
 
       final bodyBytes = utf8.encode(jsonEncode(requestPayload));
       req.contentLength = bodyBytes.length;

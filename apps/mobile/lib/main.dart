@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:kitchen_engine/kitchen_engine.dart';
 import 'package:kitchen_engine/nepali_calendar.dart';
 import 'consumption/consumption_dashboard_screen.dart';
 import 'consumption/consumption_repository.dart';
@@ -11,6 +14,13 @@ import 'screens/active_cooking_session_screen.dart';
 import 'screens/seasonal_kitchen_screen.dart';
 import 'ai/ai_assistant_screen.dart';
 import 'ai/ai_assistant_service.dart';
+import 'displays/companion_widget_service.dart';
+import 'displays/home_screen_widget_previews.dart';
+import 'displays/watch_companion_preview_sheet.dart';
+import 'displays/display_feed_cache.dart';
+import 'sync/app_sync_coordinator.dart';
+import 'sync/sync_engine.dart';
+import 'sync/sync_repository.dart';
 import 'theme/tokens.dart';
 import 'theme/nepali_typography.dart';
 import 'widgets/six_ritus_indicator.dart';
@@ -69,12 +79,25 @@ class KitchenHomeScreen extends StatefulWidget {
   final WeeklyPlannerRepository? plannerRepository;
   final ConsumptionRepository? consumptionRepository;
 
+  /// Server-connected state (delta sync + glanceable display feed). Injected in tests;
+  /// when null the screen bootstraps its own against the local sync database.
+  final AppSyncCoordinator? syncCoordinator;
+
+  /// Supplies the bearer token for household-scoped API calls.
+  final AccessTokenProvider? accessTokenProvider;
+
+  /// API origin. Overridable so a debug build can point at a local worker.
+  final String apiBaseUrl;
+
   const KitchenHomeScreen({
     super.key,
     required this.preferences,
     required this.onResetOnboarding,
     this.plannerRepository,
     this.consumptionRepository,
+    this.syncCoordinator,
+    this.accessTokenProvider,
+    this.apiBaseUrl = 'https://api.siticounter.app',
   });
 
   @override
@@ -88,6 +111,9 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
   WeeklyPlannerRepository? _plannerRepo;
   ConsumptionRepository? _consumptionRepo;
 
+  AppSyncCoordinator? _syncCoordinator;
+  bool _ownsSyncCoordinator = false;
+
   bool get _isNepali => widget.preferences.language == 'ne';
 
   @override
@@ -95,6 +121,115 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
     super.initState();
     _plannerRepo = widget.plannerRepository;
     _consumptionRepo = widget.consumptionRepository;
+
+    _syncCoordinator = widget.syncCoordinator;
+    if (_syncCoordinator != null) {
+      unawaited(_syncCoordinator!.start());
+    } else {
+      unawaited(_bootstrapSyncCoordinator());
+    }
+  }
+
+  /// Builds the coordinator against the local sync database and starts cache-first sync.
+  ///
+  /// Failures are swallowed: the app must start and work offline with whatever the local
+  /// planner and consumption databases already hold.
+  Future<void> _bootstrapSyncCoordinator() async {
+    try {
+      final repository = await SyncRepository.openOnDisk();
+      final householdId = await _resolveHouseholdId(repository);
+
+      final coordinator = AppSyncCoordinator(
+        repository: repository,
+        syncEngine: SyncEngine(
+          repository: repository,
+          householdId: householdId,
+          apiBaseUrl: widget.apiBaseUrl,
+          accessTokenProvider: widget.accessTokenProvider,
+        ),
+        displayService: CompanionWidgetService(
+          cache: SqliteDisplayFeedCache(
+            repository: repository,
+            householdId: householdId,
+          ),
+          apiBaseUrl: widget.apiBaseUrl,
+        )..accessTokenProvider = widget.accessTokenProvider,
+        accessTokenProvider: widget.accessTokenProvider,
+      );
+
+      if (!mounted) {
+        coordinator.dispose();
+        return;
+      }
+      setState(() {
+        _syncCoordinator = coordinator;
+        _ownsSyncCoordinator = true;
+      });
+      await coordinator.start();
+    } catch (_) {
+      // Storage unavailable: the app continues without server sync.
+    }
+  }
+
+  /// Resolves the household this install syncs against.
+  ///
+  /// Once a real account exists its household comes from the auth session; until then a
+  /// stable local id is generated once and persisted, so repeat launches reuse the same
+  /// cache and the same server-side household.
+  Future<String> _resolveHouseholdId(SyncRepository repository) async {
+    const stateKey = 'local_household_id';
+    final stored = await repository.getSyncState(stateKey);
+    if (stored != null && stored.isNotEmpty) return stored;
+
+    final generated =
+        'hh_local_${UuidV7.generate().replaceAll('-', '').substring(0, 16)}';
+    await repository.setSyncState(stateKey, generated);
+    return generated;
+  }
+
+  @override
+  void dispose() {
+    if (_ownsSyncCoordinator) {
+      _syncCoordinator?.dispose();
+    }
+    super.dispose();
+  }
+
+  void _openCompanionDisplays() {
+    final service = _syncCoordinator?.displayService;
+    if (service == null) return;
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (ctx) => DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.75,
+        builder: (context, controller) => ListView(
+          controller: controller,
+          children: [
+            HomeScreenWidgetPreviews(
+              todaysMeals: service.todaysMealsWidget,
+              activeSiti: service.activeSitiWidget,
+              groceryChecklist: service.groceryChecklistWidget,
+            ),
+            const Divider(height: 32),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                _isNepali ? 'स्मार्टवॉच सहायक' : 'Watch Companion',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: SitiColors.terracotta,
+                    ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            WatchCompanionPreviewSheet(service: service),
+            const SizedBox(height: 32),
+          ],
+        ),
+      ),
+    );
   }
 
   /// Opens the local planner database lazily, the first time the Planner tab is shown.
@@ -265,6 +400,12 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
                 ),
               );
             },
+          ),
+          IconButton(
+            key: const Key('companion_displays_button'),
+            icon: const Icon(Icons.widgets_outlined, color: SitiColors.dark),
+            tooltip: _isNepali ? 'विजेट र घडी' : 'Widgets & Watch',
+            onPressed: _openCompanionDisplays,
           ),
           IconButton(
             icon: const Icon(Icons.tune_rounded, color: SitiColors.dark),

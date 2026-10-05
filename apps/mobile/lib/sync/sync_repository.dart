@@ -46,6 +46,32 @@ class SyncRepository {
         resolved_at INTEGER
       )
     ''');
+
+    // Server-authoritative mirror of the household's entities. `POST /v1/sync` returns
+    // remoteChanges; applying them here is what gives the app an offline copy of server
+    // state to render from (and what the glanceable display feed is derived from).
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS sync_entities (
+        entity_type TEXT NOT NULL,
+        entity_id TEXT NOT NULL,
+        household_id TEXT NOT NULL,
+        version INTEGER NOT NULL,
+        payload TEXT NOT NULL,
+        deleted INTEGER NOT NULL DEFAULT 0,
+        server_timestamp INTEGER NOT NULL,
+        updated_at INTEGER NOT NULL,
+        PRIMARY KEY (household_id, entity_type, entity_id)
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS display_feed_cache (
+        household_id TEXT PRIMARY KEY,
+        etag TEXT,
+        payload TEXT NOT NULL,
+        fetched_at INTEGER NOT NULL
+      )
+    ''');
   }
 
   /// Creates and opens a local on-disk SQLite database for synchronization.
@@ -219,6 +245,130 @@ class SyncRepository {
       'sync_conflicts',
       where: 'resolved_at IS NULL',
       orderBy: 'created_at ASC',
+    );
+  }
+
+  /// Applies server-authoritative changes into the local entity mirror.
+  ///
+  /// Version-guarded: a remote change older than what is already cached is ignored, so a
+  /// late-arriving delta cannot roll the local cache backwards. Tombstones are kept rather
+  /// than dropped, otherwise a delete could be undone by a stale delta.
+  Future<int> applyRemoteChanges(
+    String householdId,
+    List<SyncChange> remoteChanges,
+  ) async {
+    if (remoteChanges.isEmpty) return 0;
+
+    var applied = 0;
+    final now = DateTime.now().millisecondsSinceEpoch;
+
+    await _db.transaction((txn) async {
+      for (final change in remoteChanges) {
+        final existing = await txn.query(
+          'sync_entities',
+          columns: ['version'],
+          where:
+              'household_id = ? AND entity_type = ? AND entity_id = ?',
+          whereArgs: [householdId, change.entityType, change.entityId],
+          limit: 1,
+        );
+
+        if (existing.isNotEmpty && (existing.first['version'] as int) >= change.version) {
+          continue;
+        }
+
+        await txn.insert('sync_entities', {
+          'entity_type': change.entityType,
+          'entity_id': change.entityId,
+          'household_id': householdId,
+          'version': change.version,
+          'payload': jsonEncode(change.payload),
+          'deleted': change.deleted ? 1 : 0,
+          'server_timestamp': change.createdAt,
+          'updated_at': now,
+        }, conflictAlgorithm: ConflictAlgorithm.replace);
+        applied++;
+      }
+    });
+
+    return applied;
+  }
+
+  /// Reads every cached entity for a household, optionally filtered by type and excluding
+  /// tombstones. This is the offline source of truth the UI reads from.
+  Future<List<SyncChange>> getCachedEntities({
+    required String householdId,
+    String? entityType,
+    bool includeDeleted = false,
+  }) async {
+    final where = <String>['household_id = ?'];
+    final whereArgs = <dynamic>[householdId];
+
+    if (entityType != null) {
+      where.add('entity_type = ?');
+      whereArgs.add(entityType);
+    }
+    if (!includeDeleted) {
+      where.add('deleted = 0');
+    }
+
+    final rows = await _db.query(
+      'sync_entities',
+      where: where.join(' AND '),
+      whereArgs: whereArgs,
+      orderBy: 'server_timestamp ASC',
+    );
+
+    return rows
+        .map(
+          (row) => SyncChange(
+            id: '${row['entity_type']}:${row['entity_id']}',
+            householdId: row['household_id'] as String,
+            entityType: row['entity_type'] as String,
+            entityId: row['entity_id'] as String,
+            version: row['version'] as int,
+            payload: jsonDecode(row['payload'] as String) as Map<String, dynamic>,
+            deleted: (row['deleted'] as int) == 1,
+            createdAt: row['server_timestamp'] as int,
+          ),
+        )
+        .toList();
+  }
+
+  /// Persists the display feed payloads plus the ETag that produced them.
+  Future<void> writeDisplayFeed(
+    String householdId,
+    Map<String, dynamic> payload, {
+    String? etag,
+  }) async {
+    await _db.insert(
+      'display_feed_cache',
+      {
+        'household_id': householdId,
+        'etag': etag,
+        'payload': jsonEncode(payload),
+        'fetched_at': DateTime.now().millisecondsSinceEpoch,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  /// Reads the cached display feed payloads and their ETag.
+  Future<({Map<String, dynamic>? payload, String? etag})?> readDisplayFeed(
+    String householdId,
+  ) async {
+    final rows = await _db.query(
+      'display_feed_cache',
+      where: 'household_id = ?',
+      whereArgs: [householdId],
+      limit: 1,
+    );
+    if (rows.isEmpty) return null;
+
+    final row = rows.first;
+    return (
+      payload: jsonDecode(row['payload'] as String) as Map<String, dynamic>,
+      etag: row['etag'] as String?,
     );
   }
 

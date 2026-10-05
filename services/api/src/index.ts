@@ -12,6 +12,7 @@ import { communityRouter } from './routes/community.js'
 import { telemetryRouter } from './routes/telemetry.js'
 import { legalRouter } from './routes/legal.js'
 import { commerceRouter } from './routes/commerce.js'
+import { displayRouter } from './routes/displays.js'
 import { KalimatiService } from './market/kalimati_service.js'
 
 export const app = new Hono()
@@ -61,6 +62,9 @@ app.route('/', legalRouter)
 
 // Direct Partner Cart Checkout endpoints (/v1/commerce/*)
 app.route('/', commerceRouter)
+
+// Glanceable display feed for native widgets & watch companions (/v1/displays/*)
+app.route('/', displayRouter)
 
 // 404 fallback
 app.notFound((c) => {

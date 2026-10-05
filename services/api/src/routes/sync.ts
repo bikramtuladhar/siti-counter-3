@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { UuidV7, SyncChange, SyncConflictResolver } from '@siti-counter/kitchen-engine'
+import { requireHousehold } from '../middleware/household_auth.js'
 
 export interface ClientSyncChange {
   id: string
@@ -43,9 +44,31 @@ export function resetSyncStore(): void {
   householdSyncStore.clear()
 }
 
+/** Returns the live entity map for a household, creating it on first write. */
+export function getHouseholdEntities(householdId: string): Map<string, ClientSyncChange & { serverTimestamp: number }> {
+  let entities = householdSyncStore.get(householdId)
+  if (!entities) {
+    entities = new Map()
+    householdSyncStore.set(householdId, entities)
+  }
+  return entities
+}
+
+/** All non-deleted entities of one type for a household, newest server write last. */
+export function getHouseholdEntitiesOfType(
+  householdId: string,
+  entityType: ClientSyncChange['entityType']
+): Array<ClientSyncChange & { serverTimestamp: number }> {
+  return Array.from(getHouseholdEntities(householdId).values())
+    .filter((e) => e.entityType === entityType && !e.deleted)
+    .sort((a, b) => a.serverTimestamp - b.serverTimestamp)
+}
+
 export const syncRouter = new Hono()
 
 const MAX_PAYLOAD_BYTES = 30 * 1024 // 30 KB budget per Section 21.3
+
+syncRouter.use('/v1/sync', requireHousehold())
 
 syncRouter.post('/v1/sync', async (c) => {
   // Low-bandwidth payload size validation (<30KB)
@@ -88,15 +111,23 @@ syncRouter.post('/v1/sync', async (c) => {
     )
   }
 
+  // The bearer token is the authority; a body claiming another household is rejected.
+  const tokenHouseholdId = c.get('householdId' as never) as string
+  if (body.householdId !== tokenHouseholdId) {
+    return c.json(
+      {
+        error: 'FORBIDDEN',
+        message: 'Token is not authorized for the requested household.'
+      },
+      403
+    )
+  }
+
   const { householdId, lastSyncToken, changes = [] } = body
   const serverNow = Date.now()
   const nextSyncToken = `st_${serverNow}`
 
-  // Ensure household map exists in store
-  if (!householdSyncStore.has(householdId)) {
-    householdSyncStore.set(householdId, new Map())
-  }
-  const entityMap = householdSyncStore.get(householdId)!
+  const entityMap = getHouseholdEntities(householdId)
 
   const appliedChanges: ClientSyncChange[] = []
   const conflicts: SyncConflictInfo[] = []

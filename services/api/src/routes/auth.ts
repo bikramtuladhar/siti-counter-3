@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { registerAccessToken } from '../middleware/household_auth.js'
 
 export interface AuthTokens {
   accessToken: string;
@@ -33,7 +34,7 @@ function generateToken(prefix: string): string {
   return `${prefix}_${Math.random().toString(36).substring(2)}${Date.now().toString(36)}`
 }
 
-function issueTokens(userId: string): AuthTokens {
+function issueTokens(userId: string, householdId: string): AuthTokens {
   const accessToken = generateToken(`atk_${userId}`)
   const refreshToken = generateToken(`rtk_${userId}`)
 
@@ -42,6 +43,10 @@ function issueTokens(userId: string): AuthTokens {
     userId,
     expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000
   })
+
+  // Scope the access token to exactly one household so household-scoped routes can
+  // authorize from the token instead of trusting a client-supplied householdId.
+  registerAccessToken(accessToken, householdId)
 
   return {
     accessToken,
@@ -70,7 +75,7 @@ authRouter.post('/v1/auth/guest', async (c) => {
     usersStore.set(userId, user)
   }
 
-  const tokens = issueTokens(user.id)
+  const tokens = issueTokens(user.id, user.householdId)
 
   return c.json<AuthResponse>({
     user,
@@ -147,7 +152,7 @@ authRouter.post('/v1/auth/magic-link/verify', async (c) => {
     }
   }
 
-  const tokens = issueTokens(user.id)
+  const tokens = issueTokens(user.id, user.householdId)
 
   return c.json<AuthResponse>({
     user,
@@ -200,7 +205,7 @@ authRouter.post('/v1/auth/google', async (c) => {
     }
   }
 
-  const tokens = issueTokens(user.id)
+  const tokens = issueTokens(user.id, user.householdId)
 
   return c.json<AuthResponse>({
     user,
@@ -264,7 +269,7 @@ authRouter.post('/v1/auth/refresh', async (c) => {
     return c.json({ error: 'USER_NOT_FOUND', message: 'User does not exist' }, 404)
   }
 
-  const tokens = issueTokens(user.id)
+  const tokens = issueTokens(user.id, user.householdId)
 
   return c.json({
     tokens,

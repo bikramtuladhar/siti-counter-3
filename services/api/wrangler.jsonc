@@ -10,6 +10,14 @@
   "triggers": {
     "crons": ["0 4 * * *"]
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "siti-counter",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
   "durable_objects": {
     "bindings": [
       {
