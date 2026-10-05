@@ -24,8 +24,23 @@ import 'social_auth_service.dart';
 ///   --dart-define=FACEBOOK_APP_ID=1234567890
 /// ```
 class SocialProviderRegistry {
-  static const String googleClientId = String.fromEnvironment('GOOGLE_CLIENT_ID');
-  static const String appleClientId = String.fromEnvironment('APPLE_CLIENT_ID');
+  /// Public OAuth client ids, not secrets.
+  ///
+  /// An OAuth client id is embedded in the shipped binary either way, so defaulting it here
+  /// makes Google sign-in work without a build flag while still allowing a per-build
+  /// override for a different environment. The *secret* stays on the server and is never
+  /// shipped.
+  static const String googleClientId = String.fromEnvironment(
+    'GOOGLE_CLIENT_ID',
+    defaultValue:
+        '228915460049-54cpjsd261jreom9cji2ql9v0jbolger.apps.googleusercontent.com',
+  );
+
+  static const String appleClientId = String.fromEnvironment(
+    'APPLE_CLIENT_ID',
+    defaultValue: 'com.siticounter.sitiCounter',
+  );
+
   static const String facebookAppId = String.fromEnvironment('FACEBOOK_APP_ID');
 
   /// Builds a provider only when it is fully configured, so an unconfigured build never

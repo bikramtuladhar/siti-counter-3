@@ -17,7 +17,7 @@
   // no id answers 503 NOT_CONFIGURED rather than accepting an unverified token.
   "vars": {
     "APPLE_CLIENT_ID": "com.siticounter.sitiCounter",
-    "GOOGLE_CLIENT_ID": "",
+    "GOOGLE_CLIENT_ID": "228915460049-54cpjsd261jreom9cji2ql9v0jbolger.apps.googleusercontent.com",
     "FACEBOOK_APP_ID": ""
   },
   "d1_databases": [

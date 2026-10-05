@@ -110,24 +110,48 @@ For iOS, the equivalent is a distribution certificate plus provisioning profile;
 
 ## Social sign-in
 
-Client ids are supplied as `--dart-define` values so nothing is committed to source:
+### Google
+
+| | |
+| :--- | :--- |
+| Client id (Android) | `228915460049-54cpjsd261jreom9cji2ql9v0jbolger.apps.googleusercontent.com` |
+| Package name | `com.siticounter.siti_counter` |
+| Bundle id (iOS client) | `com.siticounter.sitiCounter` |
+
+An OAuth **client id is not a secret** — it is embedded in the shipped binary either way —
+so it is committed here and defaulted in `SocialProviderRegistry`. It must stay identical to
+`GOOGLE_CLIENT_ID` in `services/api/wrangler.jsonc`, because the API verifies the token's
+audience against it. If they disagree, tokens fail as `INVALID_ID_TOKEN`, which looks like a
+bad token rather than a config mismatch.
+
+Registered SHA-1 fingerprints must include this machine's debug key
+(`FE:D3:08:94:B2:06:72:EB:CE:88:22:BE:DD:39:D6:9A:97:AE:7D:B4`) **and** the Play App Signing
+key, since Play re-signs release builds.
+
+### All providers
+
+Client ids are supplied as `--dart-define` values so a build can target a different
+environment:
 
 ```bash
 flutter run \
-  --dart-define=GOOGLE_CLIENT_ID=1234567890-abc.apps.googleusercontent.com \
+  --dart-define=GOOGLE_CLIENT_ID=228915460049-54cpjsd261jreom9cji2ql9v0jbolger.apps.googleusercontent.com \
   --dart-define=APPLE_CLIENT_ID=com.siticounter.sitiCounter \
   --dart-define=FACEBOOK_APP_ID=1234567890
 ```
 
-A provider's button is only shown when its id is supplied, and Apple additionally requires
-iOS/macOS. With no defines the sign-in sheet reports that social sign-in is unavailable
-rather than showing buttons that cannot work.
+Omitting a define falls back to the committed default; Facebook has no default, so its button
+stays hidden until configured.
+
+A provider's button is only shown when its id is resolved, and Apple additionally requires
+iOS/macOS. With nothing configured the sign-in sheet reports that social sign-in is
+unavailable rather than showing buttons that cannot work.
 
 The API verifies every token and rejects anything it cannot verify
 (`services/api/src/auth/social_verifier.ts`):
 
-- **Google** — RS256 signature against Google's JWKS. Register the Android client id plus
-  the signing fingerprint from the table above.
+- **Google** — RS256 signature against Google's JWKS, audience must equal the client id
+  above.
 - **Apple** — ES256 signature against Apple's JWKS, audience must equal the bundle id
   (`com.siticounter.sitiCounter`, *not* `com.siticounter.app`). Requires the *Sign in with
   Apple* capability on the iOS target.
@@ -135,7 +159,7 @@ The API verifies every token and rejects anything it cannot verify
   7.x SDK reads its App id from `AndroidManifest.xml` / `Info.plist`, so the `--dart-define`
   must match that value.
 
-The matching server-side values live in `services/api/wrangler.jsonc` (`vars`) and, for the
+Matching server-side values live in `services/api/wrangler.jsonc` (`vars`) and, for the
 Facebook app secret, `wrangler secret put FACEBOOK_APP_SECRET`. A provider with no
 configuration answers `503 NOT_CONFIGURED`.
 
