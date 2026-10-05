@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/tokens.dart';
 import '../theme/nepali_typography.dart';
+import 'language_toggle.dart';
 import 'onboarding_state.dart';
 
 class SetupWizardScreen extends StatefulWidget {
@@ -201,22 +202,61 @@ class _SetupWizardScreenState extends State<SetupWizardScreen> {
           style: NepaliTypography.bodyMedium.copyWith(color: Colors.grey.shade700),
         ),
         const SizedBox(height: 20),
-        _buildRadioOption(
-          id: 'ne',
-          currentVal: _prefs.language,
+        Align(
+          alignment: Alignment.centerLeft,
+          child: LanguageToggle(
+            language: _prefs.language,
+            onChanged: (code) => setState(() => _prefs.language = code),
+          ),
+        ),
+        const SizedBox(height: 16),
+        _buildLanguageInfoCard(
           title: 'नेपाली (Devanagari)',
           subtitle: 'परम्परागत नेपाली अंक, ६ ऋतु र स्थानीय नाम',
-          onSelect: (v) => setState(() => _prefs.language = v),
         ),
         const SizedBox(height: 12),
-        _buildRadioOption(
-          id: 'en',
-          currentVal: _prefs.language,
+        _buildLanguageInfoCard(
           title: 'English',
-          subtitle: 'English recipe instructions with Nepali ingredient terms',
-          onSelect: (v) => setState(() => _prefs.language = v),
+          subtitle: 'English instructions with Nepali ingredient terms',
         ),
       ],
+    );
+  }
+
+  /// Describes a language option in its own script, so both read correctly whichever
+  /// language is currently selected.
+  Widget _buildLanguageInfoCard({
+    required String title,
+    required String subtitle,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: NepaliTypography.titleMedium.copyWith(
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            subtitle,
+            style: NepaliTypography.bodyMedium.copyWith(
+              fontSize: 12,
+              color: Colors.grey.shade600,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -229,6 +269,8 @@ class _SetupWizardScreenState extends State<SetupWizardScreen> {
       {'id': 'biomass_wood', 'nameNe': 'दाउराको चुलो (Firewood / Biomass)', 'nameEn': 'Wood Fire / Biomass', 'icon': Icons.forest_rounded},
     ];
 
+    final selectedCount = _prefs.stoveTypes.length;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -238,20 +280,47 @@ class _SetupWizardScreenState extends State<SetupWizardScreen> {
         ),
         const SizedBox(height: 6),
         Text(
-          _isNepali ? 'चुलोको तापक्रम उत्सर्जनअनुसार सिट्ठी समय समायोजन हुन्छ।' : 'Heat response curves calibrate whistle detection timing.',
+          _isNepali
+              ? 'एकभन्दा बढी छन् भने सबै छान्नुहोस् — चुलोको तापक्रम उत्सर्जनअनुसार सिट्ठी समय समायोजन हुन्छ।'
+              : 'Select all that apply. Whistle timing is calibrated to each stove’s heat response.',
           style: NepaliTypography.bodyMedium.copyWith(color: Colors.grey.shade700),
         ),
-        const SizedBox(height: 20),
-        ...stoves.map((s) => Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: _buildRadioOption(
-            id: s['id'] as String,
-            currentVal: _prefs.stoveType,
-            title: _isNepali ? (s['nameNe'] as String) : (s['nameEn'] as String),
-            icon: s['icon'] as IconData,
-            onSelect: (v) => setState(() => _prefs.stoveType = v),
+        const SizedBox(height: 14),
+        if (selectedCount > 0)
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: SitiColors.terracotta.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                _isNepali
+                    ? '$selectedCount चुलो छानिएको'
+                    : '$selectedCount selected',
+                style: NepaliTypography.labelLarge.copyWith(
+                  color: SitiColors.terracotta,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
           ),
-        )),
+        const SizedBox(height: 14),
+        ...stoves.map((s) {
+          final id = s['id'] as String;
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: _buildCheckOption(
+              id: id,
+              title: _isNepali ? (s['nameNe'] as String) : (s['nameEn'] as String),
+              icon: s['icon'] as IconData,
+              isChecked: _prefs.stoveTypes.contains(id),
+              onToggle: () => setState(() => _prefs.toggleStoveType(id)),
+            ),
+          );
+        }),
       ],
     );
   }
@@ -319,49 +388,20 @@ class _SetupWizardScreenState extends State<SetupWizardScreen> {
         ),
         const SizedBox(height: 20),
         ...rules.map((rule) {
-          final isChecked = _prefs.dietaryRules.contains(rule['id']);
+          final id = rule['id'] as String;
           return Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: InkWell(
-              onTap: () {
-                setState(() {
-                  if (isChecked) {
-                    _prefs.dietaryRules.remove(rule['id']!);
-                  } else {
-                    _prefs.dietaryRules.add(rule['id']!);
-                  }
-                });
-              },
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: isChecked ? SitiColors.terracotta.withValues(alpha: 0.08) : Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: isChecked ? SitiColors.terracotta : Colors.grey.shade300,
-                    width: isChecked ? 2 : 1,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      isChecked ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded,
-                      color: isChecked ? SitiColors.terracotta : Colors.grey,
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Text(
-                        _isNepali ? rule['nameNe']! : rule['nameEn']!,
-                        style: NepaliTypography.titleMedium.copyWith(
-                          fontSize: 15,
-                          fontWeight: isChecked ? FontWeight.w600 : FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            child: _buildCheckOption(
+              id: id,
+              title: _isNepali ? rule['nameNe']! : rule['nameEn']!,
+              isChecked: _prefs.dietaryRules.contains(id),
+              onToggle: () => setState(() {
+                if (_prefs.dietaryRules.contains(id)) {
+                  _prefs.dietaryRules.remove(id);
+                } else {
+                  _prefs.dietaryRules.add(id);
+                }
+              }),
             ),
           );
         }),
@@ -369,63 +409,52 @@ class _SetupWizardScreenState extends State<SetupWizardScreen> {
     );
   }
 
-  Widget _buildRadioOption({
+  /// Multi-select option card, for questions where more than one answer is reasonable
+/// (stoves a household cooks on, dietary rules they follow).
+Widget _buildCheckOption({
     required String id,
-    required String currentVal,
     required String title,
-    String? subtitle,
     IconData? icon,
-    required ValueChanged<String> onSelect,
+    required bool isChecked,
+    required VoidCallback onToggle,
   }) {
-    final isSelected = currentVal == id;
-    return InkWell(
-      onTap: () => onSelect(id),
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: isSelected ? SitiColors.terracotta.withValues(alpha: 0.08) : Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? SitiColors.terracotta : Colors.grey.shade300,
-            width: isSelected ? 2 : 1,
+    return Semantics(
+      checked: isChecked,
+      child: InkWell(
+        key: Key('check_option_$id'),
+        onTap: onToggle,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: isChecked ? SitiColors.terracotta.withValues(alpha: 0.08) : Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isChecked ? SitiColors.terracotta : Colors.grey.shade300,
+              width: isChecked ? 2 : 1,
+            ),
           ),
-        ),
-        child: Row(
-          children: [
-            if (icon != null) ...[
-              Icon(icon, color: isSelected ? SitiColors.terracotta : Colors.grey.shade700),
-              const SizedBox(width: 12),
-            ],
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: NepaliTypography.titleMedium.copyWith(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
+          child: Row(
+            children: [
+              if (icon != null) ...[
+                Icon(icon, color: isChecked ? SitiColors.terracotta : Colors.grey.shade700),
+                const SizedBox(width: 12),
+              ],
+              Expanded(
+                child: Text(
+                  title,
+                  style: NepaliTypography.titleMedium.copyWith(
+                    fontSize: 15,
+                    fontWeight: isChecked ? FontWeight.w600 : FontWeight.w400,
                   ),
-                  if (subtitle != null) ...[
-                    const SizedBox(height: 2),
-                    Text(
-                      subtitle,
-                      style: NepaliTypography.bodyMedium.copyWith(
-                        fontSize: 12,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                  ],
-                ],
+                ),
               ),
-            ),
-            Icon(
-              isSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-              color: isSelected ? SitiColors.terracotta : Colors.grey,
-            ),
-          ],
+              Icon(
+                isChecked ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded,
+                color: isChecked ? SitiColors.terracotta : Colors.grey,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -4,4 +4,13 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- Debug builds talk to a local Cloudflare Worker over plain HTTP
+         (http://10.0.2.2:8787, the emulator's alias for the host loopback).
+         Android blocks cleartext by default from API 28, so it is enabled here
+         only for debug; the main manifest keeps TLS-only for release. -->
+    <application
+        android:usesCleartextTraffic="true"
+        tools:replace="android:usesCleartextTraffic"
+        xmlns:tools="http://schemas.android.com/tools" />
 </manifest>

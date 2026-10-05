@@ -18,11 +18,13 @@ import 'displays/companion_widget_service.dart';
 import 'displays/home_screen_widget_previews.dart';
 import 'displays/watch_companion_preview_sheet.dart';
 import 'displays/display_feed_cache.dart';
+import 'sync/api_session.dart';
 import 'sync/app_sync_coordinator.dart';
 import 'sync/sync_engine.dart';
 import 'sync/sync_repository.dart';
 import 'theme/tokens.dart';
 import 'theme/nepali_typography.dart';
+import 'theme/scroll_behavior.dart';
 import 'widgets/six_ritus_indicator.dart';
 
 void main() {
@@ -44,6 +46,8 @@ class _SitiCounterAppState extends State<SitiCounterApp> {
     return MaterialApp(
       title: 'Siti Counter 3.0',
       debugShowCheckedModeBanner: false,
+      // Removes the elastic overscroll stretch/glow; see NoElasticScrollBehavior.
+      scrollBehavior: const NoElasticScrollBehavior(),
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
@@ -97,8 +101,15 @@ class KitchenHomeScreen extends StatefulWidget {
     this.consumptionRepository,
     this.syncCoordinator,
     this.accessTokenProvider,
-    this.apiBaseUrl = 'https://api.siticounter.app',
+    this.apiBaseUrl = kDefaultApiBaseUrl,
   });
+
+  /// The API origin actually used at runtime.
+  ///
+  /// Resolves to the build-time override when set, otherwise per platform so the Android
+  /// emulator reaches the host worker at 10.0.2.2 rather than its own loopback.
+  String resolveApiBaseUrl(String configured) =>
+      configured == kDefaultApiBaseUrl ? defaultApiBaseUrl() : configured;
 
   @override
   State<KitchenHomeScreen> createState() => _KitchenHomeScreenState();
@@ -114,7 +125,17 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
   AppSyncCoordinator? _syncCoordinator;
   bool _ownsSyncCoordinator = false;
 
+  /// Standalone display service so the Widgets & Watch sheet is usable immediately,
+  /// before (or without) a successful sync bootstrap. Replaced by the coordinator's
+  /// service once it is ready.
+  late CompanionWidgetService _displayService;
+  bool _ownsPlaceholderDisplayService = false;
+
   bool get _isNepali => widget.preferences.language == 'ne';
+
+  /// API origin in use, resolving the per-platform default when none was configured.
+  String get _apiBaseUrl =>
+      widget.resolveApiBaseUrl(widget.apiBaseUrl);
 
   @override
   void initState() {
@@ -122,8 +143,15 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
     _plannerRepo = widget.plannerRepository;
     _consumptionRepo = widget.consumptionRepository;
 
+    // Placeholder so the Widgets & Watch sheet works before sync finishes bootstrapping.
+    if (widget.syncCoordinator == null) {
+      _displayService = CompanionWidgetService(apiBaseUrl: _apiBaseUrl);
+      _ownsPlaceholderDisplayService = true;
+    }
+
     _syncCoordinator = widget.syncCoordinator;
     if (_syncCoordinator != null) {
+      _displayService = _syncCoordinator!.displayService;
       unawaited(_syncCoordinator!.start());
     } else {
       unawaited(_bootstrapSyncCoordinator());
@@ -137,30 +165,43 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
   Future<void> _bootstrapSyncCoordinator() async {
     try {
       final repository = await SyncRepository.openOnDisk();
-      final householdId = await _resolveHouseholdId(repository);
+
+      // Authenticate first: the sync and feed endpoints authorize from the bearer token,
+      // and the household the token is scoped to is the one we must sync against.
+      final session = ApiSession(repository: repository, apiBaseUrl: _apiBaseUrl);
+      if (widget.accessTokenProvider == null) {
+        await session.restore();
+      }
+
+      final householdId =
+          session.householdId ?? await _fallbackHouseholdId(repository);
+      final tokenProvider =
+          widget.accessTokenProvider ?? session.accessTokenProvider;
 
       final coordinator = AppSyncCoordinator(
         repository: repository,
         syncEngine: SyncEngine(
           repository: repository,
           householdId: householdId,
-          apiBaseUrl: widget.apiBaseUrl,
-          accessTokenProvider: widget.accessTokenProvider,
+          apiBaseUrl: _apiBaseUrl,
+          accessTokenProvider: tokenProvider,
         ),
         displayService: CompanionWidgetService(
           cache: SqliteDisplayFeedCache(
             repository: repository,
             householdId: householdId,
           ),
-          apiBaseUrl: widget.apiBaseUrl,
-        )..accessTokenProvider = widget.accessTokenProvider,
-        accessTokenProvider: widget.accessTokenProvider,
+          apiBaseUrl: _apiBaseUrl,
+        )..accessTokenProvider = tokenProvider,
+        accessTokenProvider: tokenProvider,
       );
 
       if (!mounted) {
         coordinator.dispose();
         return;
       }
+      _ownsPlaceholderDisplayService = false;
+      _displayService = coordinator.displayService;
       setState(() {
         _syncCoordinator = coordinator;
         _ownsSyncCoordinator = true;
@@ -171,12 +212,11 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
     }
   }
 
-  /// Resolves the household this install syncs against.
+  /// Last-resort household id when auth could not run (offline first launch).
   ///
-  /// Once a real account exists its household comes from the auth session; until then a
-  /// stable local id is generated once and persisted, so repeat launches reuse the same
-  /// cache and the same server-side household.
-  Future<String> _resolveHouseholdId(SyncRepository repository) async {
+  /// A stable id is generated once and persisted, so repeat launches reuse the same cache.
+  /// It will not match a server-side household, so syncing stays a no-op until auth succeeds.
+  Future<String> _fallbackHouseholdId(SyncRepository repository) async {
     const stateKey = 'local_household_id';
     final stored = await repository.getSyncState(stateKey);
     if (stored != null && stored.isNotEmpty) return stored;
@@ -192,12 +232,14 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
     if (_ownsSyncCoordinator) {
       _syncCoordinator?.dispose();
     }
+    if (_ownsPlaceholderDisplayService) {
+      _displayService.dispose();
+    }
     super.dispose();
   }
 
   void _openCompanionDisplays() {
-    final service = _syncCoordinator?.displayService;
-    if (service == null) return;
+    final service = _syncCoordinator?.displayService ?? _displayService;
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,

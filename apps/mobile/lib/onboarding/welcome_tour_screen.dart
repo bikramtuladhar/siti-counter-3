@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/tokens.dart';
 import '../theme/nepali_typography.dart';
+import 'language_toggle.dart';
 
 class TourPageData {
   final String titleNe;
@@ -26,10 +27,15 @@ class WelcomeTourScreen extends StatefulWidget {
   final VoidCallback onFinish;
   final bool preferNepali;
 
+  /// Raised when the user switches language from the tour header, so the coordinator can
+  /// keep its preferences in step (the wizard and every later screen read it).
+  final ValueChanged<bool>? onLanguageChanged;
+
   const WelcomeTourScreen({
     super.key,
     required this.onFinish,
     this.preferNepali = true,
+    this.onLanguageChanged,
   });
 
   @override
@@ -39,6 +45,25 @@ class WelcomeTourScreen extends StatefulWidget {
 class _WelcomeTourScreenState extends State<WelcomeTourScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
+
+  /// Held locally so the tour re-renders in the chosen language immediately, without a
+  /// round trip through the coordinator.
+  late bool _preferNepali = widget.preferNepali;
+
+  @override
+  void didUpdateWidget(WelcomeTourScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.preferNepali != widget.preferNepali) {
+      _preferNepali = widget.preferNepali;
+    }
+  }
+
+  void _setLanguage(bool preferNepali) {
+    setState(() {
+      _preferNepali = preferNepali;
+    });
+    widget.onLanguageChanged?.call(preferNepali);
+  }
 
   static const List<TourPageData> _pages = [
     TourPageData(
@@ -143,7 +168,7 @@ class _WelcomeTourScreenState extends State<WelcomeTourScreen> {
                   TextButton(
                     onPressed: widget.onFinish,
                     child: Text(
-                      widget.preferNepali ? 'सिधै सुरु गर्नुहोस्' : 'Skip',
+                      _preferNepali ? 'सिधै सुरु गर्नुहोस्' : 'Skip',
                       style: NepaliTypography.labelLarge.copyWith(
                         color: SitiColors.terracotta,
                       ),
@@ -152,6 +177,20 @@ class _WelcomeTourScreenState extends State<WelcomeTourScreen> {
                 ],
               ),
             ),
+
+            // Language switcher: the tour text is bilingual, so let the reader pick before
+            // reading rather than after finishing it.
+            Center(
+              child: LanguageToggle(
+                language: _preferNepali
+                    ? LanguageToggle.nepali
+                    : LanguageToggle.english,
+                compact: true,
+                onChanged: (code) =>
+                    _setLanguage(code == LanguageToggle.nepali),
+              ),
+            ),
+            const SizedBox(height: 8),
 
             // PageView Tour Content
             Expanded(
@@ -211,7 +250,7 @@ class _WelcomeTourScreenState extends State<WelcomeTourScreen> {
 
                         // Title
                         Text(
-                          widget.preferNepali ? page.titleNe : page.titleEn,
+                          _preferNepali ? page.titleNe : page.titleEn,
                           textAlign: TextAlign.center,
                           style: NepaliTypography.headlineMedium.copyWith(
                             color: SitiColors.dark,
@@ -222,7 +261,7 @@ class _WelcomeTourScreenState extends State<WelcomeTourScreen> {
 
                         // Description
                         Text(
-                          widget.preferNepali ? page.descNe : page.descEn,
+                          _preferNepali ? page.descNe : page.descEn,
                           textAlign: TextAlign.center,
                           style: NepaliTypography.bodyLarge.copyWith(
                             color: Colors.black87,
@@ -276,8 +315,8 @@ class _WelcomeTourScreenState extends State<WelcomeTourScreen> {
                       children: [
                         Text(
                           _currentPage == _pages.length - 1
-                              ? (widget.preferNepali ? 'सुरु गरौँ' : 'Get Started')
-                              : (widget.preferNepali ? 'अर्को' : 'Next'),
+                              ? (_preferNepali ? 'सुरु गरौँ' : 'Get Started')
+                              : (_preferNepali ? 'अर्को' : 'Next'),
                           style: NepaliTypography.labelLarge.copyWith(
                             color: Colors.white,
                             fontSize: 15,

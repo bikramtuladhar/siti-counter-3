@@ -31,7 +31,12 @@ class _OnboardingCoordinatorState extends State<OnboardingCoordinator> {
     switch (_step) {
       case OnboardingStep.tour:
         return WelcomeTourScreen(
-          preferNepali: _prefs.language == 'ne',
+          preferNepali: _prefs.isNepali,
+          onLanguageChanged: (preferNepali) {
+            setState(() {
+              _prefs.language = preferNepali ? 'ne' : 'en';
+            });
+          },
           onFinish: () {
             setState(() {
               _step = OnboardingStep.wizard;
@@ -51,7 +56,7 @@ class _OnboardingCoordinatorState extends State<OnboardingCoordinator> {
             setState(() {
               _prefs.regionPackId = completedPrefs.regionPackId;
               _prefs.language = completedPrefs.language;
-              _prefs.stoveType = completedPrefs.stoveType;
+              _prefs.stoveTypes = completedPrefs.stoveTypes;
               _prefs.adultsCount = completedPrefs.adultsCount;
               _prefs.childrenCount = completedPrefs.childrenCount;
               _prefs.eldersCount = completedPrefs.eldersCount;
