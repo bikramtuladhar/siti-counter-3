@@ -110,9 +110,25 @@ class _WeeklyPlannerScreenState extends State<WeeklyPlannerScreen> {
   /// Keeps the week anchor inside the displayed month so switching back to week view lands
   /// on a week the cook was just looking at.
   void _syncWeekToMonth() {
-    final daysToSubtract =
-        _month.weekday == DateTime.sunday ? 0 : _month.weekday;
-    _weekStart = _month.subtract(Duration(days: daysToSubtract));
+    _weekStart = _weekStartFor(_month);
+  }
+
+  /// Jumps from the month grid into the week containing the tapped day.
+  ///
+  /// The empty day cells show a plus sign, so tapping one has to lead somewhere. The week view
+  /// is where a day is actually planned, and the month grid has no slot detail of its own.
+  void _openDayInWeek(DateTime day) {
+    setState(() {
+      _weekStart = _weekStartFor(day);
+      _viewMode = PlannerViewMode.week;
+    });
+    _loadPlannerData();
+  }
+
+  /// The Sunday on or before [day].
+  DateTime _weekStartFor(DateTime day) {
+    final daysToSubtract = day.weekday == DateTime.sunday ? 0 : day.weekday;
+    return day.subtract(Duration(days: daysToSubtract));
   }
 
   void _setViewMode(PlannerViewMode mode) {
@@ -261,6 +277,7 @@ class _WeeklyPlannerScreenState extends State<WeeklyPlannerScreen> {
                         meals: _plannedMeals,
                         preferNepali: _isNepali,
                         slotsPerDay: _slots.length,
+                        onDayTapped: _openDayInWeek,
                       ),
                     ),
                   )

@@ -667,13 +667,21 @@ class _SeasonalKitchenScreenState extends State<SeasonalKitchenScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      _isNepali ? 'बजारमा ताजा पाइने सामग्री' : 'Fresh in Market Now',
-                      style: NepaliTypography.titleMedium.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: SitiColors.dark,
+                    // Flexible: the English title plus the item count together are wider
+                    // than a 390pt phone, and two unconstrained Texts in a spaceBetween Row
+                    // overflow rather than ellipsize.
+                    Flexible(
+                      child: Text(
+                        _isNepali ? 'बजारमा ताजा पाइने सामग्री' : 'Fresh in Market Now',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: NepaliTypography.titleMedium.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: SitiColors.dark,
+                        ),
                       ),
                     ),
+                    const SizedBox(width: 12),
                     Text(
                       _isNepali
                           ? '${NepaliCalendar.toDevanagariDigits(filteredIngredients.length)} सामग्री'

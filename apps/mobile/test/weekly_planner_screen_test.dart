@@ -171,6 +171,26 @@ void main() {
       expect(find.text('अक्टोबरको परिकार'), findsNothing);
     });
 
+    testWidgets('tapping a day in the month view opens that week', (tester) async {
+      bigScreen(tester);
+      final repo = await makeRepo(tester);
+
+      await tester.pumpWidget(host(repo));
+      await settle(tester);
+
+      await tester.tap(find.byKey(const Key('view_mode_month')));
+      await settle(tester);
+      expect(find.text('Oct 2026'), findsOneWidget);
+
+      // The 15th falls in the week starting Sunday the 11th.
+      await tester.tap(find.byKey(const Key('month_cell_2026-10-15')));
+      await settle(tester);
+
+      expect(find.textContaining('Oct'), findsOneWidget);
+      expect(find.text('11 Oct – 17 Oct, 2026'), findsOneWidget);
+      expect(find.byKey(const Key('month_cell_2026-10-15')), findsNothing);
+    });
+
     testWidgets('opens rhythm configuration bottom sheet', (tester) async {
       bigScreen(tester);
       final repo = await makeRepo(tester);

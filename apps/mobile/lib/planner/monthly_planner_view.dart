@@ -17,12 +17,19 @@ class MonthlyPlannerView extends StatelessWidget {
   /// Total slot count per day, so a day can report coverage as well as a count.
   final int slotsPerDay;
 
+  /// Called when a day cell is tapped.
+  ///
+  /// The empty cells show an affordance, so tapping one has to do something. Without this the
+  /// plus sign was a lie: the view looked editable and swallowed the tap.
+  final ValueChanged<DateTime>? onDayTapped;
+
   const MonthlyPlannerView({
     super.key,
     required this.month,
     required this.meals,
     required this.preferNepali,
     this.slotsPerDay = 3,
+    this.onDayTapped,
   });
 
   /// Meals grouped by ISO date, in one pass.
@@ -75,6 +82,9 @@ class MonthlyPlannerView extends StatelessWidget {
                           isToday: _isToday(date),
                           meals: grouped[_isoDate(date)] ?? const [],
                           slotsPerDay: slotsPerDay,
+                          onTap: onDayTapped == null
+                              ? null
+                              : () => onDayTapped!(date),
                         );
                       },
                     ),
@@ -121,6 +131,12 @@ class MonthlyPlannerView extends StatelessWidget {
   }
 }
 
+/// Fixed height of a month grid cell.
+///
+/// Sized to fit two meal titles, an overflow count and the completeness indicator using the
+/// real font, which is taller than the placeholder font tests otherwise run with.
+const double _dayCellHeight = 88;
+
 class _DayCell extends StatelessWidget {
   final DateTime date;
   final bool inMonth;
@@ -128,6 +144,7 @@ class _DayCell extends StatelessWidget {
   final bool isToday;
   final List<PlannedMeal> meals;
   final int slotsPerDay;
+  final VoidCallback? onTap;
 
   const _DayCell({
     super.key,
@@ -137,6 +154,7 @@ class _DayCell extends StatelessWidget {
     required this.isToday,
     required this.meals,
     required this.slotsPerDay,
+    this.onTap,
   });
 
   @override
@@ -144,16 +162,20 @@ class _DayCell extends StatelessWidget {
     // Out-of-month days render empty rather than being hidden, so the grid keeps its shape.
     if (!inMonth) {
       // Blank but space-preserving, so the weekday columns stay aligned.
-      return const SizedBox(height: 76);
+      return const SizedBox(height: _dayCellHeight);
     }
 
     final isFull = meals.length >= slotsPerDay;
 
-    return Container(
-      // Tall enough for two titles, an overflow count and the completeness dot. A shorter
-      // cell overflowed on a fully booked day; the height must stay fixed because the grid
-      // sits in a scroll view, leaving no upper bound for Expanded to divide.
-      height: 76,
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+      // Tall enough for two titles, an overflow count and the completeness dot. The height
+      // must stay fixed because the grid sits in a scroll view, leaving no upper bound for
+      // Expanded to divide. 76 was not enough once rendered with a font that has real
+      // Devanagari metrics: a full day overflowed by 8px on a 390pt phone.
+      height: _dayCellHeight,
       margin: const EdgeInsets.symmetric(horizontal: 1),
       padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
       decoration: BoxDecoration(
@@ -204,14 +226,16 @@ class _DayCell extends StatelessWidget {
                             preferNepali ? meal.recipeTitleNe : meal.recipeTitleEn,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 8, height: 1.15),
+                            // 9 rather than 8: at 8 the titles were technically rendered but
+                            // not actually readable on a phone.
+                            style: const TextStyle(fontSize: 9, height: 1.2),
                           ),
                         ),
                       if (meals.length > 2)
                         Text(
                           '+${meals.length - 2}',
                           style: TextStyle(
-                            fontSize: 8,
+                            fontSize: 9,
                             color: Colors.grey.shade600,
                             fontWeight: FontWeight.w600,
                           ),
@@ -230,6 +254,7 @@ class _DayCell extends StatelessWidget {
               ),
             ),
         ],
+      ),
       ),
     );
   }

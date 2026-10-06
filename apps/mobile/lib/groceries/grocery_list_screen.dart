@@ -40,6 +40,11 @@ class GroceryListScreen extends StatefulWidget {
 
 class _GroceryListScreenState extends State<GroceryListScreen> {
   bool _isLoading = true;
+
+  /// Set when the list could not be built. Previously the failure was swallowed and the user
+  /// was shown an empty list, which is indistinguishable from "you planned nothing".
+  String? _errorMessage;
+
   String _selectedStallId = 'all';
   late String _language;
 
@@ -69,7 +74,10 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
   }
 
   Future<void> _loadData() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
 
     try {
       final packRepo = widget.regionPackRepository ?? RegionPackRepository();
@@ -109,7 +117,12 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
       }
     } catch (e) {
       if (mounted) {
-        setState(() => _isLoading = false);
+        setState(() {
+          _isLoading = false;
+          _errorMessage = _isNepali
+              ? 'किनमेल सूची बनाउन सकिएन। कृपया पुनः प्रयास गर्नुहोस्।'
+              : 'Could not build the grocery list. Please try again.';
+        });
       }
     }
   }
@@ -239,18 +252,48 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : (_groceryResult == null || _groceryResult!.items.isEmpty)
-              ? _buildEmptyState()
-              : Column(
+          : (_errorMessage != null)
+              ? _buildErrorState()
+              : (_groceryResult == null || _groceryResult!.items.isEmpty)
+                  ? _buildEmptyState()
+                  : Column(
                   children: [
-                    _buildSummaryCard(_groceryResult!),
-                    _buildStallFilterTabs(_groceryResult!),
-                    Expanded(
-                      child: _buildStallsList(_groceryResult!),
-                    ),
-                    _buildBottomActionBar(_groceryResult!),
-                  ],
-                ),
+                      _buildSummaryCard(_groceryResult!),
+                      _buildStallFilterTabs(_groceryResult!),
+                      Expanded(
+                        child: _buildStallsList(_groceryResult!),
+                      ),
+                      _buildBottomActionBar(_groceryResult!),
+                    ],
+                  ),
+    );
+  }
+
+  /// Shown when the list could not be built at all.
+  Widget _buildErrorState() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline_rounded, size: 56, color: SitiColors.alert),
+            const SizedBox(height: 16),
+            Text(
+              _errorMessage!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 16),
+            FilledButton.icon(
+              key: const Key('grocery_retry_button'),
+              onPressed: _loadData,
+              icon: const Icon(Icons.refresh_rounded, size: 18),
+              label: Text(_isNepali ? 'पुनः प्रयास' : 'Try again'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

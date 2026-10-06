@@ -6,6 +6,7 @@ export 'auto_plan.dart';
 export 'grocery_engine.dart';
 export 'sync_engine.dart';
 export 'region_pack.dart';
+export 'unit_conversion.dart';
 export 'region_pack_manager.dart';
 export 'consumption_engine.dart';
 export 'nutrition_engine.dart';

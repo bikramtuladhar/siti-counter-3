@@ -124,6 +124,55 @@ void main() {
       );
     });
 
+    testWidgets('tapping an empty day reports it, because the plus sign implies it works',
+        (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      DateTime? tapped;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: MonthlyPlannerView(
+              month: DateTime(2026, 10, 1),
+              meals: const [],
+              preferNepali: false,
+              onDayTapped: (d) => tapped = d,
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byKey(const Key('month_cell_2026-10-15')));
+      expect(tapped, DateTime(2026, 10, 15));
+    });
+
+    testWidgets('a full day does not overflow on a 390pt phone', (tester) async {
+      // The cell height was tuned against the placeholder test font, which is shorter than a
+      // real one. At phone width with two titles, an overflow count and the indicator, the
+      // cell overflowed by 8px.
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        host(
+          DateTime(2026, 10, 1),
+          [
+            meal('a', '2026-10-04', 'Masu Bhat'),
+            meal('b', '2026-10-04', 'Mixed Vegetable Tarkari'),
+            meal('c', '2026-10-04', 'Gundruk'),
+            meal('d', '2026-10-04', 'Achar'),
+          ],
+        ),
+      );
+
+      expect(tester.takeException(), isNull);
+    });
+
     testWidgets('excludes days outside the displayed month', (tester) async {
       tester.view.physicalSize = const Size(800, 1600);
       tester.view.devicePixelRatio = 1.0;

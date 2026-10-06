@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'kitchen_engine.dart';
 import 'nepali_calendar.dart';
 import 'region_pack.dart';
+import 'unit_conversion.dart';
 
 /// Market stall types found in traditional Nepali wet markets (Haat Bazaar / Kalimati).
 enum MarketStall {
@@ -689,7 +690,9 @@ GroceryListResult generateGroceryListFromRegion({
       ingredients: r.ingredients.map((ri) {
         return PlanRecipeIngredient(
           ingredientId: ri.ingredientId,
-          quantityGrams: ri.quantity,
+          // Converted rather than passed through: the raw quantity is only grams when the
+          // unit says so, and a `1 kg` line was otherwise asking for a single gram.
+          quantityGrams: quantityToGrams(ri.quantity, ri.unit),
         );
       }).toList(),
       tags: r.tags,
