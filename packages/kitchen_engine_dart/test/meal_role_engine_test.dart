@@ -8,6 +8,8 @@ RegionRecipe makeRecipe({
   List<String> mealTimes = const [],
   List<String> seasonality = const [],
   List<String> ingredients = const [],
+  int prepMinutes = 10,
+  int cookMinutes = 20,
 }) {
   return RegionRecipe(
     id: id,
@@ -16,8 +18,8 @@ RegionRecipe makeRecipe({
     category: category,
     cuisine: 'nepali',
     dietary: const [],
-    prepTimeMinutes: 10,
-    cookTimeMinutes: 20,
+    prepTimeMinutes: prepMinutes,
+    cookTimeMinutes: cookMinutes,
     servings: 4,
     difficulty: 'easy',
     pressureCooker: const RecipeWhistleProfile(
@@ -97,17 +99,96 @@ void main() {
       expect(DishRoleResolver.suitsMealTime(breakfastOnly, MealTime.night), isFalse);
     });
 
-    test('slot mapping merges morning and evening', () {
-      // Dal bhat is both the canonical breakfast and a dinner, so the same main course
-      // legitimately serves at both ends of the day.
-      final times = DishRoleResolver.timesForSlot('breakfast');
-      expect(times, containsAll(<MealTime>[MealTime.morning, MealTime.evening]));
-      expect(times, isNot(contains(MealTime.night)));
+    test('breakfast is morning only', () {
+      // A dish that suits breakfast declares the morning tag. Merging evening into breakfast
+      // made every evening-only dish, such as masu, a breakfast suggestion.
+      expect(DishRoleResolver.timesForSlot('breakfast'), {MealTime.morning});
+      expect(DishRoleResolver.timesForSlot('dinner'), {MealTime.night});
+    });
+
+    test('an evening-only main course is not a breakfast option', () {
+      final masu = makeRecipe(
+        id: 'masu',
+        mealTimes: ['midday', 'evening', 'night'],
+      );
+      expect(DishRoleResolver.canBePlannedIn(masu, 'breakfast'), isFalse);
+      expect(DishRoleResolver.canBePlannedIn(masu, 'dinner'), isTrue);
     });
 
     test('an unknown slot does not exclude every dish', () {
       final times = DishRoleResolver.timesForSlot('brunch-thing');
       expect(times.length, MealTime.values.length);
+    });
+  });
+
+  group('MealSuggestionEngine — ranking', () {
+    test('prefers the dish closest to the slot\'s time budget', () {
+      final quick = makeRecipe(
+        id: 'quick',
+        mealTimes: ['morning', 'night'],
+        prepMinutes: 5,
+        cookMinutes: 10, // 15 minutes total
+      );
+      final moderate = makeRecipe(
+        id: 'moderate',
+        mealTimes: ['morning', 'night'],
+        prepMinutes: 20,
+        cookMinutes: 30, // 50 minutes total
+      );
+      final verySlow = makeRecipe(
+        id: 'very_slow',
+        mealTimes: ['morning', 'night'],
+        prepMinutes: 30,
+        cookMinutes: 120, // 150 minutes total
+      );
+
+      // Listed worst-first on purpose: suggestions must be ranked, not returned in pack
+      // order, or the same recipes get offered at every meal of the day.
+      final recipes = [verySlow, moderate, quick];
+
+      // Breakfast wants ~30 minutes, so the quick dish wins.
+      expect(
+        MealSuggestionEngine.suggest(recipes: recipes, slotId: 'breakfast')
+            .first
+            .mainCourse
+            .id,
+        'quick',
+      );
+
+      // Dinner allows ~60, so the dish closest to that budget wins instead. A 150-minute
+      // dish is not a better dinner than a 50-minute one, it is just further from the goal.
+      expect(
+        MealSuggestionEngine.suggest(recipes: recipes, slotId: 'dinner')
+            .first
+            .mainCourse
+            .id,
+        'moderate',
+      );
+    });
+
+    test('ranking is stable across repeated calls', () {
+      final recipes = [
+        for (final id in ['a', 'b', 'c', 'd'])
+          makeRecipe(id: id, mealTimes: ['morning'], prepMinutes: 5, cookMinutes: 5),
+      ];
+
+      final first = MealSuggestionEngine.suggest(recipes: recipes, slotId: 'breakfast');
+      final second = MealSuggestionEngine.suggest(recipes: recipes, slotId: 'breakfast');
+
+      expect(
+        first.map((m) => m.mainCourse.id).toList(),
+        second.map((m) => m.mainCourse.id).toList(),
+      );
+    });
+
+    test('a tied pair keeps a deterministic order', () {
+      final recipes = [
+        makeRecipe(id: 'zebra', mealTimes: ['morning']),
+        makeRecipe(id: 'apple', mealTimes: ['morning']),
+      ];
+
+      final out = MealSuggestionEngine.suggest(recipes: recipes, slotId: 'breakfast');
+      expect(out.map((m) => m.mainCourse.id).toList(), ['apple', 'zebra']);
     });
   });
 

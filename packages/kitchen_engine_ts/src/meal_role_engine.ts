@@ -136,16 +136,18 @@ export class DishRoleResolver {
   /**
    * Maps a planner meal-slot id onto the meal times a dish may be served at.
    *
-   * Morning and evening are merged on purpose: dal bhat is the canonical Nepali breakfast
-   * and also a dinner, so the same main course legitimately appears at both ends of the day.
-   * A side dish maps to nothing, so it can never be slotted into a meal.
+   * Breakfast is morning only. Merging in evening was meant to let dal bhat appear at both
+   * ends of the day, but it also made every evening-only dish a breakfast option, so masu
+   * surfaced as a breakfast suggestion despite never being served at one. A dish that suits
+   * breakfast declares the morning tag. A side dish maps to nothing, so it can never be
+   * slotted into a meal.
    */
   static timesForSlot(slotId: string): Set<MealTime> {
     switch (slotId) {
       case 'breakfast':
       case 'morning-dal-bhat':
       case 'morning':
-        return new Set<MealTime>(['morning', 'evening'])
+        return new Set<MealTime>(['morning'])
       case 'lunch':
       case 'midday':
         return new Set<MealTime>(['midday'])
@@ -226,7 +228,7 @@ export class MealSuggestionEngine {
       return !MealSuggestionEngine.usesExcludedIngredient(recipe, excluded)
     })
 
-    return eligibleMains.slice(0, limit).map((main) => {
+    return MealSuggestionEngine.rank(eligibleMains, input.slotId).slice(0, limit).map((main) => {
       const pairings = MealSuggestionEngine.pairingsFor(main, sideDishes)
       return {
         mainCourse: main,
@@ -235,6 +237,53 @@ export class MealSuggestionEngine {
         reasonNe: MealSuggestionEngine.reasonNe(pairings),
       }
     })
+  }
+
+  /**
+  /**
+   * Ideal total cooking time, in minutes, for each meal slot.
+   *
+   * Breakfast is rushed and dinner is not, so a slow dish is a poor breakfast suggestion
+   * even when it is a perfectly good main course.
+   */
+  private static targetMinutesForSlot(slotId: string): number {
+    switch (slotId) {
+      case 'breakfast':
+      case 'morning-dal-bhat':
+      case 'morning':
+        return 30
+      case 'lunch':
+      case 'midday':
+        return 45
+      case 'evening-snack':
+      case 'evening':
+        return 25
+      case 'dinner':
+      case 'night':
+        return 60
+      default:
+        return 45
+    }
+  }
+
+  /**
+   * Orders candidates best-first for [slotId], on how close a dish's total time is to the
+   * slot's ideal. Seasonality is not part of the score because the caller has already
+   * filtered on it.
+   */
+  private static rank(
+    candidates: readonly RegionRecipe[],
+    slotId: string,
+  ): RegionRecipe[] {
+    if (candidates.length < 2) return [...candidates]
+    const target = MealSuggestionEngine.targetMinutesForSlot(slotId)
+    const scored = candidates.map((recipe) => {
+      const total = recipe.prepTimeMinutes + recipe.cookTimeMinutes
+      const distance = Math.min(Math.abs(total - target), 120)
+      return { recipe, score: -distance }
+    })
+    scored.sort((a, b) => b.score - a.score || a.recipe.id.localeCompare(b.recipe.id))
+    return scored.map((s) => s.recipe)
   }
 
   /**

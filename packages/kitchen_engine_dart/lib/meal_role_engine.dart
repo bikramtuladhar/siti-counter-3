@@ -158,7 +158,11 @@ class DishRoleResolver {
       case 'breakfast':
       case 'morning-dal-bhat':
       case 'morning':
-        return const {MealTime.morning, MealTime.evening};
+        // Morning only. Merging in evening was meant to let dal bhat appear at both ends of
+        // the day, but it also made every evening-only dish a breakfast option, so masu
+        // surfaced as a breakfast suggestion despite never being served at one. A dish that
+        // suits breakfast says so with the morning tag.
+        return const {MealTime.morning};
       case 'lunch':
       case 'midday':
         return const {MealTime.midday};
@@ -247,7 +251,12 @@ class MealSuggestionEngine {
       return !_usesExcludedIngredient(recipe, excludedIngredientIds);
     }).toList();
 
-    return eligibleMains.take(limit).map((main) {
+    // Rank rather than return pack order. Without this the top suggestions are just the
+    // first few recipes the pack happens to list, which is how a screen ends up advertising
+    // the same three dishes no matter what the cook asks for.
+    final ranked = _rank(eligibleMains, slotId);
+
+    return ranked.take(limit).map((main) {
       // Accompaniments are limited and drawn from the same filtered set, so a household
       // never has an allergen suggested next to a safe main.
       final pairings = _pairingsFor(main, sideDishes);
@@ -258,6 +267,62 @@ class MealSuggestionEngine {
         reasonNe: _reasonNe(main, pairings),
       );
     }).toList();
+  }
+
+  /// Ideal total cooking time, in minutes, for each meal slot.
+  ///
+  /// Breakfast is rushed and dinner is not, so a slow dish is a poor breakfast suggestion
+  /// even when it is a perfectly good main course.
+  static int _targetMinutesForSlot(String slotId) {
+    switch (slotId) {
+      case 'breakfast':
+      case 'morning-dal-bhat':
+      case 'morning':
+        return 30;
+      case 'lunch':
+      case 'midday':
+        return 45;
+      case 'evening-snack':
+      case 'evening':
+        return 25;
+      case 'dinner':
+      case 'night':
+        return 60;
+      default:
+        return 45;
+    }
+  }
+
+  /// Orders candidates best-first for [slotId].
+  ///
+  /// Ranked on how well a dish suits the moment: how close its total time is to the slot's
+  /// ideal. Without this the suggestions are just the first recipes the pack happens to
+  /// list, so the same three dishes get offered at every meal. Seasonality is not part of
+  /// the score because the caller has already filtered on it.
+  static List<RegionRecipe> _rank(
+    List<RegionRecipe> candidates,
+    String slotId,
+  ) {
+    if (candidates.length < 2) return candidates;
+
+    final target = _targetMinutesForSlot(slotId);
+    final scored = candidates.map((recipe) {
+      final total = recipe.prepTimeMinutes + recipe.cookTimeMinutes;
+      // Closer to the target is better; a dish twice the target is no worse than one at
+      // four times, so the distance is capped to keep a single outlier from dominating.
+      final distance = (total - target).abs().clamp(0, 120);
+      final score = -distance + recipe.rating / 100;
+      return MapEntry(recipe, score);
+    }).toList();
+
+    scored.sort((a, b) {
+      final byScore = b.value.compareTo(a.value);
+      if (byScore != 0) return byScore;
+      // Same slot, same result on every call.
+      return a.key.id.compareTo(b.key.id);
+    });
+
+    return scored.map((e) => e.key).toList();
   }
 
   /// Side dishes that go with this main course.
