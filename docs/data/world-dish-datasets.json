@@ -227,7 +227,7 @@
     },
     "problem3_the_actual_data_gap": {
       "severity": "high",
-      "status": "partly closed",
+      "status": "closed for everything USDA covers",
       "detail": [
         "84 distinct ingredients used by the packs still have no nutrient data. By usage:",
         "garlic 62, ginger 35, ghee 32, tomato 32, onion 27, turmeric 23, green_chili 20,",
@@ -267,7 +267,7 @@
         "source": "USDA FoodData Central SR Legacy 2018-04 (public domain)",
         "script": "scripts/import-usda-nutrients.mjs",
         "output": "data/nutrition/usda-composition.json",
-        "rows": 39,
+        "rows": 63,
         "whyBulkCsv": [
           "The search API needs a key and the shared DEMO_KEY rate limits to a handful of requests an hour, fewer than the ingredient list needs.",
           "The bulk release is a fixed version, so a re-run reproduces the same numbers instead of depending on what the API ranks first today."
@@ -279,18 +279,34 @@
         ],
         "fibreHandling": [
           "Fibre is optional. USDA publishes no fibre row for animal products because there is none, so prawn and meat carry 0. Every other nutrient is required, so a missing kcal row means the entry is not what we think it is."
+        ],
+        "batches": [
+          "Batch 1 (39 rows): the highest-usage gaps by usage count.",
+          "Batch 2 (19 rows): ingredients the first pass missed but USDA does carry, several under a different English name (mushroom, cinnamon, cucumber, quinoa, lamb meat, salt).",
+          "Batch 3 (5 rows): bhatmas, sponge gourd, corn flour, chamsur, colocasia leaves."
+        ],
+        "deliberateOmissions": [
+          "ajwain is NOT mapped to USDA's caraway. They are different spices; substituting one for the other would be inventing a value.",
+          "No lamb meat was reached by matching on 'lamb', because SR Legacy also contains 'Lambsquarters', a leafy green. Lamb is imported under its full retail-cuts description instead.",
+          "timur (citron) has no USDA entry. The only citron match is 'Lemon grass (citronella)', which is a different plant."
         ]
       },
       "result": {
-        "ingredientReferencesResolving": "66/672 (10%) -> 545/672 (81%)",
-        "compositionRows": "13 curated -> 52",
-        "stillUnresolved": "57 distinct ingredients, 127 references, mostly Nepali specifics USDA does not carry: timur (citron), ajwain, chaku (fermented fish), bhatmas, gundruk, colocasia leaves, chiura (beaten rice)"
+        "ingredientReferencesResolving": "66/672 (10%) -> 620/672 (92%)",
+        "compositionRows": "13 curated -> 76",
+        "progression": [
+          "66/672 id matching",
+          "545/672 first USDA batch",
+          "599/672 second batch plus aliases",
+          "620/672 third batch"
+        ],
+        "stillUnresolved": "17 ids, 52 references. All are Nepali or regional specifics with no USDA equivalent, and several have no single food equivalent anywhere: timur (citron), chaku (fermented fish), gundruk (fermented greens), jimbu (dried fern), sinki (dried fish), masyaura (Nepali chilli), kwati_mix (nine-bean composite), lapsi (a composite flatbread), chuno (fermented potato), habas_secas, papa_huayro (Mexican fungus), tasmanian_pepperberry, queso_criollo."
       }
     }
   },
   "engineParity": {
     "problem": "The Dart and TypeScript engines had already drifted once: the Dart ingredient-id fix was never mirrored until it was caught, and neither language tested the composition table at all.",
-    "guard": "scripts/test-engine-table-parity.mjs asserts both tables contain the same ids with the same values. It parses both literal shapes the TypeScript file uses.",
+    "guard": "scripts/test-engine-table-parity.mjs asserts both tables contain the same ids with the same values. It parses both literal shapes the TypeScript file uses. Re-run with --check in CI; it currently verifies 63 rows in both languages.",
     "generator": "scripts/sync-usda-composition.mjs writes both tables from one JSON file and has a --check mode for CI, so a regenerated file that was never applied fails the build."
   }
 }

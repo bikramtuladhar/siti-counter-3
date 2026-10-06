@@ -123,6 +123,42 @@ const INGREDIENTS = [
   { id: 'buckwheat_flour', foodGroup: 'grains', match: 'Buckwheat flour, whole-groat' },
   { id: 'sunflower_oil', foodGroup: 'fats', match: 'Oil, sunflower, high oleic (70% and over)' },
   { id: 'vegetable_oil', foodGroup: 'fats', match: 'Oil, corn and canola' },
+
+  // Second batch, covering ingredients the region packs use that the first pass missed.
+  //
+  // Two deliberate absences worth recording, because the obvious substitute is wrong:
+  //   * ajwain is NOT here. USDA carries caraway, which is a different spice with a different
+  //     flavour and different chemistry. Substituting it would be inventing a value.
+  //   * lamb is NOT here for aussie_lamb via any lambsquarters-style match. SR Legacy does carry
+  //     lamb meat, but "Lambsquarters" is a leafy green, and matching on "lamb" invites exactly
+  //     that mistake.
+  { id: 'mushroom', foodGroup: 'vegetables', match: 'Mushrooms, white, raw' },
+  { id: 'cinnamon', foodGroup: 'spices', match: 'Spices, cinnamon, ground' },
+  { id: 'coriander_fresh', foodGroup: 'vegetables', match: 'Coriander (cilantro) leaves, raw' },
+  { id: 'eggplant', foodGroup: 'vegetables', match: 'Eggplant, raw' },
+  { id: 'cucumber', foodGroup: 'vegetables', match: 'Cucumber, with peel, raw' },
+  { id: 'asparagus', foodGroup: 'vegetables', match: 'Asparagus, raw' },
+  { id: 'bamboo_shoot', foodGroup: 'vegetables', match: 'Bamboo shoots, raw' },
+  { id: 'pumpkin_shoots', foodGroup: 'vegetables', match: 'Pumpkin leaves, raw' },
+  { id: 'sweet_potato', foodGroup: 'vegetables', match: 'Sweet potato, raw, unprepared (Includes foods for USDA\'s Food Distribution Program)' },
+  { id: 'yam', foodGroup: 'vegetables', match: 'Yam, raw' },
+  { id: 'colocasia', foodGroup: 'vegetables', match: 'Taro, raw' },
+  { id: 'lemon', foodGroup: 'fruits', match: 'Lemons, raw, without peel' },
+  { id: 'yogurt', foodGroup: 'dairy', match: 'Yogurt, plain, whole milk' },
+  { id: 'quinoa', foodGroup: 'grains', match: 'Quinoa, uncooked' },
+  { id: 'millet_flour', foodGroup: 'grains', match: 'Millet flour' },
+  { id: 'red_lentils', foodGroup: 'pulses', match: 'Lentils, raw' },
+  { id: 'lamb_meat', foodGroup: 'protein', match: 'Lamb, composite of trimmed retail cuts, separable lean and fat, trimmed to 1/4" fat, choice, raw' },
+  { id: 'salmon', foodGroup: 'protein', match: 'Fish, salmon, Atlantic, farmed, raw' },
+  { id: 'salt', foodGroup: 'spices', match: 'Salt, table' },
+
+  // Third batch. Each of these exists in USDA under a different English name; without these
+  // four the packs' spellings resolve to nothing even though the data is available.
+  { id: 'split_pea', foodGroup: 'pulses', match: 'Peas, green, split, mature seeds, raw', note: 'closest to bhatmas; USDA does not carry pigeon pea separately' },
+  { id: 'sponge_gourd', foodGroup: 'vegetables', match: 'Gourd, dishcloth (towelgourd), raw', note: 'the dishcloth gourd is the sponge gourd, called chichinda in Nepali' },
+  { id: 'cornstarch', foodGroup: 'grains', match: 'Cornstarch', note: 'stands in for corn flour (maza), which USDA does not carry' },
+  { id: 'lambsquarters', foodGroup: 'vegetables', match: 'Lambsquarters, raw' },
+  { id: 'taro_leaves', foodGroup: 'vegetables', match: 'Taro leaves, raw', note: 'the leaves, not the corm; colocasia is eaten as a green here' },
 ];
 
 /** Minimal RFC 4180 CSV reader; the USDA files quote commas and embedded newlines. */
