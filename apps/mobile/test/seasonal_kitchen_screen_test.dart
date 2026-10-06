@@ -223,6 +223,15 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    // The recommendations section sits above the ingredients, so scroll down to reach the
+    // filter chips rather than assuming they are built.
+    await tester.scrollUntilVisible(
+      find.text('Spices & Herbs'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+
     // In English, all ingredients are visible initially (3 items)
     expect(find.text('3 items'), findsOneWidget);
 

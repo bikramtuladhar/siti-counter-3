@@ -205,3 +205,6 @@ class LeftoverItem {
         isConsumed: (map['is_consumed'] as int? ?? 0) == 1,
       );
 }
+
+/// Granularity of the planner grid.
+enum PlannerViewMode { week, month }

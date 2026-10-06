@@ -97,6 +97,80 @@ void main() {
       expect(find.text('जिम्बु झानेको कालो दाल'), findsNothing);
     });
 
+    testWidgets('switches between week and month views and navigates by month',
+        (tester) async {
+      bigScreen(tester);
+      final repo = await makeRepo(tester);
+
+      await tester.pumpWidget(host(repo));
+      await settle(tester);
+
+      expect(find.text('4 Oct – 10 Oct, 2026'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('view_mode_month')));
+      await settle(tester);
+
+      // The label collapses to the month, and the grid replaces the day cards.
+      expect(find.text('Oct 2026'), findsOneWidget);
+      expect(find.text('4 Oct – 10 Oct, 2026'), findsNothing);
+      expect(find.byKey(const Key('month_cell_2026-10-15')), findsOneWidget);
+      expect(find.text('आइतबार'), findsNothing);
+
+      await tester.tap(find.byKey(const Key('next_week_button')));
+      await settle(tester);
+      expect(find.text('Nov 2026'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('prev_week_button')));
+      await settle(tester);
+      expect(find.text('Oct 2026'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('view_mode_week')));
+      await settle(tester);
+
+      // Coming back to week view lands on a week inside the month just viewed.
+      expect(find.text('Oct 2026'), findsNothing);
+      expect(find.textContaining('Oct'), findsOneWidget);
+    });
+
+    testWidgets('month view shows only meals inside the displayed month',
+        (tester) async {
+      bigScreen(tester);
+      final repo = await makeRepo(tester);
+
+      await tester.runAsync(() async {
+        await repo.savePlannedMeal(const PlannedMeal(
+          id: 'october',
+          dateIso: '2026-10-04',
+          slotId: 'morning_dal_bhat',
+          recipeId: 'kalo-dal-jimbu',
+          recipeTitleEn: 'October Dish',
+          recipeTitleNe: 'अक्टोबरको परिकार',
+        ));
+        // A meal outside October, which October's grid must not show.
+        await repo.savePlannedMeal(const PlannedMeal(
+          id: 'november',
+          dateIso: '2026-11-04',
+          slotId: 'morning_dal_bhat',
+          recipeId: 'kalo-dal-jimbu',
+          recipeTitleEn: 'November Dish',
+          recipeTitleNe: 'नोभेम्बरको परिकार',
+        ));
+      });
+
+      await tester.pumpWidget(host(repo));
+      await settle(tester);
+      await tester.tap(find.byKey(const Key('view_mode_month')));
+      await settle(tester);
+
+      expect(find.text('अक्टोबरको परिकार'), findsOneWidget);
+      expect(find.text('नोभेम्बरको परिकार'), findsNothing);
+
+      await tester.tap(find.byKey(const Key('next_week_button')));
+      await settle(tester);
+      expect(find.text('नोभेम्बरको परिकार'), findsOneWidget);
+      expect(find.text('अक्टोबरको परिकार'), findsNothing);
+    });
+
     testWidgets('opens rhythm configuration bottom sheet', (tester) async {
       bigScreen(tester);
       final repo = await makeRepo(tester);

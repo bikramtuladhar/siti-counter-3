@@ -5,6 +5,7 @@ import '../data/region_pack_repository.dart';
 import '../groceries/grocery_list_screen.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
+import 'monthly_planner_view.dart';
 import 'planner_models.dart';
 import 'recipe_picker_sheet.dart';
 import 'planner_repository.dart';
@@ -31,6 +32,14 @@ class WeeklyPlannerScreen extends StatefulWidget {
 
 class _WeeklyPlannerScreenState extends State<WeeklyPlannerScreen> {
   late DateTime _weekStart;
+
+  /// Month shown in the month view; the first of the month.
+  late DateTime _month;
+
+  /// Week or month view. A month of slots does not fit a vertical list, so the month view
+  /// is a grid of what is already planned.
+  PlannerViewMode _viewMode = PlannerViewMode.week;
+
   List<MealRhythmSlot> _slots = [];
   List<PlannedMeal> _plannedMeals = [];
   List<LeftoverItem> _leftovers = [];
@@ -45,6 +54,7 @@ class _WeeklyPlannerScreenState extends State<WeeklyPlannerScreen> {
     // Start week on Sunday (weekday 7 in Dart DateTime)
     final daysToSubtract = now.weekday == 7 ? 0 : now.weekday;
     _weekStart = DateTime(now.year, now.month, now.day).subtract(Duration(days: daysToSubtract));
+    _month = DateTime(now.year, now.month, 1);
 
     _loadPlannerData();
   }
@@ -52,7 +62,15 @@ class _WeeklyPlannerScreenState extends State<WeeklyPlannerScreen> {
   Future<void> _loadPlannerData() async {
     setState(() => _isLoading = true);
     final slots = await widget.repository.getActiveSlots();
-    final meals = await widget.repository.getPlannedMealsForWeek(_weekStart);
+    // Load the window the active view needs. The month view deliberately uses the calendar
+    // month rather than the six weeks the grid draws, so leaving the month does not report
+    // leading/trailing days of the neighbouring months as planned.
+    final meals = _viewMode == PlannerViewMode.month
+        ? await widget.repository.getPlannedMealsInRange(
+            DateTime(_month.year, _month.month, 1),
+            DateTime(_month.year, _month.month + 1, 0),
+          )
+        : await widget.repository.getPlannedMealsForWeek(_weekStart);
     final leftovers = await widget.repository.getActiveLeftovers();
 
     if (mounted) {
@@ -67,14 +85,41 @@ class _WeeklyPlannerScreenState extends State<WeeklyPlannerScreen> {
 
   void _nextWeek() {
     setState(() {
-      _weekStart = _weekStart.add(const Duration(days: 7));
+      if (_viewMode == PlannerViewMode.month) {
+        _month = DateTime(_month.year, _month.month + 1, 1);
+        _syncWeekToMonth();
+      } else {
+        _weekStart = _weekStart.add(const Duration(days: 7));
+      }
     });
     _loadPlannerData();
   }
 
   void _prevWeek() {
     setState(() {
-      _weekStart = _weekStart.subtract(const Duration(days: 7));
+      if (_viewMode == PlannerViewMode.month) {
+        _month = DateTime(_month.year, _month.month - 1, 1);
+        _syncWeekToMonth();
+      } else {
+        _weekStart = _weekStart.subtract(const Duration(days: 7));
+      }
+    });
+    _loadPlannerData();
+  }
+
+  /// Keeps the week anchor inside the displayed month so switching back to week view lands
+  /// on a week the cook was just looking at.
+  void _syncWeekToMonth() {
+    final daysToSubtract =
+        _month.weekday == DateTime.sunday ? 0 : _month.weekday;
+    _weekStart = _month.subtract(Duration(days: daysToSubtract));
+  }
+
+  void _setViewMode(PlannerViewMode mode) {
+    if (_viewMode == mode) return;
+    setState(() {
+      _viewMode = mode;
+      if (mode == PlannerViewMode.month) _syncWeekToMonth();
     });
     _loadPlannerData();
   }
@@ -201,20 +246,41 @@ class _WeeklyPlannerScreenState extends State<WeeklyPlannerScreen> {
           ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
-                // Week navigator bar
+                // Week / month navigator bar
                 _buildWeekNavigator(),
 
-                // 7-Day grid with slots
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    itemCount: 7,
-                    itemBuilder: (context, dayOffset) {
-                      final currentDay = _weekStart.add(Duration(days: dayOffset));
-                      return _buildDayCard(currentDay);
-                    },
+                if (_viewMode == PlannerViewMode.month)
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      child: MonthlyPlannerView(
+                        month: _month,
+                        meals: _plannedMeals,
+                        preferNepali: _isNepali,
+                        slotsPerDay: _slots.length,
+                      ),
+                    ),
+                  )
+                else
+                  // 7-Day grid with slots
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      itemCount: 7,
+                      itemBuilder: (context, dayOffset) {
+                        final currentDay = _weekStart.add(
+                          Duration(days: dayOffset),
+                        );
+                        return _buildDayCard(currentDay);
+                      },
+                    ),
                   ),
-                ),
               ],
             ),
     );
@@ -222,38 +288,96 @@ class _WeeklyPlannerScreenState extends State<WeeklyPlannerScreen> {
 
   Widget _buildWeekNavigator() {
     final endOfWeek = _weekStart.add(const Duration(days: 6));
-    final startStr = '${_weekStart.day} ${_getMonthName(_weekStart.month)}';
-    final endStr = '${endOfWeek.day} ${_getMonthName(endOfWeek.month)}, ${endOfWeek.year}';
+    final label = _viewMode == PlannerViewMode.month
+        ? '${_getMonthName(_month.month)} ${_month.year}'
+        : '${_weekStart.day} ${_getMonthName(_weekStart.month)}'
+              ' – ${endOfWeek.day} ${_getMonthName(endOfWeek.month)}, ${endOfWeek.year}';
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       color: Colors.white,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
         children: [
-          IconButton(
-            key: const Key('prev_week_button'),
-            icon: const Icon(Icons.chevron_left_rounded, size: 28),
-            onPressed: _prevWeek,
-          ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Icon(Icons.calendar_month_rounded, size: 18, color: SitiColors.terracotta),
-              const SizedBox(width: 8),
-              Text(
-                '$startStr – $endStr',
-                style: NepaliTypography.titleSmall.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: SitiColors.dark,
-                ),
+              IconButton(
+                key: const Key('prev_week_button'),
+                icon: const Icon(Icons.chevron_left_rounded, size: 28),
+                onPressed: _prevWeek,
+              ),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.calendar_month_rounded,
+                    size: 18,
+                    color: SitiColors.terracotta,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    label,
+                    style: NepaliTypography.titleSmall.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: SitiColors.dark,
+                    ),
+                  ),
+                ],
+              ),
+              IconButton(
+                key: const Key('next_week_button'),
+                icon: const Icon(Icons.chevron_right_rounded, size: 28),
+                onPressed: _nextWeek,
               ),
             ],
           ),
-          IconButton(
-            key: const Key('next_week_button'),
-            icon: const Icon(Icons.chevron_right_rounded, size: 28),
-            onPressed: _nextWeek,
-          ),
+          const SizedBox(height: 6),
+          _buildViewModeToggle(),
+        ],
+      ),
+    );
+  }
+
+  /// Week / month segmented toggle.
+  Widget _buildViewModeToggle() {
+    return Container(
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          for (final entry in PlannerViewMode.values)
+            Expanded(
+              child: GestureDetector(
+                key: Key('view_mode_${entry.name}'),
+                onTap: () => _setViewMode(entry),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  decoration: BoxDecoration(
+                    color: _viewMode == entry
+                        ? Colors.white
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    entry == PlannerViewMode.week
+                        ? (_isNepali ? 'हप्ता' : 'Week')
+                        : (_isNepali ? 'महिना' : 'Month'),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: _viewMode == entry
+                          ? FontWeight.w700
+                          : FontWeight.w500,
+                      color: _viewMode == entry
+                          ? SitiColors.terracotta
+                          : Colors.grey.shade600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );

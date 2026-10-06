@@ -127,6 +127,22 @@ class WeeklyPlannerRepository {
     return rows.map((r) => PlannedMeal.fromMap(r)).toList();
   }
 
+  /// Retrieves all planned meals within an inclusive date range.
+  ///
+  /// Backs the month view, which needs up to 31 days rather than a fixed 7. Dates are
+  /// compared as ISO strings, which sort chronologically, so no date parsing is needed.
+  Future<List<PlannedMeal>> getPlannedMealsInRange(
+    DateTime startDate,
+    DateTime endDate,
+  ) async {
+    final rows = await _db.query(
+      'planned_meals',
+      where: 'date_iso >= ? AND date_iso <= ?',
+      whereArgs: [_formatDateIso(startDate), _formatDateIso(endDate)],
+    );
+    return rows.map((r) => PlannedMeal.fromMap(r)).toList();
+  }
+
   /// Inserts or replaces a planned meal.
   Future<void> savePlannedMeal(PlannedMeal meal) async {
     await _db.insert(

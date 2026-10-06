@@ -6,6 +6,7 @@ import 'package:kitchen_engine/region_pack.dart';
 import '../data/region_pack_repository.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
+import '../kitchen/kitchen_recommendation_section.dart';
 import '../widgets/recipe_search.dart';
 import 'recipe_detail_screen.dart';
 import 'region_manager_screen.dart';
@@ -612,6 +613,19 @@ class _SeasonalKitchenScreenState extends State<SeasonalKitchenScreen> {
             ),
             const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
+            // "What should I cook?" recommendations, filtered to the selected ritu.
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: KitchenRecommendationSection(
+                  pack: pack,
+                  preferNepali: _isNepali,
+                  rituId: _selectedRituId,
+                  onRecipeSelected: _openRecipe,
+                ),
+              ),
+            ),
+
             // Preservation Recommendations Banner (Achar, Gundruk, dried vegetables during peak harvest)
             if (pack.preservationSuggestions.isNotEmpty)
               SliverToBoxAdapter(
@@ -700,6 +714,23 @@ class _SeasonalKitchenScreenState extends State<SeasonalKitchenScreen> {
             ),
             const SliverToBoxAdapter(child: SizedBox(height: 32)),
           ],
+        ),
+      ),
+    );
+  }
+
+  /// Opens a recipe, honouring the host screen's own callback when it supplied one.
+  void _openRecipe(RegionRecipe recipe) {
+    if (widget.onRecipeSelected != null) {
+      widget.onRecipeSelected!(recipe);
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (_) => RecipeDetailScreen(
+          recipe: recipe,
+          currentLanguage: widget.currentLanguage,
         ),
       ),
     );
