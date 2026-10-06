@@ -20,6 +20,7 @@ import 'displays/watch_companion_preview_sheet.dart';
 import 'displays/display_feed_cache.dart';
 import 'sync/api_session.dart';
 import 'telemetry/error_reporter.dart';
+import 'telemetry/sentry_backend.dart';
 import 'sync/app_sync_coordinator.dart';
 import 'sync/sync_engine.dart';
 import 'settings/household_profile_publisher.dart';
@@ -39,11 +40,16 @@ void main() {
   // Reporting is installed before the first frame, otherwise the earliest failures are the ones
   // most worth seeing and the ones most likely to be missed. Both steps are inert when no DSN
   // is supplied, so a development build sends nothing.
-  startFrameMetrics();
+  final frameMetrics = startFrameMetrics();
 
   installGlobalErrorHandlers(
     onError: (error, stack) => reportError(error, stack, reason: 'uncaught'),
   );
+
+  // Fire and forget: initialising reporting must not delay the first frame, and a reporting
+  // failure must never stop the app from starting. Returns false when no DSN is configured,
+  // which is the normal case for a local build.
+  initialiseSentry(metrics: frameMetrics).catchError((Object _) => false);
 
   runApp(const SitiCounterApp());
 }

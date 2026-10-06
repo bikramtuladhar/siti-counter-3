@@ -9,49 +9,47 @@
 | Frame timing and jank | Computed on-device (`lib/telemetry/frame_metrics.dart`) | Free, uncapped |
 | Step timing (cold start, screen loads) | Computed on-device (`StopwatchMetrics`) | Free, uncapped |
 | Crash-free sessions | Existing self-hosted `/v1/telemetry/session` | Already yours |
-| Third-party delivery | **Not wired.** See below. | — |
+| Third-party delivery | Sentry via a pluggable `TelemetryBackend` | Free tier, metered |
 
 The frame metrics are the genuinely free signal: Flutter's engine already measures how long each
 frame took to build and raster, so reading it costs nothing and ships nothing off the device.
 
-## No third-party backend is currently installed
+## Installing it
 
-This is a deliberate outcome, not an oversight.
+`flutter pub add sentry_flutter:^9.0.0` — **9.x specifically.**
 
-`sentry_flutter` was added and it **broke the iOS build**. Its podspec pins
-`Sentry/HybridSDK` 8.46.0, but this repository commits no `Podfile.lock`, so CocoaPods is free
-to resolve a newer native SDK whose API no longer matches the plugin's own Swift source:
+`8.14.2` does not compile:
 
 ```
-SentryBinaryImageCache has no member 'image'
+Value of type 'SentryBinaryImageCache' has no member 'image'
   sentry_flutter-8.14.2/ios/sentry_flutter/Sources/.../SentryFlutterPlugin.swift:265
 ```
 
-A reporting tool that breaks the app it reports on is worse than no reporting tool, so the SDK
-was removed and the reporting layer made vendor-free instead.
+This project resolves iOS plugins through **Swift Package Manager**, not CocoaPods — there is
+no Podfile — so the native `sentry-cocoa` version is chosen by SPM and there is no
+`Podfile.lock` equivalent to pin with by hand. What pins it instead is
+`ios/**/Package.resolved`, which **is** committed: SPM resolved `sentry-cocoa 8.58.4` and that
+version is now locked in git. Do not delete those two files, or the native version floats again
+and this can silently return.
 
-**What was kept and still works:**
+With the dependency present, configure at build time:
 
-- scrubbing of every report, unconditionally;
-- local logging in debug builds;
-- free, uncapped frame and step metrics;
-- the global error hooks.
-
-**To install Sentry later:**
-
-1. Commit an `ios/Podfile.lock`, or pin the pod in the Podfile:
-   `pod 'Sentry/HybridSDK', '8.46.0'`
-2. Add the dependency: `flutter pub add sentry_flutter`
-3. Implement a `TelemetryBackend` that forwards the already-scrubbed payload:
-
-```dart
-ErrorReporter.installBackend((type, payload) async {
-  await Sentry.captureMessage(type, extra: payload);
-});
+```bash
+flutter build apk \
+  --dart-define=SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0 \
+  --dart-define=SENTRY_ENVIRONMENT=production \
+  --dart-define=SENTRY_RELEASE=$(git rev-parse --short HEAD)
 ```
 
-The backend receives data that has already been scrubbed, so a new backend cannot leak
-household or health data by accident — it would have to go out of its way to send the original.
+Without `SENTRY_DSN` the app installs the error hooks and the frame collector but sends nothing.
+
+### A known limit of key-based scrubbing
+
+Redaction works by key name. It cannot catch a household member's name that happens to be
+embedded in a free-text exception message — `"could not load Sita's profile"` has no sensitive
+key to match. Neither can Sentry's own filtering. Nothing here is sent by default, so this only
+matters once a DSN is configured, and it is worth remembering when reading an issue: treat error
+text as potentially containing user data and do not paste it into a public tracker unedited.
 
 ## Privacy: this is the part to read
 
