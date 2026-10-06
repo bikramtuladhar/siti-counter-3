@@ -1,6 +1,6 @@
 import { isChildOrBaby, MemberDietaryProfile } from './consumption_engine.js'
 
-export type CompositionSource = 'nfct' | 'ifct'
+export type CompositionSource = 'nfct' | 'ifct' | 'usda'
 
 /** Nutrients per 100 g of the RAW ingredient (Nepal FCT / IFCT). */
 export interface FoodComposition {
@@ -135,6 +135,57 @@ export const COMPOSITION_TABLE: FoodComposition[] = [
   c('banana', 'Banana', 'केरा', 'fruits', 116, 1.2, 0.4, 27.2, 0.3),
 ]
 
+/**
+ * Rows imported from USDA FoodData Central by scripts/import-usda-nutrients.mjs.
+ * USDA is a US Government work and therefore public domain.
+ */
+export const USDA_COMPOSITION_TABLE: FoodComposition[] = [
+  // BEGIN generated USDA composition
+  // Generated from data/nutrition/usda-composition.json by
+  // scripts/sync-usda-composition.mjs. USDA FoodData Central, public domain.
+  // Edit the JSON, not this file.
+  { id: "bean_sprouts", nameEn: "Soybeans, mature seeds, sprouted, raw", nameNe: "bean_sprouts", foodGroup: "vegetables", kcal: 510, proteinG: 13.1, fiberG: 1.1, carbsG: 9.6, fatG: 6.7, source: 'usda' },
+  { id: "bitter_gourd", nameEn: "Balsam-pear (bitter gourd), pods, raw", nameNe: "bitter_gourd", foodGroup: "vegetables", kcal: 71, proteinG: 1, fiberG: 2.8, carbsG: 3.7, fatG: 0.2, source: 'usda' },
+  { id: "bottle_gourd", nameEn: "Balsam-pear (bitter gourd), pods, raw", nameNe: "bottle_gourd", foodGroup: "vegetables", kcal: 71, proteinG: 1, fiberG: 2.8, carbsG: 3.7, fatG: 0.2, source: 'usda' },
+  { id: "buckwheat_flour", nameEn: "Buckwheat flour, whole-groat", nameNe: "buckwheat_flour", foodGroup: "grains", kcal: 335, proteinG: 12.6, fiberG: 10, carbsG: 70.6, fatG: 3.1, source: 'usda' },
+  { id: "cabbage", nameEn: "Cabbage, raw", nameNe: "cabbage", foodGroup: "vegetables", kcal: 25, proteinG: 1.3, fiberG: 2.5, carbsG: 5.8, fatG: 0.1, source: 'usda' },
+  { id: "cardamom", nameEn: "Spices, cardamom", nameNe: "cardamom", foodGroup: "spices", kcal: 311, proteinG: 10.8, fiberG: 28, carbsG: 68.5, fatG: 6.7, source: 'usda' },
+  { id: "carrot", nameEn: "Carrots, raw", nameNe: "carrot", foodGroup: "vegetables", kcal: 41, proteinG: 0.9, fiberG: 2.8, carbsG: 9.6, fatG: 0.2, source: 'usda' },
+  { id: "chickpea", nameEn: "Chickpeas (garbanzo beans, bengal gram), mature seeds, raw", nameNe: "chickpea", foodGroup: "pulses", kcal: 378, proteinG: 20.5, fiberG: 12.2, carbsG: 63, fatG: 6, source: 'usda' },
+  { id: "coriander", nameEn: "Spices, coriander seed", nameNe: "coriander", foodGroup: "spices", kcal: 298, proteinG: 12.4, fiberG: 41.9, carbsG: 55, fatG: 17.8, source: 'usda' },
+  { id: "cumin", nameEn: "Spices, cumin seed", nameNe: "cumin", foodGroup: "spices", kcal: 375, proteinG: 17.8, fiberG: 10.5, carbsG: 44.2, fatG: 22.3, source: 'usda' },
+  { id: "fenugreek_seeds", nameEn: "Spices, fenugreek seed", nameNe: "fenugreek_seeds", foodGroup: "spices", kcal: 1352, proteinG: 23, fiberG: 24.6, carbsG: 58.4, fatG: 6.4, source: 'usda' },
+  { id: "fish", nameEn: "Fish, tilapia, raw", nameNe: "fish", foodGroup: "protein", kcal: 96, proteinG: 20.1, fiberG: 0, carbsG: 0, fatG: 1.7, source: 'usda' },
+  { id: "garlic", nameEn: "Garlic, raw", nameNe: "garlic", foodGroup: "vegetables", kcal: 149, proteinG: 6.4, fiberG: 2.1, carbsG: 33.1, fatG: 0.5, source: 'usda' },
+  { id: "ghee", nameEn: "Butter, Clarified butter (ghee)", nameNe: "ghee", foodGroup: "fats", kcal: 3766, proteinG: 0, fiberG: 0, carbsG: 0, fatG: 100, source: 'usda' },
+  { id: "ginger", nameEn: "Ginger root, raw", nameNe: "ginger", foodGroup: "vegetables", kcal: 333, proteinG: 1.8, fiberG: 2, carbsG: 17.8, fatG: 0.8, source: 'usda' },
+  { id: "goat_meat", nameEn: "Game meat, goat, raw", nameNe: "goat_meat", foodGroup: "protein", kcal: 456, proteinG: 20.6, fiberG: 0, carbsG: 0, fatG: 2.3, source: 'usda' },
+  { id: "gram_flour", nameEn: "Chickpeas (garbanzo beans, bengal gram), mature seeds, raw", nameNe: "gram_flour", foodGroup: "pulses", kcal: 378, proteinG: 20.5, fiberG: 12.2, carbsG: 63, fatG: 6, source: 'usda' },
+  { id: "green_chili", nameEn: "Peppers, hot chili, green, raw", nameNe: "green_chili", foodGroup: "vegetables", kcal: 167, proteinG: 2, fiberG: 1.5, carbsG: 9.5, fatG: 0.2, source: 'usda' },
+  { id: "green_mustard", nameEn: "Mustard greens, raw", nameNe: "green_mustard", foodGroup: "vegetables", kcal: 114, proteinG: 2.9, fiberG: 3.2, carbsG: 4.7, fatG: 0.4, source: 'usda' },
+  { id: "green_peas", nameEn: "Peas, green, raw", nameNe: "green_peas", foodGroup: "vegetables", kcal: 339, proteinG: 5.4, fiberG: 5.7, carbsG: 14.5, fatG: 0.4, source: 'usda' },
+  { id: "kidney_beans", nameEn: "Beans, kidney, all types, mature seeds, raw", nameNe: "kidney_beans", foodGroup: "pulses", kcal: 1393, proteinG: 23.6, fiberG: 24.9, carbsG: 60, fatG: 0.8, source: 'usda' },
+  { id: "litchi", nameEn: "Litchis, raw", nameNe: "litchi", foodGroup: "fruits", kcal: 276, proteinG: 0.8, fiberG: 1.3, carbsG: 16.5, fatG: 0.4, source: 'usda' },
+  { id: "mango", nameEn: "Mangos, raw", nameNe: "mango", foodGroup: "fruits", kcal: 60, proteinG: 0.8, fiberG: 1.6, carbsG: 15, fatG: 0.4, source: 'usda' },
+  { id: "noodles", nameEn: "Pasta, cooked, unenriched, without added salt", nameNe: "noodles", foodGroup: "grains", kcal: 158, proteinG: 5.8, fiberG: 1.8, carbsG: 30.9, fatG: 0.9, source: 'usda' },
+  { id: "okra", nameEn: "Okra, raw", nameNe: "okra", foodGroup: "vegetables", kcal: 138, proteinG: 1.9, fiberG: 3.2, carbsG: 7.5, fatG: 0.2, source: 'usda' },
+  { id: "onion", nameEn: "Onions, raw", nameNe: "onion", foodGroup: "vegetables", kcal: 40, proteinG: 1.1, fiberG: 1.7, carbsG: 9.3, fatG: 0.1, source: 'usda' },
+  { id: "pomegranate", nameEn: "Pomegranates, raw", nameNe: "pomegranate", foodGroup: "fruits", kcal: 346, proteinG: 1.7, fiberG: 4, carbsG: 18.7, fatG: 1.2, source: 'usda' },
+  { id: "pork_meat", nameEn: "Pork, ground, 84% lean / 16% fat, raw", nameNe: "pork_meat", foodGroup: "protein", kcal: 218, proteinG: 18, fiberG: 0, carbsG: 0.4, fatG: 16, source: 'usda' },
+  { id: "prawn", nameEn: "Crustaceans, shrimp, raw", nameNe: "prawn", foodGroup: "protein", kcal: 85, proteinG: 20.1, fiberG: 0, carbsG: 0, fatG: 0.5, source: 'usda' },
+  { id: "pumpkin", nameEn: "Pumpkin, raw", nameNe: "pumpkin", foodGroup: "vegetables", kcal: 109, proteinG: 1, fiberG: 0.5, carbsG: 6.5, fatG: 0.1, source: 'usda' },
+  { id: "rajma", nameEn: "Beans, black, mature seeds, raw", nameNe: "rajma", foodGroup: "pulses", kcal: 341, proteinG: 21.6, fiberG: 15.5, carbsG: 62.4, fatG: 1.4, source: 'usda' },
+  { id: "red_chili", nameEn: "Spices, pepper, red or cayenne", nameNe: "red_chili", foodGroup: "spices", kcal: 318, proteinG: 12, fiberG: 27.2, carbsG: 56.6, fatG: 17.3, source: 'usda' },
+  { id: "sesame", nameEn: "Seeds, sesame seeds, whole, dried", nameNe: "sesame", foodGroup: "spices", kcal: 2397, proteinG: 17.7, fiberG: 11.8, carbsG: 23.5, fatG: 49.7, source: 'usda' },
+  { id: "soy_beans", nameEn: "Soybeans, mature seeds, raw", nameNe: "soy_beans", foodGroup: "pulses", kcal: 446, proteinG: 36.5, fiberG: 9.3, carbsG: 30.2, fatG: 19.9, source: 'usda' },
+  { id: "sunflower_oil", nameEn: "Oil, sunflower, high oleic (70% and over)", nameNe: "sunflower_oil", foodGroup: "fats", kcal: 884, proteinG: 0, fiberG: 0, carbsG: 0, fatG: 100, source: 'usda' },
+  { id: "tofu", nameEn: "Tofu, raw, firm, prepared with calcium sulfate", nameNe: "tofu", foodGroup: "protein", kcal: 144, proteinG: 17.3, fiberG: 2.3, carbsG: 2.8, fatG: 8.7, source: 'usda' },
+  { id: "tomato", nameEn: "Tomatoes, red, ripe, raw, year round average", nameNe: "tomato", foodGroup: "vegetables", kcal: 18, proteinG: 0.9, fiberG: 1.2, carbsG: 3.9, fatG: 0.2, source: 'usda' },
+  { id: "turmeric", nameEn: "Spices, turmeric, ground", nameNe: "turmeric", foodGroup: "spices", kcal: 312, proteinG: 9.7, fiberG: 22.7, carbsG: 67.1, fatG: 3.3, source: 'usda' },
+  { id: "vegetable_oil", nameEn: "Oil, corn and canola", nameNe: "vegetable_oil", foodGroup: "fats", kcal: 3699, proteinG: 0, fiberG: 0, carbsG: 0, fatG: 100, source: 'usda' },
+  // END generated USDA composition
+]
+
 export const YIELD_FACTORS: YieldFactor[] = [
   { ingredientId: 'rice', factor: 3.0, method: 'boiled' },
   { ingredientId: 'wheat-flour', factor: 1.5, method: 'dough/roti' },
@@ -189,6 +240,17 @@ export class NutritionEngine {
     kershipa: 'onion',
     khaman: 'wheat-flour',
     'momo-skin': 'wheat-flour',
+    rice_flour: 'rice',
+    flour: 'wheat-flour',
+    maida: 'wheat-flour',
+    chana: 'chickpea',
+    chana_dal: 'chickpea',
+    masuro_dal: 'lentil',
+    mung_dal: 'soy-beans',
+    paneer: 'tofu',
+    buff_meat: 'goat-meat',
+    buff: 'goat-meat',
+    khasi: 'goat-meat',
   }
 
   /** Canonical form of an ingredient id for lookup: folds case and the separator. */
@@ -196,18 +258,50 @@ export class NutritionEngine {
     return id.trim().toLowerCase().replaceAll('_', '-')
   }
 
-  static compositionFor(id: string): FoodComposition | undefined {
-    const exact = COMPOSITION_TABLE.find((x) => x.id === id)
-    if (exact) return exact
+  /** Curated rows first, then the USDA import. */
+  private static get allTables(): FoodComposition[][] {
+    return [COMPOSITION_TABLE, USDA_COMPOSITION_TABLE]
+  }
 
-    const normalized = NutritionEngine.normalizeIngredientId(id)
-    const bySeparator = COMPOSITION_TABLE.find((x) => x.id === normalized)
-    if (bySeparator) return bySeparator
-
-    const alias = NutritionEngine.ingredientAliases[normalized]
-      ?? NutritionEngine.ingredientAliases[id]
-    if (alias) return COMPOSITION_TABLE.find((x) => x.id === alias)
+  /**
+   * Looks a row up by exact id, then by normalised id, across both tables.
+   *
+   * Curated rows are searched first: a hand-checked local value should win over a generic one
+   * for the same food. Normalisation matters because the curated rows use kebab-case while the
+   * USDA rows use the snake_case the packs already use, so an alias pointing at an imported
+   * row would otherwise do nothing.
+   */
+  private static findById(candidate: string | undefined): FoodComposition | undefined {
+    if (!candidate) return undefined
+    const tables = [COMPOSITION_TABLE, USDA_COMPOSITION_TABLE]
+    for (const table of tables) {
+      const exact = table.find((x) => x.id === candidate)
+      if (exact) return exact
+    }
+    // Normalising only the candidate left every alias pointing at an imported row inert,
+    // because `goat-meat` never matches the `goat_meat` the USDA rows use.
+    const normalized = NutritionEngine.normalizeIngredientId(candidate)
+    for (const table of tables) {
+      const bySeparator = table.find(
+        (x) => NutritionEngine.normalizeIngredientId(x.id) === normalized,
+      )
+      if (bySeparator) return bySeparator
+    }
     return undefined
+  }
+
+  static compositionFor(id: string): FoodComposition | undefined {
+    const direct = NutritionEngine.findById(id)
+    if (direct) return direct
+    const alias =
+      NutritionEngine.ingredientAliases[NutritionEngine.normalizeIngredientId(id)]
+      ?? NutritionEngine.ingredientAliases[id]
+    return NutritionEngine.findById(alias)
+  }
+
+  /** Every row available, curated first then imported. */
+  static get allCompositions(): FoodComposition[] {
+    return [...COMPOSITION_TABLE, ...USDA_COMPOSITION_TABLE]
   }
 
   /** Whether [id] resolves to nutrient data. */

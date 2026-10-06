@@ -4,6 +4,7 @@ import 'package:test/test.dart';
 void main() {
   verifyIdMatching();
   verifyPerRecipeBatches();
+  verifyUsdaImport();
   group('Yield factors', () {
     test('rice triples in weight; spinach halves; unknown is 1.0', () {
       expect(NutritionEngine.yieldFor('rice'), 3.0);
@@ -251,14 +252,26 @@ void verifyPerRecipeBatches() {
     });
 
     test('reports an unknown ingredient instead of quietly dropping it', () {
+      // timur is a citron and USDA carries no entry for it, so it stays unknown. Using garlic
+      // here would pass vacuously now that it has been imported.
       final r = recipe(
-        id: 'with-garlic',
-        ingredients: [('rice', 300, 'g'), ('garlic', 20, 'g')],
+        id: 'with-timur',
+        ingredients: [('rice', 300, 'g'), ('timur', 20, 'g')],
       );
       final batch = NutritionEngine.batchForRecipe(r)!;
 
-      expect(batch.unknownIngredients, contains('garlic'));
+      expect(batch.unknownIngredients, contains('timur'));
       expect(batch.isComplete, isFalse);
+    });
+
+    test('a fully imported recipe is now complete', () {
+      // garlic used to be an unknown ingredient and made every recipe containing it look
+      // incomplete. The USDA import should have closed that.
+      final r = recipe(
+        id: 'garlic-rice',
+        ingredients: [('rice', 300, 'g'), ('garlic', 20, 'g')],
+      );
+      expect(NutritionEngine.batchForRecipe(r)!.isComplete, isTrue);
     });
 
     test('coverage is weighted by weight, not by ingredient count', () {
@@ -285,6 +298,64 @@ void verifyPerRecipeBatches() {
       final r = recipe(id: 'empty', ingredients: []);
       final batch = NutritionEngine.batchForRecipe(r);
       expect(batch == null || batch.totals.grams <= 0, isTrue);
+    });
+  });
+}
+
+/// Coverage for the USDA import.
+void verifyUsdaImport() {
+  group('USDA composition import', () {
+    test('rows imported from USDA are reachable', () {
+      for (final id in ['garlic', 'ginger', 'ghee', 'tomato', 'onion', 'turmeric']) {
+        expect(
+          NutritionEngine.hasCompositionFor(id),
+          isTrue,
+          reason: '$id should resolve after the USDA import',
+        );
+      }
+    });
+
+    test('imported rows resolve through a snake_case pack id', () {
+      expect(NutritionEngine.compositionFor('green_chili'), isNotNull);
+      expect(NutritionEngine.compositionFor('kitchen_papad'), isNull);
+    });
+
+    test('imported values are plausible per 100 g', () {
+      // Guards against a column mix-up, which would be silent: kcal landing in the fibre column
+      // would still "work" and produce nonsense totals.
+      final garlic = NutritionEngine.compositionFor('garlic')!;
+      expect(garlic.kcal, inInclusiveRange(100, 200));
+      expect(garlic.proteinG, inInclusiveRange(3, 10));
+      expect(garlic.fiberG, inInclusiveRange(1, 4));
+      expect(garlic.fatG, lessThan(2));
+
+      final ghee = NutritionEngine.compositionFor('ghee')!;
+      expect(ghee.fatG, greaterThan(90), reason: 'ghee is almost entirely fat');
+      expect(ghee.kcal, greaterThan(800));
+
+      final oil = NutritionEngine.compositionFor('sunflower_oil')!;
+      expect(oil.fatG, greaterThan(90));
+    });
+
+    test('imported rows carry the USDA source marker', () {
+      expect(NutritionEngine.compositionFor('garlic')?.source, CompositionSource.usda);
+      // Curated rows keep their own provenance.
+      expect(NutritionEngine.compositionFor('rice')?.source, CompositionSource.nfct);
+    });
+
+    test('curated rows win over imported rows for the same id', () {
+      // rice is curated; if the import shadowed it the value would be USDA's.
+      expect(NutritionEngine.compositionFor('rice')?.kcal, 345);
+    });
+
+    test('animal products carry zero fibre rather than a missing value', () {
+      expect(NutritionEngine.compositionFor('prawn')?.fiberG, 0);
+      expect(NutritionEngine.compositionFor('goat_meat')?.proteinG, greaterThan(15));
+    });
+
+    test('every imported id is unique', () {
+      final ids = NutritionEngine.allCompositions.map((c) => c.id).toList();
+      expect(ids.toSet().length, ids.length);
     });
   });
 }

@@ -177,7 +177,7 @@
     ],
     "problem1_fabricated_scores": {
       "severity": "high",
-      "status": "open",
+      "status": "fixed",
       "detail": [
         "apps/mobile/lib/consumption/family_nutrition_screen.dart scores every logged meal",
         "with referenceDalBhatBatch, a single hard-coded dal-bhat batch. The code comment",
@@ -194,6 +194,12 @@
         "label the values as dal-bhat reference figures rather than the household's intake.",
         "A confident number that is not the user's food is worse than an acknowledged gap.",
         "Then derive a batch per recipe from that recipe's own ingredients."
+      ],
+      "fix": [
+        "NutritionEngine.batchForRecipe derives a batch from the recipe's own ingredient list at the logged serving count.",
+        "The dashboard uses it through resolverForPack, keyed on the recipeId the log already stored.",
+        "Meals that cannot be resolved are counted in MemberNutritionInput.skippedMeals and reported in an on-screen coverage note, rather than receiving a substitute batch's numbers.",
+        "Partial batches set seasonalFraction to 0 rather than guessing at it a second time."
       ]
     },
     "problem2_id_convention_mismatch": {
@@ -215,12 +221,13 @@
         "",
         "yieldFor had the same defect and failed more quietly: an unmatched factor became 1.0,",
         "a plausible no-op rather than an obvious failure, so cooked weights were wrong without",
-        "anything looking wrong."
+        "anything looking wrong.",
+        "A second convention trap surfaced during the USDA import: the curated rows use kebab-case and the imported rows the snake_case the packs use. Alias targets have to be normalised on both sides, or `buff_meat -> goat-meat` silently resolves to nothing while looking correct in the source."
       ]
     },
     "problem3_the_actual_data_gap": {
       "severity": "high",
-      "status": "open",
+      "status": "partly closed",
       "detail": [
         "84 distinct ingredients used by the packs still have no nutrient data. By usage:",
         "garlic 62, ginger 35, ghee 32, tomato 32, onion 27, turmeric 23, green_chili 20,",
@@ -255,7 +262,35 @@
         "dataset": "IFCT (Indian Food Composition Tables), NIN Hyderabad",
         "status": "already cited in compositionTable via CompositionSource.ifct",
         "note": "Better regional fit for dal, roti and vegetable preparations than USDA, but it is a published book rather than an openly licensed machine-readable dataset. Manual reference only, not something to import."
+      },
+      "imported": {
+        "source": "USDA FoodData Central SR Legacy 2018-04 (public domain)",
+        "script": "scripts/import-usda-nutrients.mjs",
+        "output": "data/nutrition/usda-composition.json",
+        "rows": 39,
+        "whyBulkCsv": [
+          "The search API needs a key and the shared DEMO_KEY rate limits to a handful of requests an hour, fewer than the ingredient list needs.",
+          "The bulk release is a fixed version, so a re-run reproduces the same numbers instead of depending on what the API ranks first today."
+        ],
+        "reviewedEntrySelection": [
+          "Every row names an exact USDA description that had to exist; a miss is an error rather than a fallback to the first search result.",
+          "Substitutions are recorded in a `judgement` field: goat meat stands in for buffalo, buckwheat flour is whole-groat, bottle gourd uses USDA's balsam-pear entry, and gram flour uses raw chickpea.",
+          "Guava was dropped: SR Legacy has no raw guava entry at all."
+        ],
+        "fibreHandling": [
+          "Fibre is optional. USDA publishes no fibre row for animal products because there is none, so prawn and meat carry 0. Every other nutrient is required, so a missing kcal row means the entry is not what we think it is."
+        ]
+      },
+      "result": {
+        "ingredientReferencesResolving": "66/672 (10%) -> 545/672 (81%)",
+        "compositionRows": "13 curated -> 52",
+        "stillUnresolved": "57 distinct ingredients, 127 references, mostly Nepali specifics USDA does not carry: timur (citron), ajwain, chaku (fermented fish), bhatmas, gundruk, colocasia leaves, chiura (beaten rice)"
       }
     }
+  },
+  "engineParity": {
+    "problem": "The Dart and TypeScript engines had already drifted once: the Dart ingredient-id fix was never mirrored until it was caught, and neither language tested the composition table at all.",
+    "guard": "scripts/test-engine-table-parity.mjs asserts both tables contain the same ids with the same values. It parses both literal shapes the TypeScript file uses.",
+    "generator": "scripts/sync-usda-composition.mjs writes both tables from one JSON file and has a --check mode for CI, so a regenerated file that was never applied fails the build."
   }
 }

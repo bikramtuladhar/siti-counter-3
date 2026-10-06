@@ -630,14 +630,16 @@ void main() {
     });
 
     test('partial composition coverage is flagged rather than presented as whole', () {
+      // timur has no USDA entry, so the batch is legitimately partial. garlic would no longer
+      // work here: it has been imported.
       final pack = _packWithRecipe(
-        id: 'garlic-heavy',
-        ingredients: const [('rice', 300.0, 'g'), ('garlic', 20.0, 'g')],
+        id: 'timur-rice',
+        ingredients: const [('rice', 300.0, 'g'), ('timur', 20.0, 'g')],
       );
       final resolve = resolverForPack(pack);
       final log = ConsumptionEngine.logAdjustedMeal(
-        recipeId: 'garlic-heavy',
-        recipeTitle: 'Garlic Rice',
+        recipeId: 'timur-rice',
+        recipeTitle: 'Timur Rice',
         mealSlot: 'lunch',
         members: testMembers,
         adjustments: const {},
