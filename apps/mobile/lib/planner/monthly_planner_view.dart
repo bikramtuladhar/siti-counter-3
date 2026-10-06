@@ -75,7 +75,9 @@ class MonthlyPlannerView extends StatelessWidget {
                         final date = gridStart.add(Duration(days: cellIndex));
                         final inMonth = date.month == month.month;
                         return _DayCell(
-                          key: Key('month_cell_${date.toIso8601String().substring(0, 10)}'),
+                          key: Key(
+                            'month_cell_${date.toIso8601String().substring(0, 10)}',
+                          ),
                           date: date,
                           inMonth: inMonth,
                           preferNepali: preferNepali,
@@ -170,91 +172,131 @@ class _DayCell extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(8),
-      child: Container(
-      // Tall enough for two titles, an overflow count and the completeness dot. The height
-      // must stay fixed because the grid sits in a scroll view, leaving no upper bound for
-      // Expanded to divide. 76 was not enough once rendered with a font that has real
-      // Devanagari metrics: a full day overflowed by 8px on a 390pt phone.
-      height: _dayCellHeight,
-      margin: const EdgeInsets.symmetric(horizontal: 1),
-      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
-      decoration: BoxDecoration(
-        color: isToday
-            ? SitiColors.terracotta.withValues(alpha: 0.10)
-            : Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: isToday ? SitiColors.terracotta : Colors.grey.shade200,
-          width: isToday ? 1.5 : 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '${date.day}',
-            style: NepaliTypography.labelSmall.copyWith(
-              fontWeight: isToday ? FontWeight.w800 : FontWeight.w600,
-              color: isToday ? SitiColors.terracotta : Colors.grey.shade700,
+      child: Semantics(
+        // Today and plan coverage were signalled by colour alone, which carries no information
+        // for anyone who cannot distinguish terracotta from grey. The label states both.
+        container: true,
+        excludeSemantics: true,
+        label: preferNepali
+            ? '${date.day} तारीख'
+                  '${isToday ? ', आज' : ''}'
+                  '${meals.isEmpty ? ', योजना छैन' : ', ${meals.length} भोजन योजनागत'}'
+            : 'Day ${date.day}'
+                  '${isToday ? ', today' : ''}'
+                  '${meals.isEmpty ? ', nothing planned' : ', ${meals.length} meals planned'}',
+        child: Container(
+          // Tall enough for two titles, an overflow count and the completeness dot. The height
+          // must stay fixed because the grid sits in a scroll view, leaving no upper bound for
+          // Expanded to divide. 76 was not enough once rendered with a font that has real
+          // Devanagari metrics: a full day overflowed by 8px on a 390pt phone.
+          height: _dayCellHeight,
+          margin: const EdgeInsets.symmetric(horizontal: 1),
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
+          decoration: BoxDecoration(
+            color: isToday
+                ? SitiColors.terracotta.withValues(alpha: 0.10)
+                : Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: isToday ? SitiColors.terracotta : Colors.grey.shade200,
+              width: isToday ? 1.5 : 1,
             ),
           ),
-          const SizedBox(height: 2),
-          Expanded(
-            child: meals.isEmpty
-                ? Center(
-                    child: Icon(
-                      Icons.add,
-                      size: 12,
-                      color: Colors.grey.shade300,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    '${date.day}',
+                    style: NepaliTypography.labelSmall.copyWith(
+                      fontWeight: isToday ? FontWeight.w800 : FontWeight.w600,
+                      color: isToday
+                          ? SitiColors.terracotta
+                          : Colors.grey.shade700,
                     ),
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      for (final meal in meals.take(2))
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 1),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 3,
-                            vertical: 1,
-                          ),
-                          decoration: BoxDecoration(
-                            color: SitiColors.freshGreen.withValues(alpha: 0.16),
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                          child: Text(
-                            preferNepali ? meal.recipeTitleNe : meal.recipeTitleEn,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            // 9 rather than 8: at 8 the titles were technically rendered but
-                            // not actually readable on a phone.
-                            style: const TextStyle(fontSize: 9, height: 1.2),
-                          ),
-                        ),
-                      if (meals.length > 2)
-                        Text(
-                          '+${meals.length - 2}',
-                          style: TextStyle(
-                            fontSize: 9,
-                            color: Colors.grey.shade600,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                    ],
                   ),
-          ),
-          if (meals.isNotEmpty)
-            Container(
-              width: 6,
-              height: 3,
-              margin: const EdgeInsets.only(top: 2),
-              decoration: BoxDecoration(
-                color: isFull ? SitiColors.freshGreen : SitiColors.terracotta,
-                borderRadius: BorderRadius.circular(2),
+                  // A second, non-colour cue for today.
+                  if (isToday) ...[
+                    const SizedBox(width: 3),
+                    Container(
+                      width: 4,
+                      height: 4,
+                      decoration: const BoxDecoration(
+                        color: SitiColors.terracotta,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ],
+                ],
               ),
-            ),
-        ],
-      ),
+              const SizedBox(height: 2),
+              Expanded(
+                child: meals.isEmpty
+                    ? Center(
+                        child: Icon(
+                          Icons.add,
+                          size: 12,
+                          color: Colors.grey.shade300,
+                        ),
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (final meal in meals.take(2))
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 1),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 3,
+                                vertical: 1,
+                              ),
+                              decoration: BoxDecoration(
+                                color: SitiColors.freshGreen.withValues(
+                                  alpha: 0.16,
+                                ),
+                                borderRadius: BorderRadius.circular(3),
+                              ),
+                              child: Text(
+                                preferNepali
+                                    ? meal.recipeTitleNe
+                                    : meal.recipeTitleEn,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                // 9 rather than 8: at 8 the titles rendered but were not
+                                // actually readable on a phone.
+                                style: const TextStyle(
+                                  fontSize: 9,
+                                  height: 1.2,
+                                ),
+                              ),
+                            ),
+                          if (meals.length > 2)
+                            Text(
+                              '+${meals.length - 2}',
+                              style: TextStyle(
+                                fontSize: 9,
+                                color: Colors.grey.shade600,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                        ],
+                      ),
+              ),
+              if (meals.isNotEmpty)
+                Container(
+                  width: 6,
+                  height: 3,
+                  margin: const EdgeInsets.only(top: 2),
+                  decoration: BoxDecoration(
+                    color: isFull
+                        ? SitiColors.freshGreen
+                        : SitiColors.terracotta,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -4,6 +4,7 @@ import '../onboarding/language_toggle.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
 import 'social_auth_service.dart';
+import '../telemetry/sentry_reporter.dart';
 
 /// Offered at the end of onboarding, so a household's data lands in an account from the
 /// start rather than having to migrate later.
@@ -59,9 +60,14 @@ class _SocialSignInSheetState extends State<SocialSignInSheet> {
     } on SocialAuthException catch (e) {
       if (!mounted) return;
       setState(() => _error = e.message);
-    } catch (e) {
+    } catch (e, st) {
       if (!mounted) return;
-      setState(() => _error = e.toString());
+      // A friendly message on screen; the exception detail goes to the scrubbed reporter.
+      // Showing e.toString() leaked PlatformException internals into the UI.
+      reportError(e, st, reason: 'social_sign_in.failed');
+      setState(() => _error = _isNe
+          ? 'साइन इन गर्न सकिएन। कृपया पुनः प्रयास गर्नुहोस्।'
+          : 'Could not sign in. Please try again.');
     } finally {
       if (mounted) setState(() => _busy = null);
     }

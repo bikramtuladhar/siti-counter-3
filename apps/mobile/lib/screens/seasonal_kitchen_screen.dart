@@ -6,6 +6,7 @@ import 'package:kitchen_engine/region_pack.dart';
 import '../data/region_pack_repository.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
+import '../telemetry/sentry_reporter.dart';
 import '../kitchen/kitchen_recommendation_section.dart';
 import '../widgets/recipe_search.dart';
 import 'recipe_detail_screen.dart';
@@ -68,10 +69,15 @@ class _SeasonalKitchenScreenState extends State<SeasonalKitchenScreen> {
           _isLoading = false;
         });
       }
-    } catch (e) {
+    } catch (e, st) {
       if (mounted) {
         setState(() {
-          _errorMessage = e.toString();
+          // Friendly copy on screen; the raw exception goes to the scrubbed reporter instead of
+          // being shown to the user.
+          _errorMessage = _isNepali
+              ? 'सामग्री लोड गर्न सकिएन।'
+              : 'Could not load the kitchen for this region.';
+          reportError(e, st, reason: 'seasonal_kitchen.load_pack');
           _isLoading = false;
         });
       }

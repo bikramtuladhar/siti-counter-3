@@ -182,6 +182,27 @@ class SentryReporter {
   }
 }
 
+/// Reports a handled error from anywhere in the app.
+///
+/// Screens used to put `e.toString()` straight into the user-visible message, which surfaces
+/// `PlatformException(channel: ..., message: ...)` and similar internals in the UI. The friendly
+/// copy belongs on screen; the detail belongs here, scrubbed before it leaves the device and
+/// logged locally when reporting is off.
+void reportError(
+  Object error,
+  StackTrace? stack, {
+  String? reason,
+  Map<String, Object?>? context,
+}) {
+  assert(() {
+    debugPrint('[siti] $reason: $error');
+    return true;
+  }());
+
+  final reporter = SentryReporter.fromEnvironment();
+  reporter?.capture(error, stack, context: context, reason: reason);
+}
+
 /// Starts the free frame-timing collector. Returns the collector so callers can read it.
 FrameMetrics startFrameMetrics({Duration slowFrameBudget = const Duration(milliseconds: 24)}) {
   final metrics = FrameMetrics(slowFrameBudget: slowFrameBudget);

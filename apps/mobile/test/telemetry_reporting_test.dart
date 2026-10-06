@@ -139,6 +139,22 @@ void main() {
     });
   });
 
+  group('reportError', () {
+    test('never throws when reporting is disabled', () {
+      // The default build has no DSN, so this is the path that runs in every test and on a
+      // contributor's machine.
+      expect(
+        () => reportError(
+          StateError('boom'),
+          StackTrace.current,
+          reason: 'test',
+          context: const {'memberName': 'Sita'},
+        ),
+        returnsNormally,
+      );
+    });
+  });
+
   group('global error handlers', () {
     test('a platform error is reported and marked handled', () {
       final seen = <Object>[];

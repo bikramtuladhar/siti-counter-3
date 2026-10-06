@@ -124,6 +124,48 @@ void main() {
       );
     });
 
+    testWidgets("today is conveyed by more than colour", (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final today = DateTime.now();
+      final iso =
+          '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
+
+      await tester.pumpWidget(
+        host(
+          DateTime(today.year, today.month, 1),
+          [meal('a', iso, 'Dal Bhat')],
+        ),
+      );
+
+      // Today was signalled only by a terracotta tint and border, which carries no information
+      // for someone who cannot distinguish those colours.
+      final handle = tester.ensureSemantics();
+      expect(find.bySemanticsLabel(RegExp(r'today')), findsOneWidget);
+      expect(find.bySemanticsLabel(RegExp(r'1 meals planned')), findsOneWidget);
+      // Disposed here rather than via addTearDown: the binding verifies handles before tearDowns
+      // run, so a deferred dispose fails the test.
+      handle.dispose();
+    });
+
+    testWidgets('an empty day announces that nothing is planned', (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        host(DateTime(2026, 10, 1), const []),
+      );
+
+      final handle = tester.ensureSemantics();
+      expect(find.bySemanticsLabel(RegExp('nothing planned')), findsWidgets);
+      handle.dispose();
+    });
+
     testWidgets('tapping an empty day reports it, because the plus sign implies it works',
         (tester) async {
       tester.view.physicalSize = const Size(390, 844);
