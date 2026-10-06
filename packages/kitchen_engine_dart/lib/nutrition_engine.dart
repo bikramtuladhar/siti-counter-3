@@ -1,4 +1,6 @@
 import 'consumption_engine.dart';
+import 'region_pack.dart';
+import 'unit_conversion.dart';
 
 /// Source table a composition row is drawn from.
 enum CompositionSource { nfct, ifct }
@@ -94,13 +96,27 @@ class BatchIngredient {
 class BatchNutrition {
   final NutrientTotals totals; // grams == cooked batch weight
   final Set<String> foodGroups;
+
+  /// Ingredients with no composition data, which therefore contribute nothing to [totals].
   final List<String> unknownIngredients;
+
+  /// Fraction of the batch's raw weight that resolved to composition data, 0..1.
+  ///
+  /// Weight-based rather than a count, because an unknown spice used in five grams matters far
+  /// less than an unknown staple used in two hundred. A batch at less than full coverage has
+  /// totals that are too low, and a caller showing them should say so rather than presenting
+  /// them as the whole truth.
+  final double knownGramsFraction;
 
   const BatchNutrition({
     required this.totals,
     required this.foodGroups,
     this.unknownIngredients = const [],
+    this.knownGramsFraction = 1,
   });
+
+  /// Whether every gram in the batch resolved to composition data.
+  bool get isComplete => unknownIngredients.isEmpty && knownGramsFraction >= 0.999;
 
   /// Nutrients in a portion of [grams] cooked food.
   NutrientTotals portion(double grams) {
@@ -327,15 +343,19 @@ class NutritionEngine {
   }) {
     var total = NutrientTotals.zero;
     var estimatedCooked = 0.0;
+    var knownRawGrams = 0.0;
+    var totalRawGrams = 0.0;
     final groups = <String>{};
     final unknown = <String>[];
 
     for (final ing in ingredients) {
+      if (ing.rawGrams > 0) totalRawGrams += ing.rawGrams;
       final c = compositionFor(ing.ingredientId);
       if (c == null || ing.rawGrams <= 0) {
         if (c == null) unknown.add(ing.ingredientId);
         continue;
       }
+      knownRawGrams += ing.rawGrams;
       final k = ing.rawGrams / 100.0;
       total = total +
           NutrientTotals(
@@ -363,7 +383,36 @@ class NutritionEngine {
       ),
       foodGroups: groups,
       unknownIngredients: unknown,
+      knownGramsFraction: totalRawGrams <= 0
+          ? 0
+          : (knownRawGrams / totalRawGrams).clamp(0.0, 1.0).toDouble(),
     );
+  }
+
+  /// Nutrition of one recipe's own ingredient list, at an optional serving count.
+  ///
+  /// This is what the family nutrition dashboard should score a logged meal with. Previously
+  /// every meal was scored as dal bhat regardless of what was eaten, so a household logging
+  /// thukpa was shown dal bhat's nutrients.
+  ///
+  /// Returns null only when the recipe has no usable ingredients. A recipe with partial
+  /// coverage still returns a batch, with [BatchNutrition.knownGramsFraction] below 1 so the
+  /// caller can say the figure is incomplete instead of presenting it as whole.
+  static BatchNutrition? batchForRecipe(
+    RegionRecipe recipe, {
+    double? servings,
+  }) {
+    final target = servings != null && servings > 0 ? servings : recipe.servings.toDouble();
+    final scale = recipe.servings > 0 ? target / recipe.servings.toDouble() : 1.0;
+
+    return computeBatch([
+      for (final ing in recipe.ingredients)
+        if (quantityToGrams(ing.quantity, ing.unit) > 0)
+          BatchIngredient(
+            ing.ingredientId,
+            quantityToGrams(ing.quantity, ing.unit) * scale,
+          ),
+    ]);
   }
 
   static NutritionProgressBar _bar(String key, double ratio, String en, String ne) {

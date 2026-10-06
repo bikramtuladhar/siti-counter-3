@@ -3,6 +3,7 @@ import 'package:test/test.dart';
 
 void main() {
   verifyIdMatching();
+  verifyPerRecipeBatches();
   group('Yield factors', () {
     test('rice triples in weight; spinach halves; unknown is 1.0', () {
       expect(NutritionEngine.yieldFor('rice'), 3.0);
@@ -173,6 +174,117 @@ void verifyIdMatching() {
         BatchIngredient('mustard_oil', 30),
       ]);
       expect(batch.totals.fatG, closeTo(30, 0.01));
+    });
+  });
+}
+
+/// Coverage for deriving a batch from a recipe's own ingredients rather than a fixed batch.
+void verifyPerRecipeBatches() {
+  RegionRecipe recipe({
+    required String id,
+    required List<(String, double, String)> ingredients,
+    int servings = 4,
+  }) =>
+      RegionRecipe(
+        id: id,
+        titleEn: id,
+        titleNe: id,
+        category: 'main',
+        cuisine: 'nepali',
+        dietary: const [],
+        prepTimeMinutes: 10,
+        cookTimeMinutes: 20,
+        servings: servings,
+        difficulty: 'easy',
+        pressureCooker: const RecipeWhistleProfile(
+          enabled: false,
+          recommendedWhistles: 0,
+          altitudeWhistleOffsetKathmandu: 0,
+          heatLevel: 'low',
+          releaseType: 'natural',
+        ),
+        ingredients: [
+          for (final i in ingredients)
+            RecipeIngredientItem(
+              ingredientId: i.$1,
+              quantity: i.$2,
+              unit: i.$3,
+            ),
+        ],
+        steps: const [],
+        seasonality: const [],
+        tags: const [],
+      );
+
+  group('NutritionEngine.batchForRecipe', () {
+    test('uses the recipe its own ingredients, not a fixed reference', () {
+      final dalBhat = recipe(
+        id: 'dal-bhat',
+        ingredients: [('rice', 300, 'g'), ('lentil', 150, 'g')],
+      );
+      final thukpa = recipe(
+        id: 'thukpa',
+        ingredients: [('wheat_flour', 200, 'g'), ('potato', 200, 'g')],
+      );
+
+      final a = NutritionEngine.batchForRecipe(dalBhat)!;
+      final b = NutritionEngine.batchForRecipe(thukpa)!;
+
+      // The whole point: two different meals must not score the same.
+      expect(a.totals.proteinG, isNot(closeTo(b.totals.proteinG, 0.001)));
+    });
+
+    test('converts the ingredient unit rather than assuming grams', () {
+      final r = recipe(id: 'rice-only', ingredients: [('rice', 1, 'kg')]);
+      final batch = NutritionEngine.batchForRecipe(r)!;
+      expect(batch.totals.kcal, closeTo(3450, 1)); // 1000 g at 345 kcal/100 g
+    });
+
+    test('scales with servings', () {
+      final r = recipe(
+        id: 'dal-bhat',
+        ingredients: [('rice', 300, 'g'), ('lentil', 150, 'g')],
+      );
+      final forFour = NutritionEngine.batchForRecipe(r, servings: 4)!;
+      final forEight = NutritionEngine.batchForRecipe(r, servings: 8)!;
+      expect(forEight.totals.kcal, closeTo(forFour.totals.kcal * 2, 0.01));
+    });
+
+    test('reports an unknown ingredient instead of quietly dropping it', () {
+      final r = recipe(
+        id: 'with-garlic',
+        ingredients: [('rice', 300, 'g'), ('garlic', 20, 'g')],
+      );
+      final batch = NutritionEngine.batchForRecipe(r)!;
+
+      expect(batch.unknownIngredients, contains('garlic'));
+      expect(batch.isComplete, isFalse);
+    });
+
+    test('coverage is weighted by weight, not by ingredient count', () {
+      // 300 g known, 5 g unknown: the unknown is a rounding error in calories but still makes
+      // the batch incomplete.
+      final r = recipe(
+        id: 'mostly-known',
+        ingredients: [('rice', 300, 'g'), ('unobtainium', 5, 'g')],
+      );
+      final batch = NutritionEngine.batchForRecipe(r)!;
+
+      expect(batch.knownGramsFraction, closeTo(300 / 305, 0.001));
+      expect(batch.isComplete, isFalse);
+    });
+
+    test('a fully known recipe reports complete coverage', () {
+      final r = recipe(id: 'dal-bhat', ingredients: [('rice', 300, 'g')]);
+      final batch = NutritionEngine.batchForRecipe(r)!;
+      expect(batch.isComplete, isTrue);
+      expect(batch.knownGramsFraction, 1.0);
+    });
+
+    test('a recipe with no usable ingredients yields no batch', () {
+      final r = recipe(id: 'empty', ingredients: []);
+      final batch = NutritionEngine.batchForRecipe(r);
+      expect(batch == null || batch.totals.grams <= 0, isTrue);
     });
   });
 }

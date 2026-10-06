@@ -10,6 +10,7 @@ import 'package:siti_counter/consumption/quick_add_outside_food_dialog.dart';
 import 'package:siti_counter/consumption/consumption_dashboard_screen.dart';
 import 'package:siti_counter/consumption/family_nutrition_screen.dart';
 import 'package:kitchen_engine/nutrition_engine.dart';
+import 'package:kitchen_engine/region_pack.dart';
 
 /// sqflite FFI performs real async I/O, which never completes inside the
 /// fake-async zone of testWidgets. Let real I/O finish, then pump the frame.
@@ -34,6 +35,111 @@ Future<ConsumptionRepository> makeRepo(WidgetTester tester) async {
   });
   return repo!;
 }
+
+
+/// Minimal pack whose recipes carry real, differing ingredients, so a test can tell two meals
+/// apart by their nutrients.
+RegionPack _packWithRecipe({
+  required String id,
+  required List<(String, double, String)> ingredients,
+}) =>
+    RegionPack(
+      manifest: const RegionPackManifest(
+        id: 'test-pack',
+        version: '1.0.0',
+        name: 'Test',
+        country: 'Nepal',
+        countryCode: 'NP',
+        region: 'Bagmati',
+        status: 'active',
+        elevationMeters: 1400,
+        defaultLanguage: 'ne',
+        calendar: 'bikram-sambat',
+        seasonSystem: 'six-ritus',
+      ),
+      seasonality: const RegionSeasonality(regionId: 'test-pack', ritus: []),
+      ingredients: const [],
+      festivals: const [],
+      recipes: [
+        RegionRecipe(
+          id: id,
+          titleEn: id,
+          titleNe: id,
+          category: 'main',
+          cuisine: 'nepali',
+          dietary: const [],
+          prepTimeMinutes: 10,
+          cookTimeMinutes: 20,
+          servings: 4,
+          difficulty: 'easy',
+          pressureCooker: const RecipeWhistleProfile(
+            enabled: false,
+            recommendedWhistles: 0,
+            altitudeWhistleOffsetKathmandu: 0,
+            heatLevel: 'low',
+            releaseType: 'natural',
+          ),
+          ingredients: [
+            for (final i in ingredients)
+              RecipeIngredientItem(ingredientId: i.$1, quantity: i.$2, unit: i.$3),
+          ],
+          steps: const [],
+          seasonality: const [],
+          tags: const [],
+        ),
+      ],
+    );
+
+final _testPack = RegionPack(
+  manifest: const RegionPackManifest(
+    id: 'test-pack',
+    version: '1.0.0',
+    name: 'Test',
+    country: 'Nepal',
+    countryCode: 'NP',
+    region: 'Bagmati',
+    status: 'active',
+    elevationMeters: 1400,
+    defaultLanguage: 'ne',
+    calendar: 'bikram-sambat',
+    seasonSystem: 'six-ritus',
+  ),
+  seasonality: const RegionSeasonality(regionId: 'test-pack', ritus: []),
+  ingredients: const [],
+  festivals: const [],
+  recipes: [
+    _recipe('dal-bhat', [('rice', 300.0, 'g'), ('lentil', 150.0, 'g')]),
+    _recipe('thukpa', [('wheat_flour', 200.0, 'g'), ('potato', 200.0, 'g')]),
+  ],
+);
+
+RegionRecipe _recipe(String id, List<(String, double, String)> ingredients) =>
+    RegionRecipe(
+      id: id,
+      titleEn: id,
+      titleNe: id,
+      category: 'main',
+      cuisine: 'nepali',
+      dietary: const [],
+      prepTimeMinutes: 10,
+      cookTimeMinutes: 20,
+      servings: 4,
+      difficulty: 'easy',
+      pressureCooker: const RecipeWhistleProfile(
+        enabled: false,
+        recommendedWhistles: 0,
+        altitudeWhistleOffsetKathmandu: 0,
+        heatLevel: 'low',
+        releaseType: 'natural',
+      ),
+      ingredients: [
+        for (final i in ingredients)
+          RecipeIngredientItem(ingredientId: i.$1, quantity: i.$2, unit: i.$3),
+      ],
+      steps: const [],
+      seasonality: const [],
+      tags: const [],
+    );
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -463,7 +569,7 @@ void main() {
       expect(find.textContaining('kcal'), findsNothing);
     });
 
-    test('intakesFromLogs skips skipped members', () {
+    test('nutritionInputFromLogs skips skipped members', () {
       final log = ConsumptionEngine.logAdjustedMeal(
         recipeId: 'dal-bhat',
         recipeTitle: 'Dal Bhat',
@@ -473,10 +579,73 @@ void main() {
           'm2': (vesselId: 'katori', vesselCount: 1.0, skipped: true, notes: null),
         },
       );
-      expect(intakesFromLogs([log], 'm2'), isEmpty);
-      expect(intakesFromLogs([log], 'm1'), hasLength(1));
-      expect(referenceDalBhatBatch.totals.grams, greaterThan(0));
+      final resolve = resolverForPack(_testPack);
+
+      expect(nutritionInputFromLogs([log], 'm2', resolve).intakes, isEmpty);
+      expect(nutritionInputFromLogs([log], 'm1', resolve).intakes, hasLength(1));
       expect(NutritionEngine.yieldFor('rice'), 3.0);
+    });
+
+    test('a meal is scored from its own recipe, not a fixed reference batch', () {
+      // The bug this replaces: every meal was scored as dal bhat, so logging thukpa or momo
+      // produced dal bhat's numbers.
+      final resolve = resolverForPack(_testPack);
+
+      final dalBhat = ConsumptionEngine.logAdjustedMeal(
+        recipeId: 'dal-bhat',
+        recipeTitle: 'Dal Bhat',
+        mealSlot: 'lunch',
+        members: testMembers,
+        adjustments: const {},
+      );
+      final thukpa = ConsumptionEngine.logAdjustedMeal(
+        recipeId: 'thukpa',
+        recipeTitle: 'Thukpa',
+        mealSlot: 'lunch',
+        members: testMembers,
+        adjustments: const {},
+      );
+
+      final a = nutritionInputFromLogs([dalBhat], 'm1', resolve).intakes.single.nutrients;
+      final b = nutritionInputFromLogs([thukpa], 'm1', resolve).intakes.single.nutrients;
+      expect(a.proteinG, isNot(closeTo(b.proteinG, 0.001)));
+    });
+
+    test('an unresolvable meal is counted, not replaced with a default', () {
+      // A meal logged outside the app has no recipe in the pack. It must be reported as a gap
+      // rather than silently scored as something else.
+      final resolve = resolverForPack(_testPack);
+      final outside = ConsumptionEngine.logAdjustedMeal(
+        recipeId: 'restaurant-biryani',
+        recipeTitle: 'Biryani',
+        mealSlot: 'dinner',
+        members: testMembers,
+        adjustments: const {},
+      );
+
+      final input = nutritionInputFromLogs([outside], 'm1', resolve);
+      expect(input.intakes, isEmpty);
+      expect(input.skippedMeals, greaterThan(0));
+      expect(input.hasAnyData, isFalse);
+    });
+
+    test('partial composition coverage is flagged rather than presented as whole', () {
+      final pack = _packWithRecipe(
+        id: 'garlic-heavy',
+        ingredients: const [('rice', 300.0, 'g'), ('garlic', 20.0, 'g')],
+      );
+      final resolve = resolverForPack(pack);
+      final log = ConsumptionEngine.logAdjustedMeal(
+        recipeId: 'garlic-heavy',
+        recipeTitle: 'Garlic Rice',
+        mealSlot: 'lunch',
+        members: testMembers,
+        adjustments: const {},
+      );
+
+      final input = nutritionInputFromLogs([log], 'm1', resolve);
+      expect(input.anyIncomplete, isTrue);
+      expect(input.skippedMeals, 0, reason: 'partial data still produces a figure');
     });
   });
 }
