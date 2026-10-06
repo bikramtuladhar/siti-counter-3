@@ -1,58 +1,121 @@
 {
   "_comment": [
-    "Source datasets researched for world dish roles and eating habits.",
+    "Provenance and licence review for third-party dish data.",
     "",
-    "NOT yet wired into the app. Recorded here so the provenance of any future import is",
-    "traceable, and so the classification rules in scripts/classify-recipe-roles.mjs can be",
-    "checked against real-world data rather than guessed.",
+    "STATUS: nothing here is imported. The two best-matching datasets were licence-checked",
+    "on 2026-10-06 and both were refused. See `verdicts` below for the evidence. The",
+    "classification in scripts/classify-recipe-roles.mjs therefore remains hand-authored from",
+    "each pack's own category taxonomy, which is the more reliable source for the launch",
+    "region anyway.",
     "",
-    "SOURCES",
-    "",
-    "1. oxai/world-wide-dishes (GitHub, not Kaggle)",
-    "   https://github.com/oxai/world-wide-dishes",
-    "   The closest match to what we need. Columns include:",
-    "     type_of_dish        e.g. \"Main dish - eaten with sides\"",
-    "     type_of_dish_more   free-text detail",
-    "     time_of_day          e.g. [\"lunch\", \"dinner\"]",
-    "     time_of_day_more",
-    "     countries, continent, regions, cultures, occasions, utensils, ingredients",
-    "   Directly answers 'which are main courses and which are side dishes' and",
-    "   'when is this eaten'. Licence must be confirmed before importing.",
-    "",
-    "2. worldcuisines/food-kb (HuggingFace, mirrors the Kaggle world-cuisines work)",
-    "   https://huggingface.co/datasets/worldcuisines/food-kb",
-    "   ~2.4k dishes with coarse_categories (stew, soup, rice, dessert), fine_categories",
-    "   (curry, fried rice, rice cake), cuisines, countries, region1/region2 (UN M49 regions).",
-    "   Good for seeding a new region pack's dish list and cuisine tagging.",
-    "",
-    "3. Kaggle - Food Lovers: Global Cuisine Preferences Survey",
-    "   https://www.kaggle.com/datasets/themadprogramer/food-lovers-global-cuisine-preferences-survey",
-    "   CC0 public domain. Geolocated responses on cuisine preference and availability.",
-    "   Useful for 'what does a household here actually eat', not for dish roles.",
-    "",
-    "4. Kaggle - Collection of Recipes around the world",
-    "   https://www.kaggle.com/datasets/prajwaldongre/collection-of-recipes-around-the-world",
-    "   recipe_name, cuisine, ingredients, prep/cook minutes, servings, calories,",
-    "   dietary_restrictions. Shape matches RegionRecipe closely, but has no dish role,",
-    "   so it would need the same classification applied.",
-    "",
-    "5. Kaggle - Open Food Facts / World Food Facts",
-    "   https://www.kaggle.com/datasets/openfoodfacts/world-food-facts",
-    "   ODL. Packaged-product nutrition, 356k rows. Already conceptually covered by the OCR",
-    "   label parser, so lower priority.",
-    "",
-    "6. Kaggle competitions - What's Cooking? / Cuisine Classification Challenge",
-    "   https://www.kaggle.com/competitions/whats-cooking/data",
-    "   Recipe id + cuisine + ingredient list. Useful for cuisine inference on a recipe",
-    "   with no cuisine tag. Competition rules apply to redistribution.",
-    "",
-    "GAP IN THESE SOURCES",
-    "",
-    "None of them provide a per-dish 'side dish' flag for Nepali food specifically, and",
-    "none pair a dish with a meal time the way we model it. The Nepal Bagmati roles are",
-    "therefore classified from its own category taxonomy, which is more reliable for the",
-    "launch region than a general-world guess. Any import should be treated as a seed for",
-    "future region packs, reviewed rather than trusted outright."
+    "Any future import must go through scripts/import-world-dishes.mjs, which refuses to",
+    "write anything until every licence claim about a dataset is known and permissive. The",
+    "gate is covered by scripts/import-world-dishes.test.mjs."
+  ],
+
+  "verifiedOn": "2026-10-06",
+
+  "verdicts": [
+    {
+      "dataset": "oxai/world-wide-dishes",
+      "url": "https://github.com/oxai/world-wide-dishes",
+      "decision": "refused",
+      "dataQuality": "excellent fit — 765 dishes, only 1 mentioning Nepal",
+      "columnMapping": {
+        "note": "type_of_dish and time_of_day map cleanly onto our vocabulary. Implemented and tested in scripts/import-world-dishes.mjs, ready if the licence is ever cleared.",
+        "type_of_dish": {
+          "Main dish - eaten with sides": "mainCourse",
+          "Main dish - stand alone (e.g. one pot meal)": "mainCourse",
+          "Side dish": "sideDish",
+          "Side dish + any Main dish value in the same cell": "both",
+          "Dessert, Starter, Soup, Salad, Sauce, Other": "no role equivalent — skipped"
+        },
+        "time_of_day": {
+          "breakfast": "morning",
+          "lunch": "midday",
+          "snack": "evening",
+          "dinner": "night",
+          "anytime, other": "no restriction, expressed as an empty list"
+        }
+      },
+      "licenseClaims": [
+        {
+          "source": "LICENCE.md",
+          "declared": "CC-BY 4.0",
+          "note": "Prose. Terms add that it is 'primarily intended for evaluating foundation models', permits 'careful fine-tuning', and prohibits using it to build 'prompt templates for the generation of training data'."
+        },
+        {
+          "source": "croissant-worldwidedishes.json",
+          "declared": "cc-by-nc-sa-4.0",
+          "note": "Machine-readable metadata distributed with the dataset."
+        }
+      ],
+      "blockingReason": [
+        "The two official statements conflict, and the more restrictive one governs.",
+        "cc-by-nc-sa-4.0 is non-commercial, so it cannot be used in a product distributed",
+        "through the App Store and Play Store. Its share-alike term would also attach to",
+        "derived packs. We did not choose the permissive reading of LICENCE.md, because",
+        "picking the more convenient of two conflicting licence claims is exactly the mistake",
+        "this gate exists to prevent."
+      ],
+      "additionalConstraints": [
+        "Linked images carry their own per-row licences and some are known non-commercial; the authors also prohibit using the images for model training. Image columns are therefore dropped unconditionally by the importer.",
+        "Contributors consented to their photographs specifically, which is a narrower permission than a blanket dataset licence."
+      ],
+      "toClear": "Ask the maintainers which licence governs, and whether they will relicense the data (not the images) as CC-BY-4.0. Cite the conflict between LICENCE.md and the Croissant metadata."
+    },
+    {
+      "dataset": "worldcuisines/food-kb",
+      "url": "https://huggingface.co/datasets/worldcuisines/food-kb",
+      "decision": "refused",
+      "dataQuality": "good taxonomy, but no dish role or meal time",
+      "licenseClaims": [
+        {
+          "source": "dataset card and HF API",
+          "declared": null,
+          "note": "No license tag and no license field in cardData. Verified via https://huggingface.co/api/datasets/worldcuisines/food-kb."
+        }
+      ],
+      "blockingReason": [
+        "No licence is declared, so nothing establishes permission to use it. An absent",
+        "licence is all rights reserved, not an implied open licence.",
+        "Separately, it carries no per-dish role or meal time, so it would not have solved",
+        "the problem we were solving even if it were licensed."
+      ],
+      "dataHygieneNote": [
+        "The `alias` column contains respondent free-text that leaked into the data — the",
+        "'Arroz con maiz' row carries placeholder respondent fields including name, age and",
+        "city. Any use would need those rows stripped before the data went anywhere."
+      ],
+      "toClear": "Ask the publisher to publish a licence. Do not import rows in the meantime."
+    }
+  ],
+
+  "notReviewed": [
+    {
+      "dataset": "Kaggle — Food Lovers: Global Cuisine Preferences Survey",
+      "url": "https://www.kaggle.com/datasets/themadprogramer/food-lovers-global-cuisine-preferences-survey",
+      "reportedLicense": "CC0 (claimed in the dataset listing, not independently verified here)",
+      "note": "Preference and geolocation survey data. No dish roles, so it cannot answer the question we had. Worth evaluating separately if we want 'what households here actually eat'."
+    },
+    {
+      "dataset": "Kaggle — Collection of Recipes around the world",
+      "url": "https://www.kaggle.com/datasets/prajwaldongre/collection-of-recipes-around-the-world",
+      "reportedLicense": "not verified",
+      "note": "Closest shape to RegionRecipe (ingredients, prep/cook minutes, servings, dietary) but carries no dish role, so it would need the same classification applied."
+    },
+    {
+      "dataset": "Open Food Facts / World Food Facts",
+      "url": "https://www.kaggle.com/datasets/openfoodfacts/world-food-facts",
+      "reportedLicense": "ODbL",
+      "note": "Packaged-product data, largely covered by the OCR label parser already built. Lower priority."
+    },
+    {
+      "dataset": "Kaggle competitions — What's Cooking? / Cuisine Classification",
+      "url": "https://www.kaggle.com/competitions/whats-cooking/data",
+      "reportedLicense": "competition rules",
+      "note": "Cuisine inference only. Competition terms restrict redistribution, so the gate would refuse it as not on the allowlist."
+    }
   ],
 
   "_roleVocabulary": {
@@ -69,20 +132,38 @@
   },
 
   "_observedTypeOfDishValues": {
-    "note": "Verbatim examples of type_of_dish seen in source 1, useful as an import mapping.",
-    "values": [
-      "Main dish - eaten with sides",
-      "one pot meal"
-    ]
+    "note": "Full set of type_of_dish values across the 765 rows of source 1, counted from the actual CSV.",
+    "distribution": {
+      "Main dish - eaten with sides": 119,
+      "Main dish - stand alone (e.g. one pot meal)": 113,
+      "Main dish - stand alone + Main dish - eaten with sides": 86,
+      "Side dish": 85,
+      "Dessert": 80,
+      "Starter": 27,
+      "Other": 23,
+      "Soup": 20,
+      "Small plate / bowl served as a part of a collection": 10,
+      "Side dish + Main dish - stand alone": 10,
+      "Soup + Main dish - stand alone": 9
+    }
+  },
+
+  "_observedTimeOfDayValues": {
+    "note": "Counts from the same 765 rows. 'lunch, dinner' dominating confirms meal time is real, not incidental metadata.",
+    "distribution": {
+      "lunch, dinner": 253,
+      "anytime": 114,
+      "snack": 86,
+      "lunch": 64,
+      "breakfast, lunch, dinner": 29,
+      "breakfast": 25,
+      "dinner": 24,
+      "snack, anytime": 23
+    }
   },
 
   "_observedCoarseCategories": {
     "note": "coarse_categories values seen in source 2.",
-    "values": [
-      "stew",
-      "soup",
-      "rice",
-      "dessert"
-    ]
+    "values": ["stew", "soup", "rice", "dessert", "pancake", "bread", "dim sum", "salad"]
   }
 }

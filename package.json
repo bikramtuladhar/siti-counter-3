@@ -2,10 +2,11 @@
   "name": "siti-counter-3",
   "version": "0.1.0",
   "private": true,
-  "description": "Siti Counter 3.0 — Household cooking companion",
+  "description": "Siti Counter 3.0 \u2014 Household cooking companion",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "test:scripts": "node --test scripts/*.test.mjs",
     "test": "turbo run test",
     "lint": "turbo run lint"
   },
