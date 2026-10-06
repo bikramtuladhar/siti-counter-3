@@ -165,13 +165,69 @@ function makeBar(key: string, ratio: number, en: string, ne: string): NutritionP
 
 /** Yield-factor based nutrition engine (Section 11.1, 11.4). Parity with Dart. */
 export class NutritionEngine {
+  /**
+   * Ingredient ids naming a food the table already covers under a different id.
+   *
+   * Mirrors the Dart engine: the packs and the table disagree on spelling, so an exact-id
+   * lookup silently returned nothing and the ingredient contributed zero nutrients.
+   */
+  static readonly ingredientAliases: Record<string, string> = {
+    kalo_dal: 'black-lentil',
+    masoor_dal: 'lentil',
+    masur_dal: 'lentil',
+    masu: 'chicken',
+    'chicken-meat': 'chicken',
+    kukura: 'chicken',
+    ghiu: 'ghee',
+    'clarified-butter': 'ghee',
+    'tel-paoda': 'spinach',
+    palungo: 'spinach',
+    saag: 'spinach',
+    alu: 'potato',
+    kohlrabi: 'cabbage',
+    pyaaz: 'onion',
+    kershipa: 'onion',
+    khaman: 'wheat-flour',
+    'momo-skin': 'wheat-flour',
+  }
+
+  /** Canonical form of an ingredient id for lookup: folds case and the separator. */
+  static normalizeIngredientId(id: string): string {
+    return id.trim().toLowerCase().replaceAll('_', '-')
+  }
+
   static compositionFor(id: string): FoodComposition | undefined {
-    return COMPOSITION_TABLE.find((x) => x.id === id)
+    const exact = COMPOSITION_TABLE.find((x) => x.id === id)
+    if (exact) return exact
+
+    const normalized = NutritionEngine.normalizeIngredientId(id)
+    const bySeparator = COMPOSITION_TABLE.find((x) => x.id === normalized)
+    if (bySeparator) return bySeparator
+
+    const alias = NutritionEngine.ingredientAliases[normalized]
+      ?? NutritionEngine.ingredientAliases[id]
+    if (alias) return COMPOSITION_TABLE.find((x) => x.id === alias)
+    return undefined
+  }
+
+  /** Whether [id] resolves to nutrient data. */
+  static hasCompositionFor(id: string): boolean {
+    return NutritionEngine.compositionFor(id) !== undefined
   }
 
   /** Cooked grams per raw gram; 1.0 when no factor is known. */
   static yieldFor(id: string): number {
-    return YIELD_FACTORS.find((y) => y.ingredientId === id)?.factor ?? 1.0
+    const exact = YIELD_FACTORS.find((y) => y.ingredientId === id)
+    if (exact) return exact.factor
+
+    const normalized = NutritionEngine.normalizeIngredientId(id)
+    const bySeparator = YIELD_FACTORS.find((y) => y.ingredientId === normalized)
+    if (bySeparator) return bySeparator.factor
+
+    const alias = NutritionEngine.ingredientAliases[normalized]
+      ?? NutritionEngine.ingredientAliases[id]
+    if (alias) return YIELD_FACTORS.find((y) => y.ingredientId === alias)?.factor ?? 1.0
+    return 1.0
   }
 
   /** Nutrients per 100 g of the COOKED ingredient. */

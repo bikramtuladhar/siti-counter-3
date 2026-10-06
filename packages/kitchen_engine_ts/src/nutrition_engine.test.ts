@@ -114,3 +114,37 @@ describe('NutritionEngine TypeScript Parity Tests', () => {
     })
   })
 })
+
+describe('NutritionEngine ingredient id matching', () => {
+  it('matches an id that only differs by separator', () => {
+    assert.equal(NutritionEngine.compositionFor('mustard_oil')?.id, 'mustard-oil')
+    assert.equal(NutritionEngine.compositionFor('wheat_flour')?.id, 'wheat-flour')
+  })
+
+  it('matches a genuinely different name through an alias', () => {
+    assert.equal(NutritionEngine.compositionFor('kalo_dal')?.id, 'black-lentil')
+  })
+
+  it('is case insensitive', () => {
+    assert.ok(NutritionEngine.compositionFor('Mustard_Oil'))
+  })
+
+  it('still returns undefined for an unknown ingredient', () => {
+    assert.equal(NutritionEngine.compositionFor('unobtainium'), undefined)
+    assert.equal(NutritionEngine.hasCompositionFor('unobtainium'), false)
+  })
+
+  it('normalisation folds separators and case only', () => {
+    assert.equal(NutritionEngine.normalizeIngredientId('  Mustard_Oil '), 'mustard-oil')
+  })
+
+  it('yield factors resolve through the same normalisation', () => {
+    assert.equal(NutritionEngine.yieldFor('rice'), 3.0)
+    assert.equal(NutritionEngine.yieldFor('unobtainium'), 1.0)
+  })
+
+  it('a snake_case pack ingredient now contributes nutrients', () => {
+    const batch = NutritionEngine.computeBatch([{ ingredientId: 'mustard_oil', rawGrams: 30 }])
+    close(batch.totals.fatG, 30)
+  })
+})

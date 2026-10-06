@@ -2,6 +2,7 @@ import 'package:kitchen_engine/kitchen_engine.dart';
 import 'package:test/test.dart';
 
 void main() {
+  verifyIdMatching();
   group('Yield factors', () {
     test('rice triples in weight; spinach halves; unknown is 1.0', () {
       expect(NutritionEngine.yieldFor('rice'), 3.0);
@@ -127,6 +128,51 @@ void main() {
       final e = NutritionEngine.buildMemberView(member: adult, intakes: [intake]);
       final p = NutritionEngine.buildMemberView(member: preg, intakes: [intake]);
       expect(p.bars.first.fraction, lessThan(e.bars.first.fraction));
+    });
+  });
+}
+
+/// Regression coverage for the ingredient-id mismatch between packs and the composition table.
+void verifyIdMatching() {
+  group('NutritionEngine ingredient id matching', () {
+    test('matches an id that only differs by separator', () {
+      // The packs write snake_case, the table kebab-case.
+      expect(NutritionEngine.compositionFor('mustard_oil'), isNotNull);
+      expect(NutritionEngine.compositionFor('mustard-oil'), isNotNull);
+      expect(NutritionEngine.compositionFor('wheat_flour')?.id, 'wheat-flour');
+    });
+
+    test('matches a genuinely different name through an alias', () {
+      expect(NutritionEngine.compositionFor('kalo_dal')?.id, 'black-lentil');
+      expect(NutritionEngine.compositionFor('palungo')?.id, 'spinach');
+    });
+
+    test('is case insensitive', () {
+      expect(NutritionEngine.compositionFor('Mustard_Oil'), isNotNull);
+    });
+
+    test('still returns null for an unknown ingredient', () {
+      expect(NutritionEngine.compositionFor('unobtainium'), isNull);
+      expect(NutritionEngine.hasCompositionFor('unobtainium'), isFalse);
+    });
+
+    test('normalisation folds separators and case only', () {
+      expect(NutritionEngine.normalizeIngredientId('  Mustard_Oil '), 'mustard-oil');
+      expect(NutritionEngine.normalizeIngredientId('rice'), 'rice');
+    });
+
+    test('yield factors resolve through the same normalisation', () {
+      // An unmatched yield silently became 1.0, so cooked weights were quietly wrong.
+      expect(NutritionEngine.yieldFor('rice'), 3.0);
+      expect(NutritionEngine.yieldFor('mustard_oil'), 1.0);
+      expect(NutritionEngine.yieldFor('unobtainium'), 1.0);
+    });
+
+    test('a snake_case pack ingredient now contributes nutrients', () {
+      final batch = NutritionEngine.computeBatch([
+        BatchIngredient('mustard_oil', 30),
+      ]);
+      expect(batch.totals.fatG, closeTo(30, 0.01));
     });
   });
 }

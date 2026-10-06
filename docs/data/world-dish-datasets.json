@@ -12,9 +12,7 @@
     "write anything until every licence claim about a dataset is known and permissive. The",
     "gate is covered by scripts/import-world-dishes.test.mjs."
   ],
-
   "verifiedOn": "2026-10-06",
-
   "verdicts": [
     {
       "dataset": "oxai/world-wide-dishes",
@@ -90,7 +88,6 @@
       "toClear": "Ask the publisher to publish a licence. Do not import rows in the meantime."
     }
   ],
-
   "notReviewed": [
     {
       "dataset": "Kaggle — Food Lovers: Global Cuisine Preferences Survey",
@@ -117,20 +114,17 @@
       "note": "Cuisine inference only. Competition terms restrict redistribution, so the gate would refuse it as not on the allowlist."
     }
   ],
-
   "_roleVocabulary": {
     "mainCourse": "A complete meal on its own. The only role eligible for a meal recommendation.",
     "sideDish": "Served alongside a main course. Never recommended on its own.",
     "both": "E.g. a rice dish that works as the meal and as an accompaniment."
   },
-
   "_mealTimeVocabulary": {
     "morning": "breakfast",
     "midday": "lunch",
     "evening": "snack / light evening",
     "night": "dinner"
   },
-
   "_observedTypeOfDishValues": {
     "note": "Full set of type_of_dish values across the 765 rows of source 1, counted from the actual CSV.",
     "distribution": {
@@ -147,7 +141,6 @@
       "Soup + Main dish - stand alone": 9
     }
   },
-
   "_observedTimeOfDayValues": {
     "note": "Counts from the same 765 rows. 'lunch, dinner' dominating confirms meal time is real, not incidental metadata.",
     "distribution": {
@@ -161,9 +154,108 @@
       "snack, anytime": 23
     }
   },
-
   "_observedCoarseCategories": {
     "note": "coarse_categories values seen in source 2.",
-    "values": ["stew", "soup", "rice", "dessert", "pancake", "bread", "dim sum", "salad"]
+    "values": [
+      "stew",
+      "soup",
+      "rice",
+      "dessert",
+      "pancake",
+      "bread",
+      "dim sum",
+      "salad"
+    ]
+  },
+  "_nutrientDataGap": {
+    "summary": [
+      "Found while auditing the Family Nutrition screen: the app cannot currently compute",
+      "nutrition for the food it plans. This is the largest data gap, and the one that most",
+      "affects a health-adjacent feature.",
+      "",
+      "Three problems, only the third of which is fundamentally a data problem."
+    ],
+    "problem1_fabricated_scores": {
+      "severity": "high",
+      "status": "open",
+      "detail": [
+        "apps/mobile/lib/consumption/family_nutrition_screen.dart scores every logged meal",
+        "with referenceDalBhatBatch, a single hard-coded dal-bhat batch. The code comment",
+        "admits this ('used until per-recipe batch composition is logged'), but the effect is",
+        "that a household logging thukpa or momo is shown dal bhat's kcal, protein, fibre,",
+        "carbs and fat. Every number on that dashboard is dal bhat's unless the meal was",
+        "dal bhat.",
+        "",
+        "Masked by problem 2: the lookups mostly failed anyway, so the totals were not",
+        "obviously wrong to the eye."
+      ],
+      "recommended": [
+        "Until real composition exists, either stop scoring meals that are not dal bhat, or",
+        "label the values as dal-bhat reference figures rather than the household's intake.",
+        "A confident number that is not the user's food is worse than an acknowledged gap.",
+        "Then derive a batch per recipe from that recipe's own ingredients."
+      ]
+    },
+    "problem2_id_convention_mismatch": {
+      "severity": "high",
+      "status": "fixed",
+      "detail": [
+        "Region packs write ingredient ids in snake_case (mustard_oil, wheat_flour, kalo_dal)",
+        "while NutritionEngine.compositionTable writes kebab-case (mustard-oil, wheat-flour,",
+        "black-lentil). compositionFor matched on exact id and returned null otherwise, so the",
+        "ingredient silently contributed zero nutrients. No error, no coverage report, so",
+        "nothing looked wrong.",
+        "",
+        "Measured across all four packs: 66 of 672 ingredient references resolved to nutrient",
+        "data, 10%. Mustard oil appears 101 times and resolved to nothing.",
+        "",
+        "Fixed by folding case and the separator, plus an alias table for names that genuinely",
+        "differ (kalo_dal -> black-lentil, palungo -> spinach, ghiu -> ghee). Coverage becomes",
+        "190 of 672, 28%.",
+        "",
+        "yieldFor had the same defect and failed more quietly: an unmatched factor became 1.0,",
+        "a plausible no-op rather than an obvious failure, so cooked weights were wrong without",
+        "anything looking wrong."
+      ]
+    },
+    "problem3_the_actual_data_gap": {
+      "severity": "high",
+      "status": "open",
+      "detail": [
+        "84 distinct ingredients used by the packs still have no nutrient data. By usage:",
+        "garlic 62, ginger 35, ghee 32, tomato 32, onion 27, turmeric 23, green_chili 20,",
+        "timur 16, fenugreek_seeds 14, red_chili 13, cardamom 11, cumin 9, goat_meat 9,",
+        "sesame 9.",
+        "",
+        "Most are aromatics used in tens of grams. They matter for flavour and for any future",
+        "micronutrient work but contribute little to kcal or protein, so the sensible order is",
+        "staples and protein sources first (rice, dal, flour, meat, ghee), then vegetables,",
+        "then aromatics."
+      ],
+      "recommendedSource": {
+        "dataset": "USDA FoodData Central",
+        "url": "https://fdc.nal.usda.gov/",
+        "license": "public domain (US Government work); clears scripts/lib/dataset-license-gate.mjs",
+        "why": [
+          "Authoritative per-100 g values including the micronutrients this dashboard would",
+          "eventually want, which no regional table here covers to the same depth.",
+          "Machine-readable API and bulk downloads, so the import is scriptable.",
+          "Public domain: no attribution obligation and no non-commercial conflict, unlike",
+          "every candidate in the verdicts section above."
+        ],
+        "caveats": [
+          "USDA describes foods generically and in Western preparation. Entry selection has to",
+          "be done per ingredient by hand; automatic name matching will pull the wrong thing",
+          "for ingredients such as timur (citron) or jimbu (dried fern) that USDA may not carry.",
+          "Values must be recorded per 100 g raw to match compositionTable, and should keep the",
+          "CompositionSource marker so USDA-sourced rows stay distinguishable from IFCT ones."
+        ]
+      },
+      "alternativeSource": {
+        "dataset": "IFCT (Indian Food Composition Tables), NIN Hyderabad",
+        "status": "already cited in compositionTable via CompositionSource.ifct",
+        "note": "Better regional fit for dal, roti and vegetable preparations than USDA, but it is a published book rather than an openly licensed machine-readable dataset. Manual reference only, not something to import."
+      }
+    }
   }
 }

@@ -220,17 +220,85 @@ class NutritionEngine {
     'fitness': NutrientTarget(90, 30),
   };
 
+  /// Ingredient ids that name a food the table already covers under a different id.
+  ///
+  /// The packs and the table were written by different hands and do not agree on spelling, so
+  /// a lookup by exact id silently returned nothing and the ingredient contributed zero
+  /// nutrients. Separators are handled by [normalizeIngredientId]; these are the cases where
+  /// the names genuinely differ.
+  static const Map<String, String> ingredientAliases = {
+    'kalo_dal': 'black-lentil',
+    'masoor_dal': 'lentil',
+    'masur_dal': 'lentil',
+    'masu': 'chicken',
+    'chicken-meat': 'chicken',
+    'kukura': 'chicken',
+    'ghiu': 'ghee',
+    'clarified-butter': 'ghee',
+    'tel-paoda': 'spinach',
+    'palungo': 'spinach',
+    'saag': 'spinach',
+    'alu': 'potato',
+    'kohlrabi': 'cabbage',
+    'pyaaz': 'onion',
+    'kershipa': 'onion',
+    'khaman': 'wheat-flour',
+    'momo-skin': 'wheat-flour',
+  };
+
+  /// Canonical form of an ingredient id for lookup.
+  ///
+  /// The region packs write snake_case (`mustard_oil`) while this table writes kebab-case
+  /// (`mustard-oil`). Before normalisation only 66 of 672 ingredient references across the
+  /// packs resolved to nutrient data; folding the separator alone lifts that to 183, because
+  /// mustard oil on its own appears 101 times.
+  static String normalizeIngredientId(String id) {
+    return id.trim().toLowerCase().replaceAll('_', '-');
+  }
+
   static FoodComposition? compositionFor(String id) {
     for (final c in compositionTable) {
       if (c.id == id) return c;
     }
+
+    final normalized = normalizeIngredientId(id);
+    for (final c in compositionTable) {
+      if (c.id == normalized) return c;
+    }
+
+    final alias = ingredientAliases[normalized] ?? ingredientAliases[id];
+    if (alias != null) {
+      for (final c in compositionTable) {
+        if (c.id == alias) return c;
+      }
+    }
     return null;
   }
+
+  /// Whether [id] resolves to nutrient data.
+  ///
+  /// Callers that report coverage use this rather than inferring it from a zero total, which is
+  /// indistinguishable from a food that genuinely has no nutrients.
+  static bool hasCompositionFor(String id) => compositionFor(id) != null;
 
   /// Cooked grams per raw gram; 1.0 when no factor is known.
   static double yieldFor(String ingredientId) {
     for (final y in yieldFactors) {
       if (y.ingredientId == ingredientId) return y.factor;
+    }
+
+    // Same separator problem as compositionFor: an unmatched yield factor silently became 1.0,
+    // which is a no-op rather than an error, so cooked weights were quietly wrong.
+    final normalized = normalizeIngredientId(ingredientId);
+    for (final y in yieldFactors) {
+      if (y.ingredientId == normalized) return y.factor;
+    }
+
+    final alias = ingredientAliases[normalized] ?? ingredientAliases[ingredientId];
+    if (alias != null) {
+      for (final y in yieldFactors) {
+        if (y.ingredientId == alias) return y.factor;
+      }
     }
     return 1.0;
   }
