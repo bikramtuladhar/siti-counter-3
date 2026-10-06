@@ -83,6 +83,16 @@ export interface RegionRecipe {
   seasonality: string[]
   tags: string[]
   originPackId?: string
+  /**
+   * How this dish is served: `mainCourse`, `sideDish`, or `both`.
+   *
+   * Declared rather than inferred from `category`, because a category describes the dish while
+   * this describes its role at the table. A dish can appear twice in a pack, once as the
+   * morning main and once as a dinner side. Empty means main course; see DishRoleResolver.
+   */
+  dishRoles?: string[]
+  /** Meal times this dish suits: `morning`, `midday`, `evening`, `night`. Empty means all. */
+  mealTimes?: string[]
 }
 
 export interface RegionFestival {

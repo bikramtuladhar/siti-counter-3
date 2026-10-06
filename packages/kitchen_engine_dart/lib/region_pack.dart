@@ -246,6 +246,19 @@ class RegionRecipe {
   /// Origin region pack ID if layered from a specific pack
   final String? originPackId;
 
+  /// How this dish is served: `mainCourse`, `sideDish`, or `both`.
+  ///
+  /// Declared rather than inferred from [category], because a category describes the dish
+  /// while this describes its role at the table. A dish can appear twice in a pack — once as
+  /// the morning main and once as a dinner side — and these roles are what let the app tell
+  /// the two apart. Empty means main course; see `DishRoleResolver`.
+  final List<String> dishRoles;
+
+  /// Meal times this dish suits: `morning`, `midday`, `evening`, `night`.
+  ///
+  /// Empty means every time, so an unclassified pack still plans cleanly.
+  final List<String> mealTimes;
+
   const RegionRecipe({
     required this.id,
     required this.titleEn,
@@ -268,6 +281,8 @@ class RegionRecipe {
     this.costEstimateNpr = 65,
     this.proteinGramsPerServing = 0,
     this.originPackId,
+    this.dishRoles = const [],
+    this.mealTimes = const [],
   });
 
   factory RegionRecipe.fromJson(Map<String, dynamic> json) {
@@ -303,6 +318,8 @@ class RegionRecipe {
       proteinGramsPerServing:
           (json['proteinGramsPerServing'] as num?)?.toDouble() ?? 0,
       originPackId: json['originPackId'] as String?,
+      dishRoles: (json['dishRoles'] as List<dynamic>?)?.cast<String>() ?? const [],
+      mealTimes: (json['mealTimes'] as List<dynamic>?)?.cast<String>() ?? const [],
     );
   }
 }

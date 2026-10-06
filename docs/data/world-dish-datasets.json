@@ -1,0 +1,88 @@
+{
+  "_comment": [
+    "Source datasets researched for world dish roles and eating habits.",
+    "",
+    "NOT yet wired into the app. Recorded here so the provenance of any future import is",
+    "traceable, and so the classification rules in scripts/classify-recipe-roles.mjs can be",
+    "checked against real-world data rather than guessed.",
+    "",
+    "SOURCES",
+    "",
+    "1. oxai/world-wide-dishes (GitHub, not Kaggle)",
+    "   https://github.com/oxai/world-wide-dishes",
+    "   The closest match to what we need. Columns include:",
+    "     type_of_dish        e.g. \"Main dish - eaten with sides\"",
+    "     type_of_dish_more   free-text detail",
+    "     time_of_day          e.g. [\"lunch\", \"dinner\"]",
+    "     time_of_day_more",
+    "     countries, continent, regions, cultures, occasions, utensils, ingredients",
+    "   Directly answers 'which are main courses and which are side dishes' and",
+    "   'when is this eaten'. Licence must be confirmed before importing.",
+    "",
+    "2. worldcuisines/food-kb (HuggingFace, mirrors the Kaggle world-cuisines work)",
+    "   https://huggingface.co/datasets/worldcuisines/food-kb",
+    "   ~2.4k dishes with coarse_categories (stew, soup, rice, dessert), fine_categories",
+    "   (curry, fried rice, rice cake), cuisines, countries, region1/region2 (UN M49 regions).",
+    "   Good for seeding a new region pack's dish list and cuisine tagging.",
+    "",
+    "3. Kaggle - Food Lovers: Global Cuisine Preferences Survey",
+    "   https://www.kaggle.com/datasets/themadprogramer/food-lovers-global-cuisine-preferences-survey",
+    "   CC0 public domain. Geolocated responses on cuisine preference and availability.",
+    "   Useful for 'what does a household here actually eat', not for dish roles.",
+    "",
+    "4. Kaggle - Collection of Recipes around the world",
+    "   https://www.kaggle.com/datasets/prajwaldongre/collection-of-recipes-around-the-world",
+    "   recipe_name, cuisine, ingredients, prep/cook minutes, servings, calories,",
+    "   dietary_restrictions. Shape matches RegionRecipe closely, but has no dish role,",
+    "   so it would need the same classification applied.",
+    "",
+    "5. Kaggle - Open Food Facts / World Food Facts",
+    "   https://www.kaggle.com/datasets/openfoodfacts/world-food-facts",
+    "   ODL. Packaged-product nutrition, 356k rows. Already conceptually covered by the OCR",
+    "   label parser, so lower priority.",
+    "",
+    "6. Kaggle competitions - What's Cooking? / Cuisine Classification Challenge",
+    "   https://www.kaggle.com/competitions/whats-cooking/data",
+    "   Recipe id + cuisine + ingredient list. Useful for cuisine inference on a recipe",
+    "   with no cuisine tag. Competition rules apply to redistribution.",
+    "",
+    "GAP IN THESE SOURCES",
+    "",
+    "None of them provide a per-dish 'side dish' flag for Nepali food specifically, and",
+    "none pair a dish with a meal time the way we model it. The Nepal Bagmati roles are",
+    "therefore classified from its own category taxonomy, which is more reliable for the",
+    "launch region than a general-world guess. Any import should be treated as a seed for",
+    "future region packs, reviewed rather than trusted outright."
+  ],
+
+  "_roleVocabulary": {
+    "mainCourse": "A complete meal on its own. The only role eligible for a meal recommendation.",
+    "sideDish": "Served alongside a main course. Never recommended on its own.",
+    "both": "E.g. a rice dish that works as the meal and as an accompaniment."
+  },
+
+  "_mealTimeVocabulary": {
+    "morning": "breakfast",
+    "midday": "lunch",
+    "evening": "snack / light evening",
+    "night": "dinner"
+  },
+
+  "_observedTypeOfDishValues": {
+    "note": "Verbatim examples of type_of_dish seen in source 1, useful as an import mapping.",
+    "values": [
+      "Main dish - eaten with sides",
+      "one pot meal"
+    ]
+  },
+
+  "_observedCoarseCategories": {
+    "note": "coarse_categories values seen in source 2.",
+    "values": [
+      "stew",
+      "soup",
+      "rice",
+      "dessert"
+    ]
+  }
+}
