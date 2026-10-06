@@ -19,6 +19,7 @@ import 'displays/home_screen_widget_previews.dart';
 import 'displays/watch_companion_preview_sheet.dart';
 import 'displays/display_feed_cache.dart';
 import 'sync/api_session.dart';
+import 'telemetry/sentry_reporter.dart';
 import 'sync/app_sync_coordinator.dart';
 import 'sync/sync_engine.dart';
 import 'settings/household_profile_publisher.dart';
@@ -31,9 +32,28 @@ import 'sync/sync_repository.dart';
 import 'theme/tokens.dart';
 import 'theme/nepali_typography.dart';
 import 'theme/scroll_behavior.dart';
+import 'widgets/load_failure_state.dart';
 import 'widgets/six_ritus_indicator.dart';
 
 void main() {
+  // Reporting is installed before the first frame, otherwise the earliest failures are the ones
+  // most worth seeing and the ones most likely to be missed. Both steps are inert when no DSN
+  // is supplied, so a development build sends nothing.
+  final frameMetrics = startFrameMetrics();
+  final reporter = SentryReporter.fromEnvironment(metrics: frameMetrics);
+
+  installGlobalErrorHandlers(
+    onError: (error, stack) {
+      // Reported directly rather than only via Sentry, so a handled failure is still visible
+      // when reporting is switched off.
+      reporter?.capture(error, stack, reason: 'uncaught');
+    },
+  );
+
+  // Fire and forget: initialising the SDK must not delay the first frame, and a reporting
+  // failure must never stop the app from starting.
+  reporter?.initialise().catchError((Object _) => false);
+
   runApp(const SitiCounterApp());
 }
 
@@ -508,8 +528,14 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
   }
 
   /// Opens the local planner database lazily, the first time the Planner tab is shown.
+  /// Set when the planner database could not be opened.
+  bool _plannerRepoFailed = false;
+
   Future<void> _ensurePlannerRepo() async {
     if (_plannerRepo != null) return;
+    setState(() {
+      _plannerRepoFailed = false;
+    });
     try {
       final repo = await WeeklyPlannerRepository.openOnDisk();
       if (mounted) {
@@ -518,7 +544,13 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
         });
       }
     } catch (_) {
-      // Storage unavailable: planner tab keeps showing its loading state.
+      // Previously this left the planner tab on a spinner forever, which reads as "still
+      // loading" rather than "failed". Surface it with a retry instead.
+      if (mounted) {
+        setState(() {
+          _plannerRepoFailed = true;
+        });
+      }
     }
   }
 
@@ -587,7 +619,14 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
                 repository: _plannerRepo!,
                 currentLanguage: widget.preferences.language,
               )
-            : const Center(child: CircularProgressIndicator()),
+            : _plannerRepoFailed
+                ? LoadFailureState.bilingual(
+                    preferNepali: widget.preferences.language == 'ne',
+                    detailEn: 'The meal plan database could not be opened.',
+                    detailNe: 'भोजन योजनाको डाटाबेस खोल्न सकिएन।',
+                    onRetry: _ensurePlannerRepo,
+                  )
+                : const Center(child: CircularProgressIndicator()),
         bottomNavigationBar: _buildBottomNav(),
       );
     }

@@ -10,6 +10,7 @@ import '../planner/planner_repository.dart';
 import 'market_mode_screen.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
+import '../widgets/load_failure_state.dart';
 
 /// Screen displaying the automated grocery list generated from the weekly meal plan,
 /// categorized into traditional Haat Bazaar / Kalimati market stalls (Vegetables, Fruit,
@@ -270,32 +271,12 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
   }
 
   /// Shown when the list could not be built at all.
-  Widget _buildErrorState() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error_outline_rounded, size: 56, color: SitiColors.alert),
-            const SizedBox(height: 16),
-            Text(
-              _errorMessage!,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 16),
-            FilledButton.icon(
-              key: const Key('grocery_retry_button'),
-              onPressed: _loadData,
-              icon: const Icon(Icons.refresh_rounded, size: 18),
-              label: Text(_isNepali ? 'पुनः प्रयास' : 'Try again'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  Widget _buildErrorState() => LoadFailureState.bilingual(
+    preferNepali: _isNepali,
+    detailEn: 'The grocery list could not be built.',
+    detailNe: 'किनमेल सूची बनाउन सकिएन।',
+    onRetry: _loadData,
+  );
 
   Widget _buildEmptyState() {
     return Center(
