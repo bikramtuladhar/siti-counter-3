@@ -4,16 +4,54 @@
 
 | Concern | Choice | Cost |
 |---|---|---|
-| Crashes and unhandled errors | Sentry Flutter SDK (`sentry_flutter`) | Free tier, metered |
-| Performance units (traces) | Sentry, sampled at 20% | Draws from the same free quota |
-| Frame timing and jank | Computed on-device (`lib/telemetry/frame_metrics.dart`) | Free, uncapped, no vendor |
-| Step timing (cold start, screen loads) | Computed on-device (`StopwatchMetrics`) | Free, uncapped, no vendor |
+| Crashes and unhandled errors | `ErrorReporter` with a pluggable backend | Free |
+| Privacy scrubbing | Always on, no backend needed | Free |
+| Frame timing and jank | Computed on-device (`lib/telemetry/frame_metrics.dart`) | Free, uncapped |
+| Step timing (cold start, screen loads) | Computed on-device (`StopwatchMetrics`) | Free, uncapped |
 | Crash-free sessions | Existing self-hosted `/v1/telemetry/session` | Already yours |
+| Third-party delivery | **Not wired.** See below. | — |
 
-The frame metrics are the genuinely free signal. Flutter's engine already measures how long each
+The frame metrics are the genuinely free signal: Flutter's engine already measures how long each
 frame took to build and raster, so reading it costs nothing and ships nothing off the device.
-Sentry forwards a *sample* of it for trend visibility; the number has to be computed somewhere
-either way.
+
+## No third-party backend is currently installed
+
+This is a deliberate outcome, not an oversight.
+
+`sentry_flutter` was added and it **broke the iOS build**. Its podspec pins
+`Sentry/HybridSDK` 8.46.0, but this repository commits no `Podfile.lock`, so CocoaPods is free
+to resolve a newer native SDK whose API no longer matches the plugin's own Swift source:
+
+```
+SentryBinaryImageCache has no member 'image'
+  sentry_flutter-8.14.2/ios/sentry_flutter/Sources/.../SentryFlutterPlugin.swift:265
+```
+
+A reporting tool that breaks the app it reports on is worse than no reporting tool, so the SDK
+was removed and the reporting layer made vendor-free instead.
+
+**What was kept and still works:**
+
+- scrubbing of every report, unconditionally;
+- local logging in debug builds;
+- free, uncapped frame and step metrics;
+- the global error hooks.
+
+**To install Sentry later:**
+
+1. Commit an `ios/Podfile.lock`, or pin the pod in the Podfile:
+   `pod 'Sentry/HybridSDK', '8.46.0'`
+2. Add the dependency: `flutter pub add sentry_flutter`
+3. Implement a `TelemetryBackend` that forwards the already-scrubbed payload:
+
+```dart
+ErrorReporter.installBackend((type, payload) async {
+  await Sentry.captureMessage(type, extra: payload);
+});
+```
+
+The backend receives data that has already been scrubbed, so a new backend cannot leak
+household or health data by accident — it would have to go out of its way to send the original.
 
 ## Privacy: this is the part to read
 

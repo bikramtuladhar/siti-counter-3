@@ -6,7 +6,7 @@ import 'package:kitchen_engine/region_pack.dart';
 import '../data/region_pack_repository.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
-import '../telemetry/sentry_reporter.dart';
+import '../telemetry/error_reporter.dart';
 import '../kitchen/kitchen_recommendation_section.dart';
 import '../widgets/recipe_search.dart';
 import 'recipe_detail_screen.dart';

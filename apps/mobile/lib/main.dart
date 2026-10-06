@@ -19,7 +19,7 @@ import 'displays/home_screen_widget_previews.dart';
 import 'displays/watch_companion_preview_sheet.dart';
 import 'displays/display_feed_cache.dart';
 import 'sync/api_session.dart';
-import 'telemetry/sentry_reporter.dart';
+import 'telemetry/error_reporter.dart';
 import 'sync/app_sync_coordinator.dart';
 import 'sync/sync_engine.dart';
 import 'settings/household_profile_publisher.dart';
@@ -39,20 +39,11 @@ void main() {
   // Reporting is installed before the first frame, otherwise the earliest failures are the ones
   // most worth seeing and the ones most likely to be missed. Both steps are inert when no DSN
   // is supplied, so a development build sends nothing.
-  final frameMetrics = startFrameMetrics();
-  final reporter = SentryReporter.fromEnvironment(metrics: frameMetrics);
+  startFrameMetrics();
 
   installGlobalErrorHandlers(
-    onError: (error, stack) {
-      // Reported directly rather than only via Sentry, so a handled failure is still visible
-      // when reporting is switched off.
-      reporter?.capture(error, stack, reason: 'uncaught');
-    },
+    onError: (error, stack) => reportError(error, stack, reason: 'uncaught'),
   );
-
-  // Fire and forget: initialising the SDK must not delay the first frame, and a reporting
-  // failure must never stop the app from starting.
-  reporter?.initialise().catchError((Object _) => false);
 
   runApp(const SitiCounterApp());
 }
@@ -328,6 +319,7 @@ class _KitchenHomeScreenState extends State<KitchenHomeScreen> {
           apiBaseUrl: _apiBaseUrl,
         )..accessTokenProvider = tokenProvider,
         accessTokenProvider: tokenProvider,
+        ensureFreshToken: session.ensureFresh,
       );
 
       if (!mounted) {

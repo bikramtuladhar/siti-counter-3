@@ -23,6 +23,18 @@ class AppSyncCoordinator {
   /// Supplies the bearer token for household-scoped calls; null while signed out.
   final AccessTokenProvider? accessTokenProvider;
 
+  /// Renews an expired access token before a sync pass.
+  ///
+  /// Without this the app authorises requests with a token the API has already rejected: the
+  /// token's expiry was never tracked, so nothing noticed until every call came back 401.
+  final Future<bool> Function()? ensureFreshToken;
+
+  /// True when the last sync could not verify credentials because the API was unreachable.
+  ///
+  /// The sync result is then cache-only, which the UI should say rather than presenting an
+  /// empty household as the truth.
+  bool lastRunWasOffline = false;
+
   bool _isRefreshing = false;
 
   AppSyncCoordinator({
@@ -30,6 +42,7 @@ class AppSyncCoordinator {
     required this.syncEngine,
     required this.displayService,
     this.accessTokenProvider,
+    this.ensureFreshToken,
   });
 
   /// Builds a coordinator against the on-disk sync database.
@@ -92,11 +105,16 @@ class AppSyncCoordinator {
     _isRefreshing = true;
 
     try {
+      // Renew first, so the pass does not authorise itself with a dead token.
+      if (ensureFreshToken != null) {
+        lastRunWasOffline = !(await ensureFreshToken!());
+      }
+
       final result = await syncEngine.syncNow();
 
       // Only revalidate the feed when the token is present; without it the API answers 401
       // and the cached payloads are the best we can render.
-      if (accessTokenProvider?.call() != null) {
+      if (accessTokenProvider?.call() != null && !lastRunWasOffline) {
         await displayService.refreshFromApi();
       }
 

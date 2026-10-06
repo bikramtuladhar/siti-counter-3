@@ -4,7 +4,7 @@ import '../onboarding/language_toggle.dart';
 import '../theme/nepali_typography.dart';
 import '../theme/tokens.dart';
 import 'social_auth_service.dart';
-import '../telemetry/sentry_reporter.dart';
+import '../telemetry/error_reporter.dart';
 
 /// Offered at the end of onboarding, so a household's data lands in an account from the
 /// start rather than having to migrate later.

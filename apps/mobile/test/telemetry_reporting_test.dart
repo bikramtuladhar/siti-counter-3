@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:siti_counter/telemetry/frame_metrics.dart';
-import 'package:siti_counter/telemetry/sentry_reporter.dart';
+import 'package:siti_counter/telemetry/error_reporter.dart';
+import 'package:siti_counter/telemetry/event_scrubber.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -116,26 +117,81 @@ void main() {
     });
   });
 
-  group('SentryReporter configuration', () {
-    test('is disabled without a DSN and does not initialise', () async {
-      final reporter = SentryReporter(dsn: '', environment: 'test', release: 'test');
-      expect(reporter.isEnabled, isFalse);
-      expect(await reporter.initialise(), isFalse);
-    });
-
-    test('capture is a no-op when disabled, and does not throw', () async {
-      final reporter = SentryReporter(dsn: '', environment: 'test', release: 'test');
-      await reporter.capture(StateError('boom'), StackTrace.current, reason: 'test');
-      reporter.addTimingBreadcrumb('screen.load', const Duration(milliseconds: 5));
-    });
-
-    test('defaults to sampling performance rather than sending everything', () {
-      final reporter = SentryReporter(
-        dsn: 'https://example@example.ingest.sentry.io/1',
-        environment: 'test',
-        release: 'test',
+  group('ErrorReporter without a backend', () {
+    test('capture is a no-op that does not throw', () async {
+      // The default state: no backend installed, which is how the app ships until one is.
+      final reporter = ErrorReporter(backend: null);
+      await reporter.capture(
+        StateError('boom'),
+        StackTrace.current,
+        reason: 'test',
+        context: const {'memberName': 'Sita'},
       );
-      expect(reporter.tracesSampleRate, lessThan(1.0));
+    });
+
+    test('capture respects the master switch', () async {
+      var called = false;
+      final reporter = ErrorReporter(
+        enabled: false,
+        backend: (_, _) async {
+          called = true;
+        },
+      );
+      await reporter.capture(StateError('boom'), StackTrace.current);
+      expect(called, isFalse);
+    });
+
+    test('a backend failure never propagates', () async {
+      // An exception thrown inside an error handler is far worse than a lost report.
+      final reporter = ErrorReporter(
+        backend: (_, _) async => throw StateError('backend down'),
+      );
+      await expectLater(
+        reporter.capture(StateError('boom'), StackTrace.current),
+        completes,
+      );
+    });
+
+    test('the context is scrubbed before it reaches the backend', () async {
+      String? type;
+      Map<String, Object?>? payload;
+      final reporter = ErrorReporter(
+        backend: (t, p) async {
+          type = t;
+          payload = p;
+        },
+      );
+
+      await reporter.capture(
+        StateError('boom'),
+        StackTrace.current,
+        reason: 'screen.load',
+        context: const {
+          'screen': 'planner',
+          'memberName': 'Sita',
+          'allergens': ['peanut'],
+        },
+      );
+
+      expect(type, 'screen.load');
+      final context = payload!['context']! as Map<String, Object?>;
+      expect(context['screen'], 'planner');
+      expect(context['memberName'], redactedMarker);
+      expect(context['allergens'], redactedMarker);
+      expect(payload.toString(), isNot(contains('Sita')));
+    });
+
+    test('installBackend sets and clears the process-wide instance', () async {
+      var called = 0;
+      ErrorReporter.installBackend((_, _) async {
+        called += 1;
+      });
+      await ErrorReporter.instance.capture(StateError('a'), StackTrace.current);
+      expect(called, 1);
+
+      ErrorReporter.installBackend(null);
+      await ErrorReporter.instance.capture(StateError('b'), StackTrace.current);
+      expect(called, 1, reason: 'clearing the backend stops delivery');
     });
   });
 
